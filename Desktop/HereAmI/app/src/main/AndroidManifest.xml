@@ -29,7 +29,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat"></activity>
+            android:theme="@style/Theme.AppCompat" />
 
         <receiver
             android:name=".ReceiveSMS"
@@ -53,14 +53,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
         <activity
             android:name=".name"
-            android:theme="@style/Theme.AppCompat">
-
-        </activity>
+            ></activity>
+        <activity android:name=".ListActivity"></activity>
+        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

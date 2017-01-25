@@ -38,4 +38,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/button3"
         style="@style/Widget.AppCompat.Button" />
+
+    <Button
+        android:text="list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn"
+        android:layout_alignStart="@+id/btn"
+        android:layout_marginTop="32dp"
+        android:id="@+id/btn_list" />
 </RelativeLayout>

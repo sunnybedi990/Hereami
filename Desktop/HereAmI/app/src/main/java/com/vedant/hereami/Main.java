@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Main extends  RuntimePermissionsActivity {
-    Button b1;
+    Button b1,b2;
     private static final int REQUEST_PERMISSIONS = 5;
     public SharedPreferences sharedpreferences;
     public static final String mypreference123 = "mypref123";
@@ -32,6 +32,7 @@ public class Main extends  RuntimePermissionsActivity {
 
             re();
             b1 =(Button)findViewById(R.id.btn);
+            b2 =(Button)findViewById(R.id.btn_list);
 
 
         b1.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +42,13 @@ public class Main extends  RuntimePermissionsActivity {
                 startActivity(intent1);
             }
         });
+            b2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent1 = new Intent(Main.this,ListActivity.class);
+                    startActivity(intent1);
+                }
+            });
     }
         else{
             Intent b = new Intent(Main.this,name.class);

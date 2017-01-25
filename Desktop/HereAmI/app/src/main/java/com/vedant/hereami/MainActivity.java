@@ -53,6 +53,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -81,7 +82,7 @@ public class MainActivity extends FragmentActivity implements GeoQueryEventListe
     public SharedPreferences sharedpreferences;
     public String[] stockArr;
     public List<String> lst;
-
+PolylineOptions polylineOptions;
 
 
     @Override
@@ -106,7 +107,7 @@ public class MainActivity extends FragmentActivity implements GeoQueryEventListe
         }
         LatLng latLngCenter = new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude);
         Log.d("LatlngCenter", latLngCenter.toString());
-
+polylineOptions = new PolylineOptions();
 
         searchCircle = map.addCircle(new CircleOptions().center(new LatLng(23.0977, 72.5491)).radius(100000));
         searchCircle.setFillColor(Color.argb(66, 255, 0, 255));
@@ -287,7 +288,7 @@ public class MainActivity extends FragmentActivity implements GeoQueryEventListe
         // Move the marker
         //Marker marker = this.markers.get(key);
         //if (marker != null) {
-          this.animateMarkerTo(marker, location.latitude, location.longitude);
+         // this.animateMarkerTo(marker, location.latitude, location.longitude);
         //}
 
         for(final String data:lst) {
@@ -295,14 +296,18 @@ public class MainActivity extends FragmentActivity implements GeoQueryEventListe
                 @Override
                 public void onLocationResult(String key, GeoLocation location) {
                     if (location != null) {
+                        if(key.equals(data))
+                        {
+                        polylineOptions.add(new LatLng(location.latitude,location.longitude));
+                        map.addPolyline(polylineOptions);
                         System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
                         //         if (marker != null) {
 //
                         //                      marker.remove();
                         //                }
                         marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(data));
-                        marker.setTag(0);
-
+                        marker.setTag(data);
+Log.e(">>>>>>>>key ==",data);}
                         // markers.put(key, marker);
                     } else {
                         System.out.println(String.format("There is no location for key %s in GeoFire", key));
