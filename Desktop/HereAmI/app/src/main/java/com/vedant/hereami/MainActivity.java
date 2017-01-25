@@ -287,7 +287,7 @@ public class MainActivity extends FragmentActivity implements GeoQueryEventListe
         // Move the marker
         //Marker marker = this.markers.get(key);
         //if (marker != null) {
-        //   this.animateMarkerTo(marker, location.latitude, location.longitude);
+          this.animateMarkerTo(marker, location.latitude, location.longitude);
         //}
 
         for(final String data:lst) {
