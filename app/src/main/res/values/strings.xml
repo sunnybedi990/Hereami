@@ -7,4 +7,18 @@
     <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
     <string name="title_activity_name">name</string>
     <string name="goodtogo">You are doing a great job buddy. Keep it up</string>
+    <string name="title_activity_log_in">LogIn</string>
+    <string name="title_activity_register">Register</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- LogInActivity-->
+    <string name="login_error_message">Please make sure you enter a username and password!</string>
+    <string name="login_error_title">Checking</string>
+    <string name="title_activity_chat">Chat</string>
+
+    <!-- RegisterActivity-->
+    <string name="register_error_message">Please make sure you enter first name,mobile no, email and password!</string>
+    <string name="mobile_no">Mobile no.</string>
+    <string name="Api_Key">AIzaSyCiyY9W_9Wvhf4Pi9KB-YIyM6qJ8CcSr9w</string>
+    <string name="API_KEY">DEV5714CCE447A7A52BC95AC6512E9</string>
 </resources>

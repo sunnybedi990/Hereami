@@ -54,6 +54,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -81,6 +83,9 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
     public String[] stockArr;
     public List<String> lst;
     PolylineOptions polylineOptions;
+    public FirebaseUser user;
+    public String name1;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     public void onMapReady(GoogleMap map) {
@@ -121,13 +126,15 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sendlocation);
         MultiDex.install(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
       //  SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
       //  mapFragment.getMapAsync(this);
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
         Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
-
+        name1 = user.getDisplayName();
         // FirebaseOptions options = new FirebaseOptions.Builder().setApplicationId("geofire").setDatabaseUrl(GEO_FIRE_DB).build();
         //FirebaseApp app = FirebaseApp.initializeApp(this, options);
         fb_to_read.addValueEventListener(new ValueEventListener(){
@@ -202,7 +209,7 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
 
             //  Toast.make(context, data, Toast.LONG_LENGTH).show;
 
-            geoFire.setLocation(savedpass, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+            geoFire.setLocation(name1, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
                 @Override
                 public void onComplete(String key, DatabaseError error) {
                     if (error != null) {

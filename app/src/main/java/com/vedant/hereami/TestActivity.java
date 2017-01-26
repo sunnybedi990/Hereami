@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.Toast;
@@ -512,4 +513,12 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
             }
         });
     }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == android.view.KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keycode, event);
+    }
 }
+

@@ -54,6 +54,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -83,6 +85,9 @@ public class MainActivity extends FragmentActivity implements GeoQueryEventListe
     public String[] stockArr;
     public List<String> lst;
 PolylineOptions polylineOptions;
+    public FirebaseUser user;
+    public String name2;
+    public FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -94,7 +99,9 @@ PolylineOptions polylineOptions;
 
         }
         this.map = map;
+
         settingsrequest();
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -125,11 +132,13 @@ polylineOptions = new PolylineOptions();
         MultiDex.install(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
         Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
-
+        name2 = user.getDisplayName();
         // FirebaseOptions options = new FirebaseOptions.Builder().setApplicationId("geofire").setDatabaseUrl(GEO_FIRE_DB).build();
         //FirebaseApp app = FirebaseApp.initializeApp(this, options);
         fb_to_read.addValueEventListener(new ValueEventListener(){
@@ -203,7 +212,7 @@ polylineOptions = new PolylineOptions();
 
               //  Toast.make(context, data, Toast.LONG_LENGTH).show;
 
-                geoFire.setLocation(savedpass, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+            geoFire.setLocation(name2, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
                     @Override
                     public void onComplete(String key, DatabaseError error) {
                         if (error != null) {
