@@ -20,7 +20,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListActivity extends Activity {
@@ -53,15 +56,30 @@ public class ListActivity extends Activity {
             public void onDataChange(DataSnapshot result) {
                 // Result will be holded Here
                 for (DataSnapshot dsp : result.getChildren()) {
-                    lst.add(String.valueOf(dsp.getKey())); //add result into array list
+                    String keyname = String.valueOf(dsp.getKey());
+                    lst.add(keyname); //add result into array list
+
+
+
 
                     Log.e(">>>>>List Value", lst.size() + "");
 
                     ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1,lst);
+                    final Collator col = Collator.getInstance();
+                    itemsAdapter.sort(new Comparator<String>() {
+                        @Override
+                        public int compare(String lhs, String rhs) {
+                            return col.compare(lhs, rhs);
+                        }
+                    });
+
+
+
+                    itemsAdapter.notifyDataSetChanged();
+
 
                     listView.setAdapter(itemsAdapter);
-
-
+                    Log.e(">>>>asdd", lst + "");
 
                 }
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,16 +93,19 @@ public class ListActivity extends Activity {
                     }
                 });
 
+
+
+
+
             }
 
 
         });
 
-        stockArr = new String[lst.size()];
-        stockArr = lst.toArray(stockArr);
+
         //Log.e(">>>>>List size", lst.size() + "");
 
-        Log.e(">>>>>stock size", stockArr.length + "");
+//        Log.e(">>>>>stock size", stockArr.length + "");
 
         //Log.e(">>>>>List ", stockArr[0] + "");
 //            ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,lst);

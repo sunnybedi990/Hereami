@@ -11,40 +11,31 @@
     tools:context="com.vedant.hereami.Main">
 
     <Button
-        android:text="Get Location"
+        android:text="Send Location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_marginTop="58dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="GET LOCATION"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:id="@+id/btn_list"
         android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp"
-        android:id="@+id/button3"
-        style="@style/Widget.AppCompat.Button" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="old"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp"
         android:id="@+id/btn"
-        style="@style/Widget.AppCompat.Button" />
-
-    <Button
-        android:text="Send Location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/button3"
-        style="@style/Widget.AppCompat.Button" />
-
-    <Button
-        android:text="list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn"
-        android:layout_alignStart="@+id/btn"
-        android:layout_marginTop="32dp"
-        android:id="@+id/btn_list" />
+        style="@style/Widget.AppCompat.Button"
+        android:layout_marginTop="59dp"
+        android:layout_below="@+id/btn_list"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

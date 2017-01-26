@@ -75,7 +75,7 @@ public class ReceiveSMS extends BroadcastReceiver  {
 
 
         if (VarMessageBody.equals("tracker")) {
-            Intent intentHome = new Intent(context, MainActivity.class);
+            Intent intentHome = new Intent(context, Sendlocation.class);
             intentHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intentHome);
 
