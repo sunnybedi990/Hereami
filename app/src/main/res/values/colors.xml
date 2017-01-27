@@ -11,4 +11,13 @@
     <color name="divider">#B6B6B6</color>
     <color name="text_color">#FFFFFF</color>
     <color name="text_color_icon">#212121</color>
+    <color name="test">#221224</color>
+    <color name="defaultContentColor">@android:color/black</color>
+    <color name="shadow_1">#d4d4d4</color>
+    <color name="shadow_2">#dddddd</color>
+    <color name="card_background">#ffffff</color>
+    <color name="color1">#fff</color>
+    <color name="selectedTile">#222124</color>
+    <color name="color2">#69f0ae</color>
+    <color name="color3">#7c4dff</color>
 </resources>

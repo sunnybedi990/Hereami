@@ -124,7 +124,7 @@ public class Main extends  RuntimePermissionsActivity {
             b4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, MainActivity.class);
+                    Intent intent1 = new Intent(Main.this, phonenumber.class);
                     startActivity(intent1);
                 }
             });

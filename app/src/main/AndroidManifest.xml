@@ -70,9 +70,12 @@
         <activity android:name=".ListActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".chat" />
-
         <activity android:name=".Register" />
-        <activity android:name=".login"></activity>
+        <activity android:name=".login" />
+        <activity
+            android:name=".phonenumber"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
+
     </application>
 
 </manifest>

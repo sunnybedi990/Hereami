@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PersistableBundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class ListActivity extends Activity {
         listView = (ListView) findViewById(R.id.listview1);
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
-        Firebase fb_to_read = fb_parent.child("data");
+        final Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         lst = new ArrayList<String>();
         final int a;
@@ -56,30 +57,43 @@ public class ListActivity extends Activity {
 
             public void onDataChange(DataSnapshot result) {
                 // Result will be holded Here
+
                 for (DataSnapshot dsp : result.getChildren()) {
                     String keyname = String.valueOf(dsp.getKey()).replace("dot", ".");
-                    lst.add(keyname); //add result into array list
+
+                    long sun = result.getChildrenCount();
+                    if (lst.size() > sun) {
+                        lst.clear();
+                    } else {
 
 
-                    Log.e(">>>>>List Value", lst.size() + "");
-
-                    ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, lst);
-                    final Collator col = Collator.getInstance();
-                    itemsAdapter.sort(new Comparator<String>() {
-                        @Override
-                        public int compare(String lhs, String rhs) {
-                            return col.compare(lhs, rhs);
-                        }
-                    });
+                        lst.add(keyname); //add result into array list
 
 
-                    itemsAdapter.notifyDataSetChanged();
+                        Log.e(">>>>>List Value", lst.size() + "");
+
+                        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, lst);
+                        final Collator col = Collator.getInstance();
+                        itemsAdapter.sort(new Comparator<String>() {
+                            @Override
+                            public int compare(String lhs, String rhs) {
+                                return col.compare(lhs, rhs);
+                            }
+                        });
 
 
-                    listView.setAdapter(itemsAdapter);
-                    Log.e(">>>>asdd", lst + "");
+                        itemsAdapter.notifyDataSetChanged();
+
+
+                        listView.setAdapter(itemsAdapter);
+                        Log.e(">>>>asdd", lst + "");
+
+
+                    }
 
                 }
+
+
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
