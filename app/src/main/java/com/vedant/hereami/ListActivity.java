@@ -57,7 +57,7 @@ public class ListActivity extends Activity {
             public void onDataChange(DataSnapshot result) {
                 // Result will be holded Here
                 for (DataSnapshot dsp : result.getChildren()) {
-                    String keyname = String.valueOf(dsp.getKey());
+                    String keyname = String.valueOf(dsp.getKey()).replace("dot", ".");
                     lst.add(keyname); //add result into array list
 
 
@@ -86,7 +86,7 @@ public class ListActivity extends Activity {
 
                         //TextView t1 = (TextView) findViewById(android.R.id.text1);
                         Log.e(">>>>asd", lst.get(position) + "");
-                        Intent intent4 = new Intent(ListActivity.this, TestActivity.class).putExtra("key_position", lst.get(position));
+                        Intent intent4 = new Intent(ListActivity.this, TestActivity.class).putExtra("key_position", lst.get(position).replace(".", "dot"));
                         startActivity(intent4);
                     }
                 });
