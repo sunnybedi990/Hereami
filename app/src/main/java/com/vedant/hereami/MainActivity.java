@@ -88,6 +88,8 @@ PolylineOptions polylineOptions;
     public FirebaseUser user;
     public String name2;
     public FirebaseAuth firebaseAuth;
+    public String usermail2;
+    public String mail2;
 
 
     @Override
@@ -139,6 +141,13 @@ polylineOptions = new PolylineOptions();
         Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         name2 = user.getDisplayName();
+        usermail2 = user.getEmail();
+        if (usermail2 != null) {
+            mail2 = usermail2.replace(".", "dot");
+        } else {
+            Log.e(">>>>asdd", "notfound" + "");
+
+        }
         // FirebaseOptions options = new FirebaseOptions.Builder().setApplicationId("geofire").setDatabaseUrl(GEO_FIRE_DB).build();
         //FirebaseApp app = FirebaseApp.initializeApp(this, options);
         fb_to_read.addValueEventListener(new ValueEventListener(){
@@ -212,7 +221,7 @@ polylineOptions = new PolylineOptions();
 
               //  Toast.make(context, data, Toast.LONG_LENGTH).show;
 
-            geoFire.setLocation(name2, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+            geoFire.setLocation(name2 + " " + mail2, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
                     @Override
                     public void onComplete(String key, DatabaseError error) {
                         if (error != null) {
@@ -259,7 +268,7 @@ polylineOptions = new PolylineOptions();
 
                         marker.remove();
                     }
-                    marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(data));
+                    marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(data.replace("dot", ".")));
                     marker.setTag(0);
                     System.out.println(marker.getId());
                     //markers.put(key, marker);
@@ -314,7 +323,7 @@ polylineOptions = new PolylineOptions();
 //
                         //                      marker.remove();
                         //                }
-                        marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(data));
+                            marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(data.replace("dot", ".")));
                         marker.setTag(data);
 Log.e(">>>>>>>>key ==",data);}
                         // markers.put(key, marker);

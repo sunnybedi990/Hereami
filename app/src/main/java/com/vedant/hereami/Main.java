@@ -43,7 +43,7 @@ public class Main extends  RuntimePermissionsActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         firebaseAuth = FirebaseAuth.getInstance();
-
+        textViewUserEmail = (TextView) findViewById(R.id.textView2);
         //if the user is not logged in
         //that means current user will return null
         if (firebaseAuth.getCurrentUser() == null) {
@@ -55,7 +55,6 @@ public class Main extends  RuntimePermissionsActivity {
             //getting current user
             FirebaseUser user = firebaseAuth.getCurrentUser();
             name3 = user.getDisplayName();
-
             if (name3 == null) {
                 Bundle bundle = getIntent().getExtras();
                 firstname = bundle.getString("first_name");
@@ -73,11 +72,13 @@ public class Main extends  RuntimePermissionsActivity {
                                 }
                             }
                         });
+                textViewUserEmail.setText("Welcome " + firstname);
+            } else {
+                textViewUserEmail.setText("Welcome " + name3);
+
             }
 
-
             //initializing views
-            textViewUserEmail = (TextView) findViewById(R.id.textView2);
 
 
             //displaying logged in user name
@@ -85,7 +86,7 @@ public class Main extends  RuntimePermissionsActivity {
 
             //adding listener to button
 
-            textViewUserEmail.setText("Welcome " + name3);
+
             sharedpreferences = getSharedPreferences(mypreference123,
                     Context.MODE_PRIVATE);
             //    if (sharedpreferences.contains(Pass)) {

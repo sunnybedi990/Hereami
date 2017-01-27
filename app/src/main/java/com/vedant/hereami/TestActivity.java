@@ -1,6 +1,7 @@
 package com.vedant.hereami;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -199,7 +200,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
 
                                                      marker.remove();
                                                 }
-                                marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message));
+                                marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message.replace("dot", ".")));
                                 marker.setTag(key);
 
                             }
@@ -337,7 +338,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
 
 //                        marker.remove();
   //                  }
-                    marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message));
+                    marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message.replace("dot", ".")));
                     marker.setTag(0);
                     System.out.println(marker.getId());
                     //markers.put(key, marker);
@@ -516,7 +517,9 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == android.view.KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
+            Intent i = new Intent(TestActivity.this, Main.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
         }
         return super.onKeyDown(keycode, event);
     }

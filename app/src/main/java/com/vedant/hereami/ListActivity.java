@@ -7,6 +7,7 @@ import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -60,11 +61,9 @@ public class ListActivity extends Activity {
                     lst.add(keyname); //add result into array list
 
 
-
-
                     Log.e(">>>>>List Value", lst.size() + "");
 
-                    ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1,lst);
+                    ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, lst);
                     final Collator col = Collator.getInstance();
                     itemsAdapter.sort(new Comparator<String>() {
                         @Override
@@ -72,7 +71,6 @@ public class ListActivity extends Activity {
                             return col.compare(lhs, rhs);
                         }
                     });
-
 
 
                     itemsAdapter.notifyDataSetChanged();
@@ -88,13 +86,10 @@ public class ListActivity extends Activity {
 
                         //TextView t1 = (TextView) findViewById(android.R.id.text1);
                         Log.e(">>>>asd", lst.get(position) + "");
-                       Intent intent4 = new Intent(ListActivity.this,TestActivity.class).putExtra("key_position", lst.get(position));
+                        Intent intent4 = new Intent(ListActivity.this, TestActivity.class).putExtra("key_position", lst.get(position));
                         startActivity(intent4);
                     }
                 });
-
-
-
 
 
             }
@@ -110,10 +105,10 @@ public class ListActivity extends Activity {
         //Log.e(">>>>>List ", stockArr[0] + "");
 //            ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,lst);
 //
-  //          listView.setAdapter(itemsAdapter);
+        //          listView.setAdapter(itemsAdapter);
 //
-
-
-
     }
+
+
+
 }
