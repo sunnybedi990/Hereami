@@ -37,6 +37,7 @@ public class Main extends  RuntimePermissionsActivity {
 
     private FirebaseAuth firebaseAuth;
     public String name3;
+    private String usermail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,13 @@ public class Main extends  RuntimePermissionsActivity {
         } else {
             //getting current user
             FirebaseUser user = firebaseAuth.getCurrentUser();
+            usermail = user.getEmail();
             name3 = user.getDisplayName();
             if (name3 == null) {
-                Bundle bundle = getIntent().getExtras();
-                firstname = bundle.getString("first_name");
+                //      Bundle bundle = getIntent().getExtras();
+                //    firstname = bundle.getString("first_name");
 
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+        /*        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(firstname).build();
                 user.updateProfile(profileUpdates)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -72,9 +74,13 @@ public class Main extends  RuntimePermissionsActivity {
                                 }
                             }
                         });
-                textViewUserEmail.setText("Welcome " + firstname);
+                        */
+
+                Intent intent4 = new Intent(this, phonenumber.class);
+                startActivity(intent4);
+                //   textViewUserEmail.setText("Welcome " + firstname);
             } else {
-                textViewUserEmail.setText("Welcome " + name3);
+                textViewUserEmail.setText("Welcome " + usermail);
 
             }
 

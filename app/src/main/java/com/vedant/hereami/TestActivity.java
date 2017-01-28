@@ -77,7 +77,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
     public static final String mypreference123 = "mypref123";
     public static final String Pass = "password";
     public GoogleMap map;
-   // public Circle searchCircle;
+    // public Circle searchCircle;
     public GeoFire geoFire;
     public GeoQuery geoQuery;
     private Map<String, Marker> markers;
@@ -89,6 +89,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
     public List<String> lst;
     PolylineOptions polylineOptions;
     public String message;
+    private String namenumber;
 
 
     @Override
@@ -102,14 +103,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
         this.map = map1;
 
 
-
-
-
-
-
-
         settingsrequest();
-
 
 
         geoFire.getLocation(message, new LocationCallback() {
@@ -120,7 +114,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
 
                     System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
                     //if (marker != null) {
-                   // searchCircle = map.addCircle(new CircleOptions().center(new LatLng(location.latitude,location.longitude)).radius(100000));
+                    // searchCircle = map.addCircle(new CircleOptions().center(new LatLng(location.latitude,location.longitude)).radius(100000));
                     //searchCircle.setFillColor(Color.argb(66, 255, 0, 255));
                     //searchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
                     LatLng latLngCenter = new LatLng(location.latitude, location.longitude);
@@ -128,11 +122,11 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
                     map.setOnCameraChangeListener(TestActivity.this);
 
                     map.setMyLocationEnabled(true);
-                      //  marker.remove();
+                    //  marker.remove();
                     //}
                     //marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message));
                     //marker.setTag(0);
-                   // System.out.println(marker.getId());
+                    // System.out.println(marker.getId());
                     //markers.put(key, marker);
                 } else {
                     System.out.println(String.format("There is no location for key %s in GeoFire", key));
@@ -144,7 +138,6 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
                 System.err.println("There was an error getting the GeoFire location: " + databaseError);
             }
         });
-
 
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -173,11 +166,12 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
         mapFragment.getMapAsync(this);
         Bundle bundle = getIntent().getExtras();
         message = bundle.getString("key_position");
-       Firebase.setAndroidContext(this);
+        namenumber = bundle.getString("namenumber");
+        Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
         Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
-        fb_to_read.addChildEventListener(new ChildEventListener(){
+        fb_to_read.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -196,11 +190,11 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
                                 polylineOptions.add(new LatLng(location.latitude, location.longitude));
                                 map.addPolyline(polylineOptions);
                                 System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
-                                        if (marker != null) {
+                                if (marker != null) {
 
-                                                     marker.remove();
-                                                }
-                                marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message.replace("dot", ".")));
+                                    marker.remove();
+                                }
+                                marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(namenumber));
                                 marker.setTag(key);
 
                             }
@@ -337,8 +331,8 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
                     //if (marker != null) {
 
 //                        marker.remove();
-  //                  }
-                    marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message.replace("dot", ".")));
+                    //                  }
+                    marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(namenumber));
                     marker.setTag(0);
                     System.out.println(marker.getId());
                     //markers.put(key, marker);
@@ -378,7 +372,6 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
         //if (marker != null) {
         // this.animateMarkerTo(marker, location.latitude, location.longitude);
         //}
-
 
 
     }
@@ -453,15 +446,23 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
         // Update the search criteria for this geoQuery and the circle on the map
         LatLng center = cameraPosition.target;
         double radius = zoomLevelToRadius(cameraPosition.zoom);
-        Log.e(">>>>>radius",radius+"");
+        Log.e(">>>>>radius", radius / 1000 + "");
         //this.searchCircle.setCenter(center);
         //this.searchCircle.setRadius(radius);
         this.geoQuery.setCenter(new GeoLocation(center.latitude, center.longitude));
+        //this.geoQuery.setRadius(radius/1000);
         // radius in km
-        if(radius/500 > 8){this.geoQuery.setRadius(radius/500);}
-        else{
-            Log.e(">>>>>radius nt ",radius/500 +"");
-    }}
+        if ((radius / 1000 > 8) && (radius / 1000 < 1000)) {
+
+
+            this.geoQuery.setRadius(radius / 1000);
+        } else if (radius / 1000 > 1000) {
+            this.geoQuery.setRadius(1000);
+        } else {
+
+            this.geoQuery.setRadius(0.0078125);
+        }
+    }
 
     public void settingsrequest() {
         if (mGoogleApiClient == null) {

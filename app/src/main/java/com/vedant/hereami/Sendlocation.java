@@ -218,7 +218,7 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
 
             //  Toast.make(context, data, Toast.LONG_LENGTH).show;
 
-            geoFire.setLocation(name1 + " " + mail, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+            geoFire.setLocation(mail + name1, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
                 @Override
                 public void onComplete(String key, DatabaseError error) {
                     if (error != null) {

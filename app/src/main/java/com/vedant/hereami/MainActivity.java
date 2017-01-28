@@ -221,7 +221,7 @@ polylineOptions = new PolylineOptions();
 
               //  Toast.make(context, data, Toast.LONG_LENGTH).show;
 
-            geoFire.setLocation(name2 + " " + mail2, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
+            geoFire.setLocation(mail2 + name2, new GeoLocation(loc.getLatitude(), loc.getLongitude()), new GeoFire.CompletionListener() {
                     @Override
                     public void onComplete(String key, DatabaseError error) {
                         if (error != null) {
