@@ -128,6 +128,7 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sendlocation);
         MultiDex.install(this);
+        settingsrequest();
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
       //  SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);

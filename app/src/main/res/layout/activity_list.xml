@@ -1,17 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.vedant.hereami.ListActivity">
 
-    <ListView
+    <com.vedant.hereami.CustomSwipeRefreshLayout xmlns:swiperefresh="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/swipelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        swiperefresh:enable_top_progress_bar="true"
+        swiperefresh:keep_refresh_head="true"
+        swiperefresh:refresh_mode="pull_mode"
+        swiperefresh:time_out_refresh_complete="2000"
+        swiperefresh:time_out_return_to_top="1000"
+        swiperefresh:return_to_header_duration="1000"
+        swiperefresh:return_to_top_duration="500"
+        swiperefresh:top_progress_bar_color_1="@color/common_red"
+        swiperefresh:top_progress_bar_color_2="#ee5522"
+        swiperefresh:top_progress_bar_color_3="#ffa600"
+        swiperefresh:top_progress_bar_color_4="@color/common_yellow">
 
-        android:id="@+id/listview1"/>
+        <ListView
+            android:id="@+id/listview1"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-</android.support.v4.widget.SwipeRefreshLayout>
+    </com.vedant.hereami.CustomSwipeRefreshLayout>
+
+</LinearLayout>

@@ -58,25 +58,30 @@
             android:label="@string/title_activity_sendlocation" />
         <activity
             android:name=".Main"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
         <activity
             android:name=".name"
             android:label="Name"
             android:theme="@style/Theme.AppCompat" />
-        <activity android:name=".ListActivity" />
+        <activity
+            android:name=".ListActivity"
+            android:theme="@style/Theme.AppCompat" />
         <activity android:name=".TestActivity" />
         <activity android:name=".chat" />
         <activity android:name=".Register" />
         <activity android:name=".login" />
         <activity
             android:name=".phonenumber"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 

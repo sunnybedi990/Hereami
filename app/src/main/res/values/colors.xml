@@ -20,4 +20,6 @@
     <color name="selectedTile">#222124</color>
     <color name="color2">#69f0ae</color>
     <color name="color3">#7c4dff</color>
+    <color name="common_yellow">#ffee33</color>
+    <color name="common_red">#f2ef2620</color>
 </resources>

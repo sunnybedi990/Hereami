@@ -150,7 +150,7 @@ public class Main extends  RuntimePermissionsActivity {
         Main.super.requestAppPermissions(new
                         String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.SEND_SMS}, R.string
+                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS}, R.string
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 

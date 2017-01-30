@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,29 +38,70 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class ListActivity extends Activity {
+
+public class ListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, CustomSwipeRefreshLayout.OnRefreshListener {
     public List<String> lst;
     public ListView listView;
     public String[] stockArr;
     public HashMap<String, String> hashMap;
     public HashMap<String, String> hashMap1;
+    public Firebase fb_to_read;
+    private SwipeRefreshLayout swipeLayout;
+    private CustomSwipeRefreshLayout mCustomSwipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         listView = (ListView) findViewById(R.id.listview1);
+        mCustomSwipeRefreshLayout = (CustomSwipeRefreshLayout) findViewById(R.id.swipelayout);
+
+        mCustomSwipeRefreshLayout.setOnRefreshListener(ListActivity.this);
+        mCustomSwipeRefreshLayout.setCustomHeadview(new MyCustomHeadView(this));
+        // swipeLayout.setProgressBackgroundColor(android.R.color.transparent);
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
-        final Firebase fb_to_read = fb_parent.child("data");
+        fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         lst = new ArrayList<String>();
         final int a;
         lst.clear();
+        getdata();
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
+
         // FirebaseOptions options = new FirebaseOptions.Builder().setApplicationId("geofire").setDatabaseUrl(GEO_FIRE_DB).build();
         //FirebaseApp app = FirebaseApp.initializeApp(this, options);
+
+
+        //Log.e(">>>>>List size", lst.size() + "");
+
+//        Log.e(">>>>>stock size", stockArr.length + "");
+
+        //Log.e(">>>>>List ", stockArr[0] + "");
+//            ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,lst);
+//
+        //          listView.setAdapter(itemsAdapter);
+//
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                lst.clear();
+                getdata();
+                mCustomSwipeRefreshLayout.setRefreshing(false);
+                Log.e(">>>>>List Valueeeeeeee", "");
+
+            }
+
+        }, 5000);
+    }
+
+    public void getdata() {
+
         fb_to_read.addValueEventListener(new ValueEventListener() {
 
 
@@ -135,19 +179,7 @@ public class ListActivity extends Activity {
 
 
         });
-
-
-        //Log.e(">>>>>List size", lst.size() + "");
-
-//        Log.e(">>>>>stock size", stockArr.length + "");
-
-        //Log.e(">>>>>List ", stockArr[0] + "");
-//            ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,lst);
-//
-        //          listView.setAdapter(itemsAdapter);
-//
     }
-
     public static String getLastThree(String myString) {
         if (myString.length() > 10)
             return myString.substring(myString.length() - 10);
