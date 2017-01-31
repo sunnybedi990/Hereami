@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +50,8 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
     private SwipeRefreshLayout swipeLayout;
     private CustomSwipeRefreshLayout mCustomSwipeRefreshLayout;
     private ArrayAdapter<String> itemsAdapter;
+    private View row;
+    private TextView tv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,7 +141,11 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         Log.e(">>>>>List Value", lst.size() + "");
 
-                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, R.layout.list_black_text, R.id.list_content, lst);
+                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.activity_list_item, android.R.id.text1, lst);
+
+
+
+
                         final Collator col = Collator.getInstance();
                         itemsAdapter.sort(new Comparator<String>() {
                             @Override
@@ -246,7 +254,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
-        changeSearchViewTextColor(listView.findViewById(R.layout.list_black_text));
+        // changeSearchViewTextColor(row);
         return super.onCreateOptionsMenu(menu);
 
     }
