@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.swiperefresh;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.vedant.hereami.R;
 
 
 public class MyCustomHeadView extends LinearLayout implements CustomSwipeRefreshLayout.CustomSwipeRefreshHeadLayout {

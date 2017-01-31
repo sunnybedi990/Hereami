@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.swiperefresh;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.vedant.hereami.CustomSwipeRefreshLayout.State;
-import com.vedant.hereami.CustomSwipeRefreshLayout;
+import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout.State;
+import com.vedant.hereami.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,7 +1,9 @@
-package com.vedant.hereami;
+package com.vedant.hereami.code;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.vedant.hereami.R;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * Created by hbb20 on 11/1/16.
  */
-class Country {
+public class Country {
     static String TAG = "Class Country";
     String nameCode;
     String phoneCode;

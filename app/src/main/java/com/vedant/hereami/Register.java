@@ -2,8 +2,13 @@ package com.vedant.hereami;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -51,6 +56,7 @@ public class Register extends Activity implements View.OnClickListener {
         mRegisterButton.setOnClickListener(Register.this);
 
         progressDialog = new ProgressDialog(this);
+
 
     }
 

@@ -1,10 +1,9 @@
-package com.vedant.hereami;
+package com.vedant.hereami.code;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.vedant.hereami.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class CountryCodePicker extends RelativeLayout {
     public String countryfound = null;
     static String TAG = "CCP";
     static String BUNDLE_SELECTED_CODE = "selectedCode";
-    static int LIB_DEFAULT_COUNTRY_CODE = 91;
+    public static int LIB_DEFAULT_COUNTRY_CODE = 91;
     int defaultCountryCode;
     String defaultCountryNameCode;
     Context context;

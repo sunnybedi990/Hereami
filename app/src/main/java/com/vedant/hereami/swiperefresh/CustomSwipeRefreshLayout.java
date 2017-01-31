@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.swiperefresh;
 /**
  * Created by tony.lxy on 2014/9/5.
  */
@@ -23,6 +23,8 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
+
+import com.vedant.hereami.R;
 
 /**
  * The CustomSwipeRefreshLayout should be used whenever the user can refresh the
@@ -399,7 +401,7 @@ public class CustomSwipeRefreshLayout extends ViewGroup {
         return ret;
     }
 
-    private boolean canChildrenScroolHorizontally(View view, MotionEvent event, int direction) {
+    public boolean canChildrenScroolHorizontally(View view, MotionEvent event, int direction) {
         if (view instanceof ViewGroup) {
             final ViewGroup viewgroup = (ViewGroup) view;
             int count = viewgroup.getChildCount();
@@ -471,7 +473,7 @@ public class CustomSwipeRefreshLayout extends ViewGroup {
         mListener = listener;
     }
 
-    private void setTriggerPercentage(float percent) {
+    public void setTriggerPercentage(float percent) {
         if (percent == 0f) {
             // No-op. A null trigger means it's uninitialized, and setting it to zero-percent
             // means we're trying to reset state, so there's nothing to reset in this case.
@@ -485,13 +487,13 @@ public class CustomSwipeRefreshLayout extends ViewGroup {
     }
 
     // for headview
-    private void setRefreshState(int state) {
+    public void setRefreshState(int state) {
         currentState.update(state, mCurrentTargetOffsetTop, mTriggerOffset);
         ((CustomSwipeRefreshHeadLayout) mHeadview).onStateChange(currentState, lastState);
         lastState.update(state, mCurrentTargetOffsetTop, mTriggerOffset);
     }
 
-    private void updateHeadViewState(boolean changeHeightOnly) {
+    public void updateHeadViewState(boolean changeHeightOnly) {
         if (changeHeightOnly) {
             setRefreshState(currentState.getRefreshState());
         } else {
@@ -544,7 +546,7 @@ public class CustomSwipeRefreshLayout extends ViewGroup {
      *
      * @param refreshing Whether or not the view should show refresh progress.
      */
-    protected void setRefreshing(boolean refreshing) {
+    public void setRefreshing(boolean refreshing) {
         if (mRefreshing != refreshing) {
             ensureTarget();
             mCurrPercentage = 0;

@@ -356,9 +356,10 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
     public void onKeyExited(String key) {
         // Remove any old marker
         System.out.println("Key is " + key);
-
+        if (marker != null) {
         marker.getTag();
-        this.marker.remove();
+            this.marker.remove();
+        }
         //if (marker != null) {
         //   marker.remove();
         // this.markers.remove(key);

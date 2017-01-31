@@ -43,7 +43,7 @@
         android:layout_toEndOf="@+id/ccp"
         android:layout_marginStart="11dp" />
 
-    <com.vedant.hereami.CountryCodePicker
+    <com.vedant.hereami.code.CountryCodePicker
         android:id="@+id/ccp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

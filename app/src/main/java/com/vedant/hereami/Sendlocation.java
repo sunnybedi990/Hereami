@@ -63,7 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Sendlocation extends FragmentActivity implements GeoQueryEventListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnCameraChangeListener, OnMapReadyCallback  {
+public class Sendlocation extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final GeoLocation INITIAL_CENTER = new GeoLocation(23.0977, 72.5491);
     private static final int INITIAL_ZOOM_LEVEL = 14;
     private static final String GEO_FIRE_DB = "https://iamhere-29f2b.firebaseio.com";
@@ -89,39 +89,6 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
     public String useremail;
     public String mail;
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        sharedpreferences = getSharedPreferences(mypreference123,
-                Context.MODE_PRIVATE);
-        if (sharedpreferences.contains(Pass)) {
-            savedpass = (sharedpreferences.getString(Pass, ""));
-
-        }
-        this.map = map;
-        settingsrequest();
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        LatLng latLngCenter = new LatLng(INITIAL_CENTER.latitude, INITIAL_CENTER.longitude);
-        Log.d("LatlngCenter", latLngCenter.toString());
-        polylineOptions = new PolylineOptions();
-
-        searchCircle = map.addCircle(new CircleOptions().center(new LatLng(23.0977, 72.5491)).radius(100000));
-        searchCircle.setFillColor(Color.argb(66, 255, 0, 255));
-        searchCircle.setStrokeColor(Color.argb(66, 0, 0, 0));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngCenter, INITIAL_ZOOM_LEVEL));
-        map.setOnCameraChangeListener(this);
-
-        map.setMyLocationEnabled(true);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +98,8 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
         settingsrequest();
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-      //  SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-      //  mapFragment.getMapAsync(this);
+        //  SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        //  mapFragment.getMapAsync(this);
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
         Firebase fb_to_read = fb_parent.child("data");
@@ -145,37 +112,10 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
             Log.e(">>>>asdd", "notfound" + "");
 
         }
-        // FirebaseOptions options = new FirebaseOptions.Builder().setApplicationId("geofire").setDatabaseUrl(GEO_FIRE_DB).build();
-        //FirebaseApp app = FirebaseApp.initializeApp(this, options);
-        fb_to_read.addValueEventListener(new ValueEventListener(){
-
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-
-            public void onDataChange(DataSnapshot result){
-                lst = new ArrayList<String>(); // Result will be holded Here
-                for(DataSnapshot dsp : result.getChildren()){
-                    lst.add(String.valueOf(dsp.getKey())); //add result into array list
-                    //    stockArr = new String[lst.size()];
-                    //  stockArr = lst.toArray(stockArr);
-                }}
-
-
-        });
-        // setup GeoFire
-        this.geoFire = new GeoFire(FirebaseDatabase.getInstance().getReferenceFromUrl(GEO_FIRE_REF));
-        // radius in km
-        this.geoQuery = this.geoFire.queryAtLocation(INITIAL_CENTER, 1);
-
-
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
-        LocationListener mlocListener = new Sendlocation.MyLocationListener();
-
+        LocationListener mlocListener = new MyLocationListener();
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -187,7 +127,13 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
             return;
         }
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
-        Log.e(">>>>asdd", mlocListener + "");
+        // FirebaseOptions options = new FirebaseOptions.Builder().setApplicationId("geofire").setDatabaseUrl(GEO_FIRE_DB).build();
+        //FirebaseApp app = FirebaseApp.initializeApp(this, options);
+
+        this.geoFire = new GeoFire(FirebaseDatabase.getInstance().getReferenceFromUrl(GEO_FIRE_REF));
+        // radius in km
+        this.geoQuery = this.geoFire.queryAtLocation(INITIAL_CENTER, 1);
+
 
 
     }
@@ -206,6 +152,7 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 
     /* Class My Location Listener */
     public class MyLocationListener implements LocationListener {
@@ -249,172 +196,9 @@ public class Sendlocation extends FragmentActivity implements GeoQueryEventListe
         }
     }
 
-    @Override
-    public void onKeyEntered(String key, GeoLocation location) {
-        for(final String data:lst) {
-            // Add a new marker to the map
-            System.out.println(location.latitude);
-            System.out.println(location.longitude);
-            geoFire.getLocation(data, new LocationCallback() {
-                @Override
-                public void onLocationResult(String key, GeoLocation location) {
-                    if (location != null) {
 
 
-                        System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
-                        if (marker != null) {
 
-                            marker.remove();
-                        }
-                        marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(data));
-                        marker.setTag(0);
-                        System.out.println(marker.getId());
-                        //markers.put(key, marker);
-                    } else {
-                        System.out.println(String.format("There is no location for key %s in GeoFire", key));
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.err.println("There was an error getting the GeoFire location: " + databaseError);
-                }
-            });
-            //Marker marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)));
-            //markers.put(key, marker);
-        }
-    }
-
-
-    @Override
-    public void onKeyExited(String key) {
-        // Remove any old marker
-        System.out.println("Key is " + key);
-
-        marker.getTag();
-        this.marker.remove();
-        //if (marker != null) {
-        //   marker.remove();
-        // this.markers.remove(key);
-        //markers.clear();
-    }
-
-    @Override
-    public void onKeyMoved(String key, GeoLocation location) {
-        // Move the marker
-        //Marker marker = this.markers.get(key);
-        //if (marker != null) {
-        // this.animateMarkerTo(marker, location.latitude, location.longitude);
-        //}
-
-        for(final String data:lst) {
-            geoFire.getLocation(data, new LocationCallback() {
-                @Override
-                public void onLocationResult(String key, GeoLocation location) {
-                    if (location != null) {
-                        if(key.equals(data))
-                        {
-                            polylineOptions.add(new LatLng(location.latitude,location.longitude));
-                            map.addPolyline(polylineOptions);
-                            System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
-                            //         if (marker != null) {
-//
-                            //                      marker.remove();
-                            //                }
-                            marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(data));
-                            marker.setTag(data);
-                            Log.e(">>>>>>>>key ==",data);}
-                        // markers.put(key, marker);
-                    } else {
-                        System.out.println(String.format("There is no location for key %s in GeoFire", key));
-                    }
-                }
-
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.err.println("There was an error getting the GeoFire location: " + databaseError);
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onGeoQueryReady() {
-
-    }
-
-    @Override
-    public void onGeoQueryError(DatabaseError error) {
-        new AlertDialog.Builder(this)
-                .setTitle("Error")
-                .setMessage("There was an unexpected error querying GeoFire: " + error.getMessage())
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
-
-
-    private double zoomLevelToRadius(double zoomLevel) {
-        // Approximation to fit circle into view
-        return 16384000 / Math.pow(2, zoomLevel);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // remove all event listeners to stop updating in the background
-        this.geoQuery.removeAllListeners();
-        //for (Marker marker: this.markers.values()) {
-        //  marker.remove();
-        //}
-        //this.markers.clear();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // add an event listener to start updating locations again
-        this.geoQuery.addGeoQueryEventListener(this);
-    }
-
-    private void animateMarkerTo(final Marker marker, final double lat, final double lng) {
-        final Handler handler = new Handler();
-        final long start = SystemClock.uptimeMillis();
-        final long DURATION_MS = 3000;
-        final Interpolator interpolator = new AccelerateDecelerateInterpolator();
-        final LatLng startPosition = marker.getPosition();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                float elapsed = SystemClock.uptimeMillis() - start;
-                float t = elapsed / DURATION_MS;
-                float v = interpolator.getInterpolation(t);
-
-                double currentLat = (lat - startPosition.latitude) * v + startPosition.latitude;
-                double currentLng = (lng - startPosition.longitude) * v + startPosition.longitude;
-                marker.setPosition(new LatLng(currentLat, currentLng));
-
-                // if animation is not finished yet, repeat
-                if (t < 1) {
-                    handler.postDelayed(this, 16);
-                }
-            }
-        });
-    }
-
-
-    @Override
-    public void onCameraChange(CameraPosition cameraPosition) {
-        // Update the search criteria for this geoQuery and the circle on the map
-        LatLng center = cameraPosition.target;
-        double radius = zoomLevelToRadius(cameraPosition.zoom);
-        this.searchCircle.setCenter(center);
-        this.searchCircle.setRadius(radius);
-        this.geoQuery.setCenter(new GeoLocation(center.latitude, center.longitude));
-        // radius in km
-        this.geoQuery.setRadius(radius / 1000);
-    }
 
     public void settingsrequest() {
         if (mGoogleApiClient == null) {

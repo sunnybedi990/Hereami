@@ -1,42 +1,41 @@
 package com.vedant.hereami;
 
-import android.app.Activity;
+import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
+import com.vedant.hereami.swiperefresh.MyCustomHeadView;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.StringTokenizer;
 
 
 public class ListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, CustomSwipeRefreshLayout.OnRefreshListener {
@@ -48,6 +47,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
     public Firebase fb_to_read;
     private SwipeRefreshLayout swipeLayout;
     private CustomSwipeRefreshLayout mCustomSwipeRefreshLayout;
+    private ArrayAdapter<String> itemsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,7 +137,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         Log.e(">>>>>List Value", lst.size() + "");
 
-                        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, lst);
+                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, R.layout.list_black_text, R.id.list_content, lst);
                         final Collator col = Collator.getInstance();
                         itemsAdapter.sort(new Comparator<String>() {
                             @Override
@@ -180,6 +180,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         });
     }
+
     public static String getLastThree(String myString) {
         if (myString.length() > 10)
             return myString.substring(myString.length() - 10);
@@ -211,6 +212,58 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         return name;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        // Inflate menu to add items to action bar if it is present.
+        inflater.inflate(R.menu.search_list, menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // this is your adapter that will be filtered
+                if (itemsAdapter != null) {
+                    itemsAdapter.getFilter().filter(newText);
+                    System.out.println("on text chnge text: " + newText);
+                }
+                return true;
+
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // this is your adapter that will be filtered
+                itemsAdapter.getFilter().filter(query);
+                System.out.println("on query submit: " + query);
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(textChangeListener);
+        changeSearchViewTextColor(listView.findViewById(R.layout.list_black_text));
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    private void changeSearchViewTextColor(View view) {
+        if (view != null) {
+            if (view instanceof TextView) {
+                ((TextView) view).setTextColor(Color.YELLOW);
+                return;
+            } else if (view instanceof ViewGroup) {
+                ViewGroup viewGroup = (ViewGroup) view;
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    changeSearchViewTextColor(viewGroup.getChildAt(i));
+                }
+            }
+        }
+    }
 }
 
 

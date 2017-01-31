@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.code;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.vedant.hereami.R;
 
 import java.util.ArrayList;
 import java.util.List;
