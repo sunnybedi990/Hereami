@@ -115,43 +115,49 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         // phonenoto = phoneno.getText().toString();
 
         this.geoFire = new GeoFire(FirebaseDatabase.getInstance().getReferenceFromUrl(GEO_FIRE_REF));
+
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 codecon = ccpGetNumber.getFullNumberWithPlus();
                 if (useremail == null) {
-                    //  Bundle bundle = getIntent().getExtras();
-                    //  firstname = bundle.getString("first_name");
+                    String s = editTextGetFullNumber.getText().toString();
+                    if (s.length() < 10 || s.length() > 10) {
+                        Log.e(">>>>asddddddd", s + "");
+                    } else {
+                        //  Bundle bundle = getIntent().getExtras();
+                        //  firstname = bundle.getString("first_name");
 
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(codecon).build();
-                    user.updateProfile(profileUpdates)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        firsttimeregister();
-                                        Intent intent4 = new Intent(phonenumber.this, Main.class);
-                                        startActivity(intent4);
-                                        //   Log.d(TAG, "User profile updated.");
-                                        finish();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(codecon).build();
+                        user.updateProfile(profileUpdates)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            firsttimeregister();
+                                            Intent intent4 = new Intent(phonenumber.this, Main.class);
+                                            startActivity(intent4);
+                                            //   Log.d(TAG, "User profile updated.");
+                                            finish();
 
+                                        }
                                     }
-                                }
-                            });
+                                });
 
 
-                    //       phonenoto = phoneno.getText().toString();
-                    //  Toast.makeText(phonenumber.this, codecon + phonenoto, Toast.LENGTH_LONG).show();
-                    Log.e(">>>>asddddddd", phonenoto + "");
+                        //       phonenoto = phoneno.getText().toString();
+                        //  Toast.makeText(phonenumber.this, codecon + phonenoto, Toast.LENGTH_LONG).show();
+                        Log.e(">>>>asddddddd", phonenoto + "");
 //                Toast.makeText(phonenumber.this, selectedCountry.getName(), Toast.LENGTH_LONG).show();
 //                Log.e(">>>>selected", selectedCountry.getName() + "");
-                    //              Log.e(">>>>selectedphonecode", selectedCountry.getPhoneCode() + "");
-                    //            Log.e(">>>>selectednamecode", selectedCountry.getNameCode() + "");
-                    //          Toast.makeText(phonenumber.this, getoa, Toast.LENGTH_LONG).show();
-                    //          Log.e(">>>>codepicker", getoa + "");
+                        //              Log.e(">>>>selectedphonecode", selectedCountry.getPhoneCode() + "");
+                        //            Log.e(">>>>selectednamecode", selectedCountry.getNameCode() + "");
+                        //          Toast.makeText(phonenumber.this, getoa, Toast.LENGTH_LONG).show();
+                        //          Log.e(">>>>codepicker", getoa + "");
+                    }
+                    Log.e(">>>>asddddddd", codecon + "");
                 }
-                Log.e(">>>>asddddddd", codecon + "");
             }
         });
 
