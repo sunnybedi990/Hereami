@@ -47,10 +47,10 @@ public class Register extends Activity implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        mUserFirstNameRegister = (EditText) findViewById(R.id.userFirstNameRegister);
+
         mUserEmailRegister = (EditText) findViewById(R.id.userEmailRegister);
         mUserPassWordRegister = (EditText) findViewById(R.id.passWordRegister);
-        mMobilenoRegister = (EditText) findViewById(R.id.usermobilenoRegister);
+
         mRegisterButton = (Button) findViewById(R.id.registerButton);
         mCancelRegister = (Button) findViewById(R.id.cancelRegisterButton);
         mRegisterButton.setOnClickListener(Register.this);

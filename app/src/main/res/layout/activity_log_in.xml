@@ -12,12 +12,18 @@
         android:id="@+id/titleChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Track Chat"
+        android:text="Tracker"
         android:textStyle="bold"
         android:textColor="@color/text_color"
         android:layout_gravity="center"
         android:textSize="30sp"
         android:layout_marginTop="@dimen/log_in_margin" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
     <EditText
         android:inputType="textEmailAddress"
@@ -30,7 +36,13 @@
         android:layout_marginRight="@dimen/log_in_margin"
         android:layout_marginTop="40dp"
         android:hint="email" />
+    </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
     <EditText
         android:id="@+id/passWordChat"
         android:layout_width="match_parent"
@@ -42,7 +54,7 @@
         android:layout_marginLeft="@dimen/log_in_margin"
         android:layout_marginRight="@dimen/log_in_margin"
         android:hint="password" />
-
+    </android.support.design.widget.TextInputLayout>
     <Button
         android:id="@+id/btn_LogInChat"
         android:layout_width="match_parent"

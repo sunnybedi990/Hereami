@@ -73,11 +73,15 @@
         </activity>
         <activity android:name=".TestActivity" />
         <activity android:name=".chat" />
-        <activity android:name=".Register" />
-        <activity android:name=".login" />
+        <activity
+            android:name=".Register"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".login"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".phonenumber"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.NoActionBar">

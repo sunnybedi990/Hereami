@@ -17,12 +17,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.LocationCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -36,6 +42,8 @@ import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +54,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.vedant.hereami.code.Country;
 import com.vedant.hereami.code.CountryCodePicker;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.vedant.hereami.code.CountryCodePicker.LIB_DEFAULT_COUNTRY_CODE;
@@ -88,77 +98,99 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
     private CountryCodePicker ccpGetNumber;
     private String getit;
     private String useremailaddress;
+    private TextView wrongnumber;
+    public DataSnapshot result;
+    public Firebase fb_to_read;
+    private String part1;
+    private String part2;
+    public List<String> lst1;
+    public String[] stockArr;
+    private String wrnf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phonenumber);
         settingsrequest();
-
+        Firebase.setAndroidContext(this);
+        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        fb_to_read = fb_parent.child("data");
+        Firebase fb_put_child = fb_to_read.push();
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         // countrycode = (TextView) findViewById(R.id.textView_selectedCountry);
         editTextGetFullNumber = (EditText) findViewById(R.id.editTextGetFullNumber);
-
-        Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
-        Firebase fb_to_read = fb_parent.child("data");
-        Firebase fb_put_child = fb_to_read.push();
+        wrongnumber = (TextView) findViewById(R.id.txt_view_wrng);
+        lst1 = new ArrayList<String>();
         // county = (Spinner) findViewById(R.id.spin_country);
         btnsubmit = (Button) findViewById(R.id.button3);
         useremailaddress = user.getEmail();
         useremail = user.getDisplayName();
         ccpGetNumber = (CountryCodePicker) findViewById(R.id.ccp);
+        this.geoFire = new GeoFire(FirebaseDatabase.getInstance().getReferenceFromUrl(GEO_FIRE_REF));
         registerCarrierEditText();
+        getdata();
+
 
         //   codecon = ccpGetNumber.getFullNumberWithPlus();
         // phonenoto = phoneno.getText().toString();
 
-        this.geoFire = new GeoFire(FirebaseDatabase.getInstance().getReferenceFromUrl(GEO_FIRE_REF));
+
 
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 codecon = ccpGetNumber.getFullNumberWithPlus();
-                if (useremail == null) {
-                    String s = editTextGetFullNumber.getText().toString();
-                    if (s.length() < 10 || s.length() > 10) {
-                        Log.e(">>>>asddddddd", s + "");
+                String lessplus = codecon.replace("+", "");
+                String s = editTextGetFullNumber.getText().toString();
+                if (s.length() < 10 || s.length() > 10) {
+                    wrongnumber.setText("Please Enter the Correct Number");
+                    Log.e(">>>>asddddddd", s + "");
+                } else {
+                    if (lst1.contains(lessplus)) {
+                        wrongnumber.setText("Number is already registered. Please enter a diffrent number");
                     } else {
-                        //  Bundle bundle = getIntent().getExtras();
-                        //  firstname = bundle.getString("first_name");
 
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(codecon).build();
-                        user.updateProfile(profileUpdates)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            firsttimeregister();
-                                            Intent intent4 = new Intent(phonenumber.this, Main.class);
-                                            startActivity(intent4);
-                                            //   Log.d(TAG, "User profile updated.");
-                                            finish();
-
-                                        }
-                                    }
-                                });
+                        if (useremail == null) {
 
 
-                        //       phonenoto = phoneno.getText().toString();
-                        //  Toast.makeText(phonenumber.this, codecon + phonenoto, Toast.LENGTH_LONG).show();
-                        Log.e(">>>>asddddddd", phonenoto + "");
+                            if (part2.endsWith(part1)) {
+                                //  Bundle bundle = getIntent().getExtras();
+                                //  firstname = bundle.getString("first_name");
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(codecon).build();
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    firsttimeregister();
+                                                    Intent intent4 = new Intent(phonenumber.this, Main.class);
+                                                    startActivity(intent4);
+                                                    //   Log.d(TAG, "User profile updated.");
+                                                    finish();
+
+                                                }
+                                            }
+                                        });
+                            }
+
+                            //       phonenoto = phoneno.getText().toString();
+                            //  Toast.makeText(phonenumber.this, codecon + phonenoto, Toast.LENGTH_LONG).show();
+                            Log.e(">>>>asddddddd", phonenoto + "");
 //                Toast.makeText(phonenumber.this, selectedCountry.getName(), Toast.LENGTH_LONG).show();
 //                Log.e(">>>>selected", selectedCountry.getName() + "");
-                        //              Log.e(">>>>selectedphonecode", selectedCountry.getPhoneCode() + "");
-                        //            Log.e(">>>>selectednamecode", selectedCountry.getNameCode() + "");
-                        //          Toast.makeText(phonenumber.this, getoa, Toast.LENGTH_LONG).show();
-                        //          Log.e(">>>>codepicker", getoa + "");
+                            //              Log.e(">>>>selectedphonecode", selectedCountry.getPhoneCode() + "");
+                            //            Log.e(">>>>selectednamecode", selectedCountry.getNameCode() + "");
+                            //          Toast.makeText(phonenumber.this, getoa, Toast.LENGTH_LONG).show();
+                            //          Log.e(">>>>codepicker", getoa + "");
+                        }
+                        Log.e(">>>>asddddddd", codecon + "");
                     }
-                    Log.e(">>>>asddddddd", codecon + "");
                 }
             }
+
         });
 
 
@@ -294,6 +326,33 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         });
     }
 
+
+    public void getdata() {
+
+        fb_to_read.addValueEventListener(new ValueEventListener() {
+
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            public void onDataChange(DataSnapshot result) {
+                // Result will be holded Here
+
+                for (DataSnapshot dsp : result.getChildren()) {
+                    String keyname = String.valueOf(dsp.getKey()).replace("+", ":");
+
+                    String[] parts = keyname.split(":"); // escape .
+                    part1 = parts[0];
+                    part2 = parts[1];
+                    wrnf = part2.trim();
+                    lst1.add(wrnf);
+                }
+            }
+        });
+
+    }
 }
 
 

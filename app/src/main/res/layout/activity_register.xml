@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Track Chat"
+        android:text="Tracker"
         android:id="@+id/titleChat"
         android:layout_gravity="center"
         android:textSize="30sp"
@@ -18,27 +18,11 @@
         android:textColor="@color/text_color"
         android:layout_marginTop="@dimen/log_in_margin" />
 
-    <EditText
-        android:id="@+id/userFirstNameRegister"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="@dimen/log_in_margin"
-        android:layout_marginRight="@dimen/log_in_margin"
-        android:textColor="@color/text_color"
-        android:textColorHint="@color/text_color"
-        android:hint="first name" />
-
-    <EditText
-        android:id="@+id/usermobilenoRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/log_in_margin"
-        android:layout_marginRight="@dimen/log_in_margin"
-        android:textColor="@color/text_color"
-        android:textColorHint="@color/text_color"
-        android:hint="@string/mobile_no"
-        android:inputType="phone" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
     <EditText
         android:id="@+id/userEmailRegister"
@@ -50,7 +34,13 @@
         android:textColor="@color/text_color"
         android:textColorHint="@color/text_color"
         android:hint="email" />
+    </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
     <EditText
         android:id="@+id/passWordRegister"
         android:layout_width="match_parent"
@@ -62,6 +52,7 @@
         android:textColor="@color/text_color"
         android:textColorHint="@color/text_color"
         android:hint="password" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/registerButton"
