@@ -27,7 +27,9 @@
             android:id="@+id/listview1"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout>
 

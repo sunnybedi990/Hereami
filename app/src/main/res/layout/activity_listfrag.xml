@@ -1,14 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/activity_listfrag">
+    android:layout_height="wrap_content"
+    android:paddingTop="1dip"
+    android:paddingBottom="1dip"
+    android:paddingStart="8dip"
+    android:paddingEnd="8dip">
 
 
-    <FrameLayout
-        android:id="@+id/sample_content_fragment"
-        android:layout_weight="2"
-        android:layout_width="match_parent"
-        android:layout_height="0px" />
-
+    <TextView
+        android:id="@+id/text123"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:textSize="20sp" />
 </LinearLayout>

@@ -65,6 +65,7 @@
             android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".ListActivity"
+            android:label="@string/title_activity_getlocation"
             android:theme="@style/Theme.AppCompat">
 
             <meta-data

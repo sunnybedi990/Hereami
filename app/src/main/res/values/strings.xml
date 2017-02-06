@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Here Am I</string>
     <string name="title_activity_receive_sms">ReceiveSMS</string>
-    <string name="title_activity_getlocation">Getlocation</string>
-    <string name="title_activity_sendlocation">Sendlocation</string>
+    <string name="title_activity_getlocation">Get location</string>
+    <string name="title_activity_sendlocation">Send location</string>
     <string name="title_activity_main">Main</string>
     <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
     <string name="title_activity_name">name</string>

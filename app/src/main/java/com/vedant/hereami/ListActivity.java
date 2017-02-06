@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -142,9 +143,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         Log.e(">>>>>List Value", lst.size() + "");
 
-                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.activity_list_item, android.R.id.text1, lst);
-
-
+                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, lst);
 
 
                         final Collator col = Collator.getInstance();
