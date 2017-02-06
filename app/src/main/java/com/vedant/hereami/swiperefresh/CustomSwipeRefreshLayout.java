@@ -523,8 +523,8 @@ public class CustomSwipeRefreshLayout extends ViewGroup {
         final Resources res = getResources();
         final int color1 = res.getColor(R.color.cardview_light_background);
         final int color2 = res.getColor(R.color.cardview_dark_background);
-        final int color3 = res.getColor(R.color.accent);
-        final int color4 = res.getColor(R.color.card_background);
+        final int color3 = res.getColor(R.color.dullBG);
+        final int color4 = res.getColor(R.color.cardview_dark_background);
         mTopProgressBar.setColorScheme(color1, color2, color3, color4);
     }
 

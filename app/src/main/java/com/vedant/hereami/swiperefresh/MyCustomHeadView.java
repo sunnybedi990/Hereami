@@ -93,7 +93,7 @@ public class MyCustomHeadView extends LinearLayout implements CustomSwipeRefresh
                     mImageView.clearAnimation();
                     mImageView.setVisibility(View.INVISIBLE);
                     mProgressBar.setVisibility(View.VISIBLE);
-                    mMainTextView.setText("    refreshing  ...    ");
+                    mMainTextView.setText("    refreshing...    ");
                     mMainTextView.setTextColor(Color.RED);
                 }
                 break;
@@ -104,7 +104,7 @@ public class MyCustomHeadView extends LinearLayout implements CustomSwipeRefresh
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.HONEYCOMB) {
                         Integer colorFrom = Color.RED;
-                        Integer colorTo = Color.BLACK;
+                        Integer colorTo = Color.GREEN;
                         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
                         colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                             @Override
@@ -116,7 +116,7 @@ public class MyCustomHeadView extends LinearLayout implements CustomSwipeRefresh
                         colorAnimation.setDuration(1000);
                         colorAnimation.start();
                     } else {
-                        mMainTextView.setTextColor(Color.BLACK);
+                        mMainTextView.setTextColor(Color.GREEN);
                     }
                 }
                 mMainTextView.setText("  refresh  complete  ");
