@@ -154,8 +154,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                         if (useremail == null) {
 
 
-                            if (part2.endsWith(part1)) {
-                                //  Bundle bundle = getIntent().getExtras();
+                            //  Bundle bundle = getIntent().getExtras();
                                 //  firstname = bundle.getString("first_name");
 
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -187,7 +186,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                             //          Log.e(">>>>codepicker", getoa + "");
                         }
                         Log.e(">>>>asddddddd", codecon + "");
-                    }
+
                 }
             }
 

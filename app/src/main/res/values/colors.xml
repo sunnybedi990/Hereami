@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="bg_user_message">#ffffff</color>
+    <color name="refresh_progress_1">@color/colorAccent</color>
+    <color name="refresh_progress_2">@color/accent</color>
+    <color name="refresh_progress_3">@color/colorPrimary</color>
 
     <color name="primary_dark">#E64A19</color>
     <color name="primary">#FF5722</color>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -25,6 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.Locale;
+
 public class Main extends  RuntimePermissionsActivity {
     Button b1, b2, b3, b4;
     private static final int REQUEST_PERMISSIONS = 5;
@@ -38,13 +41,41 @@ public class Main extends  RuntimePermissionsActivity {
     private FirebaseAuth firebaseAuth;
     public String name3;
     private String usermail;
+    private Locale mCurrentLocale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String languageToLoad = "de"; // your language
+        //      Locale locale = new Locale(languageToLoad);
+        //    Locale.setDefault(locale);
+        //    Configuration config = new Configuration();
+        //    config.locale = locale;
+        //    getBaseContext().getResources().updateConfiguration(config,
+        //            getBaseContext().getResources().getDisplayMetrics());
+        //    Log.e(">>>>asdd", locale + "");
+        //    if (!locale.equals(mCurrentLocale)) {
+
+        //      mCurrentLocale = locale;
+        //      recreate();
+        //  }
+        Log.e(">>>>lang1", mCurrentLocale + "");
+        if (mCurrentLocale == null) {
+
+            Locale locale = new Locale(languageToLoad);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
+            Log.e(">>>>lang2", mCurrentLocale + "");
+        }
+        //      mCurrentLocale = locale;
         setContentView(R.layout.activity_main2);
+
         firebaseAuth = FirebaseAuth.getInstance();
         textViewUserEmail = (TextView) findViewById(R.id.textView2);
+
         //if the user is not logged in
         //that means current user will return null
         if (firebaseAuth.getCurrentUser() == null) {

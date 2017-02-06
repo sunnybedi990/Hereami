@@ -38,7 +38,7 @@ public class Register extends Activity implements View.OnClickListener {
     FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     FirebaseUser user;
-    public String Firstname;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class Register extends Activity implements View.OnClickListener {
     private void registerUser() {
         String email = mUserEmailRegister.getText().toString().trim();
         String password = mUserPassWordRegister.getText().toString().trim();
-        Firstname = mMobilenoRegister.getText().toString().trim();
+
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
@@ -114,19 +114,5 @@ public class Register extends Activity implements View.OnClickListener {
         }
     }
 
-    public void nameupdate() {
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(Firstname).build();
-        user.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User profile updated.");
-                            // finish();
 
-                        }
-                    }
-                });
-    }
 }

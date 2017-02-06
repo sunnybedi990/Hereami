@@ -121,7 +121,7 @@ public class DefaultCustomHeadView extends LinearLayout implements CustomSwipeRe
                 break;
 
             case CustomSwipeRefreshLayout.State.STATE_COMPLETE:
-                mMainTextView.setText(R.string.csr_text_state_complete);
+                // mMainTextView.setText(R.string.csr_text_state_complete);
                 updateData();
                 break;
             default:

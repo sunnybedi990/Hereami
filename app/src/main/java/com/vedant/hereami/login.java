@@ -87,7 +87,7 @@ public class login extends Activity implements View.OnClickListener {
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.setMessage("Loggin in Please Wait...");
         progressDialog.show();
 
         //logging in the user

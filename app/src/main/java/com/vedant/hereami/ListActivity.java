@@ -62,6 +62,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         mCustomSwipeRefreshLayout.setOnRefreshListener(ListActivity.this);
         mCustomSwipeRefreshLayout.setCustomHeadview(new MyCustomHeadView(this));
+        mCustomSwipeRefreshLayout.setProgressBarColorRes();
         // swipeLayout.setProgressBackgroundColor(android.R.color.transparent);
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
@@ -106,7 +107,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public void getdata() {
 
-        fb_to_read.addValueEventListener(new ValueEventListener() {
+        fb_to_read.addListenerForSingleValueEvent(new ValueEventListener() {
 
 
             @Override
