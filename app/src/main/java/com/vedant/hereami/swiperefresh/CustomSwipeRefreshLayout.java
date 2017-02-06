@@ -514,17 +514,17 @@ public class CustomSwipeRefreshLayout extends ViewGroup {
      * also be the color of the bar that grows in response to a user swipe
      * gesture.
      *
-     * @param colorRes1 Color resource.
-     * @param colorRes2 Color resource.
-     * @param colorRes3 Color resource.
-     * @param colorRes4 Color resource.
+     //  * @param colorRes1 Color resource.
+     //  * @param colorRes2 Color resource.
+     //  * @param colorRes3 Color resource.
+     //  * @param colorRes4 Color resource.
      */
-    public void setProgressBarColorRes(int colorRes1, int colorRes2, int colorRes3, int colorRes4) {
+    public void setProgressBarColorRes() {
         final Resources res = getResources();
-        final int color1 = res.getColor(colorRes1);
-        final int color2 = res.getColor(colorRes2);
-        final int color3 = res.getColor(colorRes3);
-        final int color4 = res.getColor(colorRes4);
+        final int color1 = res.getColor(R.color.cardview_light_background);
+        final int color2 = res.getColor(R.color.cardview_dark_background);
+        final int color3 = res.getColor(R.color.accent);
+        final int color4 = res.getColor(R.color.card_background);
         mTopProgressBar.setColorScheme(color1, color2, color3, color4);
     }
 
