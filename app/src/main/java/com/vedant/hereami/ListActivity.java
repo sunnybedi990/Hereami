@@ -16,6 +16,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,10 +63,10 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.activity_list);
         listView = (ListView) findViewById(R.id.listview1);
         mCustomSwipeRefreshLayout = (CustomSwipeRefreshLayout) findViewById(R.id.swipelayout);
-
         mCustomSwipeRefreshLayout.setOnRefreshListener(ListActivity.this);
         mCustomSwipeRefreshLayout.setCustomHeadview(new MyCustomHeadView(this));
         mCustomSwipeRefreshLayout.setProgressBarColorRes();
+
         // swipeLayout.setProgressBackgroundColor(android.R.color.transparent);
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
@@ -76,19 +79,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
 
-        // FirebaseOptions options = new FirebaseOptions.Builder().setApplicationId("geofire").setDatabaseUrl(GEO_FIRE_DB).build();
-        //FirebaseApp app = FirebaseApp.initializeApp(this, options);
 
-
-        //Log.e(">>>>>List size", lst.size() + "");
-
-//        Log.e(">>>>>stock size", stockArr.length + "");
-
-        //Log.e(">>>>>List ", stockArr[0] + "");
-//            ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,lst);
-//
-        //          listView.setAdapter(itemsAdapter);
-//
     }
 
     @Override
@@ -143,9 +134,17 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         Log.e(">>>>>List Value", lst.size() + "");
 
-                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, lst);
+                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, R.layout.activity_listfrag, lst) {
 
-
+                            @NonNull
+                            @Override
+                            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                                View view = super.getView(position, convertView, parent);
+                                tv = (TextView) view.findViewById(R.id.text123);
+                                tv.setTextColor(Color.WHITE);
+                                return view;
+                            }
+                        };
                         final Collator col = Collator.getInstance();
                         itemsAdapter.sort(new Comparator<String>() {
                             @Override
@@ -240,6 +239,17 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                 if (itemsAdapter != null) {
                     itemsAdapter.getFilter().filter(newText);
                     System.out.println("on text chnge text: " + newText);
+
+                    Spannable wordtoSpan = new SpannableString(newText);
+                    //    int i = lst.indexOf(newText);
+                    //   wordtoSpan.setSpan(new ForegroundColorSpan(Color.BLUE), i, i + newText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    //   tv.setText(wordtoSpan);
+                    if (tv.getText().toString().contains(newText)) {
+                        tv.setTextColor(Color.YELLOW);
+                    }
+//                    tv.textc
+
                 }
                 return true;
 

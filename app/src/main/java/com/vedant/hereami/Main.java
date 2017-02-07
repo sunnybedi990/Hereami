@@ -46,7 +46,7 @@ public class Main extends  RuntimePermissionsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String languageToLoad = "de"; // your language
+        String languageToLoad = "en"; // your language
         //      Locale locale = new Locale(languageToLoad);
         //    Locale.setDefault(locale);
         //    Configuration config = new Configuration();
@@ -69,6 +69,13 @@ public class Main extends  RuntimePermissionsActivity {
             getBaseContext().getResources().updateConfiguration(config,
                     getBaseContext().getResources().getDisplayMetrics());
             Log.e(">>>>lang2", mCurrentLocale + "");
+        } else {
+            Locale locale = new Locale(languageToLoad);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
         }
         //      mCurrentLocale = locale;
         setContentView(R.layout.activity_main2);
