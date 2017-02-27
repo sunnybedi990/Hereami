@@ -4,8 +4,10 @@ import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.BaseColumns;
@@ -19,6 +21,7 @@ import android.support.v7.widget.SearchView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,6 +45,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
+import static com.vedant.hereami.R.id.end;
+import static com.vedant.hereami.R.id.textView;
 
 
 public class ListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, CustomSwipeRefreshLayout.OnRefreshListener {
@@ -56,6 +63,8 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ArrayAdapter<String> itemsAdapter;
     private View row;
     private TextView tv;
+    private SpannableString wordtoSpan;
+    private String contactmatch;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,7 +134,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                         lst.clear();
                     } else {
 
-                        String contactmatch = getContactDisplayNameByNumber(tendigitnumber);
+                        contactmatch = getContactDisplayNameByNumber(tendigitnumber);
                         if (!contactmatch.equals("?")) {
                             lst.add(contactmatch);
                         }
@@ -141,7 +150,12 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                                 View view = super.getView(position, convertView, parent);
                                 tv = (TextView) view.findViewById(R.id.text123);
-                                tv.setTextColor(Color.WHITE);
+                                //   tv.setTextColor(Color.WHITE);
+
+
+
+
+
                                 return view;
                             }
                         };
@@ -159,8 +173,9 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         listView.setAdapter(itemsAdapter);
                         Log.e(">>>>asdd", lst + "");
-
-
+                        if (wordtoSpan != null) {
+                            tv.setText(wordtoSpan);
+                    }
                     }
 
                 }
@@ -238,18 +253,39 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                 // this is your adapter that will be filtered
                 if (itemsAdapter != null) {
                     itemsAdapter.getFilter().filter(newText);
-                    System.out.println("on text chnge text: " + newText);
 
-                    Spannable wordtoSpan = new SpannableString(newText);
-                    //    int i = lst.indexOf(newText);
-                    //   wordtoSpan.setSpan(new ForegroundColorSpan(Color.BLUE), i, i + newText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                    //   tv.setText(wordtoSpan);
-                    if (tv.getText().toString().contains(newText)) {
-                        tv.setTextColor(Color.YELLOW);
+                    itemsAdapter.notifyDataSetChanged();
+            /*        newText = newText.toLowerCase(Locale.getDefault());
+                    lst.clear();
+                    if (newText.length() == 0) {
+                        lst.add(contactmatch);
                     }
-//                    tv.textc
+                    else
+                    {
+                        for ( String wp : lst)
+                        {
+                            if (wp.toLowerCase(Locale.getDefault()).contains(newText))
+                            {
+                                lst.add(wp);
+                            }
+                        }
+                    }
 
+            */
+                    System.out.println("on text chnge text: " + newText);
+                    //        int i = lst.toString().toLowerCase(Locale.US).indexOf(newText.toLowerCase(Locale.US));
+                    //        int endpos = i + newText.length();
+                    //        if (i != -1) {
+                    //             wordtoSpan = new SpannableString(itemsAdapter.toString());
+
+                    //             wordtoSpan.setSpan(new ForegroundColorSpan(Color.BLUE), i, endpos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    //           tv.setText(wordtoSpan);
+                    //  if (tv.getText().toString().contains(newText)) {
+                    //      tv.setTextColor(Color.YELLOW);
+
+//                    tv.textc
+                    //         }
                 }
                 return true;
 

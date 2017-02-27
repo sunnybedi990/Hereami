@@ -55,4 +55,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:id="@+id/textView2" />
+
+    <Button
+        android:text="one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_chat"
+        android:layout_alignRight="@+id/btn_chat"
+        android:layout_alignEnd="@+id/btn_chat"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_one" />
 </RelativeLayout>

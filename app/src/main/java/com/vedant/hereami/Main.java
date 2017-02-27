@@ -4,32 +4,22 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.vedant.hereami.chatfolder.chatactivity;
 
 import java.util.Locale;
 
 public class Main extends  RuntimePermissionsActivity {
-    Button b1, b2, b3, b4;
+    public Button b1, b2, b3, b4, b5;
     private static final int REQUEST_PERMISSIONS = 5;
     public SharedPreferences sharedpreferences;
     public static final String mypreference123 = "mypref123";
@@ -42,41 +32,13 @@ public class Main extends  RuntimePermissionsActivity {
     public String name3;
     private String usermail;
     private Locale mCurrentLocale;
+    private FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String languageToLoad = "en"; // your language
-        //      Locale locale = new Locale(languageToLoad);
-        //    Locale.setDefault(locale);
-        //    Configuration config = new Configuration();
-        //    config.locale = locale;
-        //    getBaseContext().getResources().updateConfiguration(config,
-        //            getBaseContext().getResources().getDisplayMetrics());
-        //    Log.e(">>>>asdd", locale + "");
-        //    if (!locale.equals(mCurrentLocale)) {
 
-        //      mCurrentLocale = locale;
-        //      recreate();
-        //  }
-        Log.e(">>>>lang1", mCurrentLocale + "");
-        if (mCurrentLocale == null) {
-
-            Locale locale = new Locale(languageToLoad);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,
-                    getBaseContext().getResources().getDisplayMetrics());
-            Log.e(">>>>lang2", mCurrentLocale + "");
-        } else {
-            Locale locale = new Locale(languageToLoad);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,
-                    getBaseContext().getResources().getDisplayMetrics());
-        }
         //      mCurrentLocale = locale;
         setContentView(R.layout.activity_main2);
 
@@ -92,7 +54,9 @@ public class Main extends  RuntimePermissionsActivity {
             startActivity(new Intent(this, login.class));
         } else {
             //getting current user
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+            user = firebaseAuth.getCurrentUser();
+
+
             usermail = user.getEmail();
             name3 = user.getDisplayName();
             if (name3 == null) {
@@ -142,6 +106,7 @@ public class Main extends  RuntimePermissionsActivity {
             b2 = (Button) findViewById(R.id.btn_list);
             b3 = (Button) findViewById(R.id.button2);
             b4 = (Button) findViewById(R.id.btn_chat);
+            b5 = (Button) findViewById(R.id.btn_one);
 
 
             b1.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +133,7 @@ public class Main extends  RuntimePermissionsActivity {
             b4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, phonenumber.class);
+                    Intent intent1 = new Intent(Main.this, chat.class);
                     startActivity(intent1);
                 }
             });
@@ -176,9 +141,16 @@ public class Main extends  RuntimePermissionsActivity {
             //      Intent b = new Intent(Main.this, name.class);
             //      startActivity(b);
             // }
+            b5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent1 = new Intent(Main.this, chatactivity.class);
+                    startActivity(intent1);
+                }
+            });
+        }
 
         }
-    }
 
 
     public void onPermissionsGranted(final int requestCode) {

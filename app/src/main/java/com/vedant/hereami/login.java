@@ -3,11 +3,13 @@ package com.vedant.hereami;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class login extends Activity implements View.OnClickListener {
     private EditText mUserEmail;
@@ -27,6 +30,8 @@ public class login extends Activity implements View.OnClickListener {
 
     //progress dialog
     private ProgressDialog progressDialog;
+    private FirebaseUser user;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,8 @@ public class login extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_log_in);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
         //if the objects getcurrentuser method is not null
         //means user is already logged in
         if (firebaseAuth.getCurrentUser() != null) {
@@ -60,6 +66,12 @@ public class login extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         if (view == mLoginToMChat) {
             userLogin();
+            try {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
         }
 
         if (view == mRegisterUser) {
@@ -93,14 +105,37 @@ public class login extends Activity implements View.OnClickListener {
         //logging in the user
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         //if the task is successfull
                         if (task.isSuccessful()) {
                             //start the profile activity
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), Main.class));
+                            // finish();
+                            user = firebaseAuth.getCurrentUser();
+                            if (user != null) {
+                                if (user.isEmailVerified()) {
+
+                                    Intent mainIntent = new Intent(getApplicationContext(), Main.class);
+                                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(mainIntent);
+
+
+                                } else {
+                                    Snackbar snackbar = Snackbar
+                                            .make(coordinatorLayout, "Please verify your account!", Snackbar.LENGTH_LONG);
+
+                                    snackbar.show();
+
+                                    //  Snackbar.make(getView().findViewById(R.id.coordinatorLayout), "Please verify your account!", Snackbar.LENGTH_LONG).show();
+                                    firebaseAuth.signOut();
+
+                                }
+                                //  startActivity(new Intent(getApplicationContext(), Main.class));
+                            }
                         }
                     }
                 });

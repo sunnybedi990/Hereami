@@ -164,9 +164,9 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
+                                                    user.sendEmailVerification();
                                                     firsttimeregister();
-                                                    Intent intent4 = new Intent(phonenumber.this, Main.class);
-                                                    startActivity(intent4);
+                                                    firebaseAuth.signOut();
                                                     //   Log.d(TAG, "User profile updated.");
                                                     finish();
 
