@@ -73,7 +73,9 @@
                 android:value=".SearchResultsActivity" />
         </activity>
         <activity android:name=".TestActivity" />
-        <activity android:name=".chat" />
+        <activity
+            android:name=".chat"
+            android:theme="@style/Theme.AppCompat" />
         <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -106,6 +108,11 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".chatfolder.chatactivity"
+            android:theme="@style/Theme.MyCompatTheme">
+
         </activity>
     </application>
 
