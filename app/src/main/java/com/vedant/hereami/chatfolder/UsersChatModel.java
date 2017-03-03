@@ -68,7 +68,6 @@ public class UsersChatModel implements Parcelable {
     public void setMobileno(String mobileno) {
         mmobileno = mobileno;
     }
-
     public String getProvider() {
         return provider;
     }
@@ -132,7 +131,6 @@ public class UsersChatModel implements Parcelable {
     public String getMlastmessage() {
         return mlastmessage;
     }
-
     /*create chat endpoint for firebase*/
     public String getChatRef() {
         return createUniqueChatRef();
@@ -208,7 +206,7 @@ public class UsersChatModel implements Parcelable {
 
 //01-17 23:02:27.190 1944-1944/com.marceme.marcefirebasechat E/AndroidRuntime: FATAL EXCEPTION: main
 //        Process: com.marceme.marcefirebasechat, PID: 1944
-//        java.lang.RuntimeException: Unable to start activity ComponentInfo{com.marceme.marcefirebasechat/com.marceme.marcefirebasechat.ui.ChatActivity}: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)' on a null object reference
+//        java.lang.RuntimeException: Unable to start activity ComponentInfo{com.marceme.marcefirebasechat/com.marceme.marcefirebasechat.ui.chatactivity}: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)' on a null object reference
 //        at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2298)
 //        at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2360)
 //        at android.app.ActivityThread.access$800(ActivityThread.java:144)
@@ -224,7 +222,7 @@ public class UsersChatModel implements Parcelable {
 //        at com.marceme.marcefirebasechat.model.UsersChatModel.cleanEmailAddress(UsersChatModel.java:150)
 //        at com.marceme.marcefirebasechat.model.UsersChatModel.createUniqueChatRef(UsersChatModel.java:131)
 //        at com.marceme.marcefirebasechat.model.UsersChatModel.getChatRef(UsersChatModel.java:123)
-//        at com.marceme.marcefirebasechat.ui.ChatActivity.onCreate(ChatActivity.java:83)
+//        at com.marceme.marcefirebasechat.ui.chatactivity.onCreate(chatactivity.java:83)
 //        at android.app.Activity.performCreate(Activity.java:5933)
 //        at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1105)
 //        at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2251)

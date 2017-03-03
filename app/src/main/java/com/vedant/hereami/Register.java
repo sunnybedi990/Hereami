@@ -98,7 +98,7 @@ public class Register extends Activity implements View.OnClickListener {
                             startActivity(intent4);
                             //     startActivity(new Intent(getApplicationContext(), Main.class));
                         } else {
-                            //display some message here
+                            //display some message1 here
                             Toast.makeText(Register.this, "Registration Error", Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();

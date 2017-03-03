@@ -1,29 +1,22 @@
-package com.vedant.hereami;
+package com.vedant.hereami.chatfolder;
 
 import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -37,6 +30,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.vedant.hereami.R;
 import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
 import com.vedant.hereami.swiperefresh.MyCustomHeadView;
 
@@ -45,13 +39,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
-import static com.vedant.hereami.R.id.end;
-import static com.vedant.hereami.R.id.textView;
-
-
-public class ListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, CustomSwipeRefreshLayout.OnRefreshListener {
+public class chatmain extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, CustomSwipeRefreshLayout.OnRefreshListener {
     public List<String> lst;
     public ListView listView;
     public String[] stockArr;
@@ -67,39 +56,18 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
     private String contactmatch;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-        listView = (ListView) findViewById(R.id.listview1);
+        setContentView(R.layout.activity_chatmain);
+        listView = (ListView) findViewById(R.id.listview_chatmain);
         mCustomSwipeRefreshLayout = (CustomSwipeRefreshLayout) findViewById(R.id.swipelayout);
-        mCustomSwipeRefreshLayout.setOnRefreshListener(ListActivity.this);
+        mCustomSwipeRefreshLayout.setOnRefreshListener(chatmain.this);
         mCustomSwipeRefreshLayout.setCustomHeadview(new MyCustomHeadView(this));
         mCustomSwipeRefreshLayout.setProgressBarColorRes();
-
-        // swipeLayout.setProgressBackgroundColor(android.R.color.transparent);
         Firebase.setAndroidContext(this);
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
         fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
-        fb_to_read.addValueEventListener(new ValueEventListener() {
-
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-
-            public void onDataChange(DataSnapshot result) {
-                lst = new ArrayList<String>(); // Result will be holded Here
-                for (DataSnapshot dsp : result.getChildren()) {
-                    lst.add(String.valueOf(dsp.getKey())); //add result into array list
-                    //    stockArr = new String[lst.size()];
-                    //  stockArr = lst.toArray(stockArr);
-                }
-            }
-
-
-        });
         lst = new ArrayList<String>();
         final int a;
         lst.clear();
@@ -110,20 +78,6 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     }
 
-    @Override
-    public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                lst.clear();
-                getdata();
-                mCustomSwipeRefreshLayout.setRefreshing(false);
-                Log.e(">>>>>List Valueeeeeeee", "");
-
-            }
-
-        }, 5000);
-    }
 
     public void getdata() {
 
@@ -162,7 +116,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         Log.e(">>>>>List Value", lst.size() + "");
 
-                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, R.layout.activity_listfrag, lst) {
+                        itemsAdapter = new ArrayAdapter<String>(chatmain.this, R.layout.activity_listfrag, lst) {
 
                             @NonNull
                             @Override
@@ -207,7 +161,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                         Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
 
                         Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                        Intent intent4 = new Intent(ListActivity.this, TestActivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
+                        Intent intent4 = new Intent(chatmain.this, chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
                         startActivity(intent4);
                     }
                 });
@@ -259,7 +213,10 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_search).getActionView();
+                null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        }
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
@@ -334,6 +291,23 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
     }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                lst.clear();
+                getdata();
+                mCustomSwipeRefreshLayout.setRefreshing(false);
+                Log.e(">>>>>List Valueeeeeeee", "");
+
+            }
+
+        }, 5000);
+    }
+
 }
+
 
 

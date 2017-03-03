@@ -136,7 +136,7 @@ public class UsersChatAdapter extends RecyclerView.Adapter<UsersChatAdapter.View
             user.setCurrentUserCreatedAt(mCurrentUserCreatedAt);
 
             // Create a chat activity
-            Intent chatIntent = new Intent(mContextViewHolder, chatactivity.class);
+            Intent chatIntent = new Intent(mContextViewHolder, chatactivity1.class);
 
             // Attach data to activity as a parcelable object
             chatIntent.putExtra(ReferenceUrl.KEY_PASS_USERS_INFO, user);

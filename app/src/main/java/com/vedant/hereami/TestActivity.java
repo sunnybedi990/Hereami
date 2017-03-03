@@ -124,7 +124,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
                     map.setMyLocationEnabled(true);
                     //  marker.remove();
                     //}
-                    //marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message));
+                    //marker = map.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(message1));
                     //marker.setTag(0);
                     // System.out.println(marker.getId());
                     //markers.put(key, marker);

@@ -87,7 +87,7 @@ public class chat extends AppCompatActivity
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 10;
     public static final String ANONYMOUS = "anonymous";
     private static final String MESSAGE_SENT_EVENT = "message_sent";
-    private static final String MESSAGE_URL = "http://friendlychat.firebase.google.com/message/";
+    private static final String MESSAGE_URL = "http://friendlychat.firebase.google.com/message1/";
     private static final String LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif";
 
 
@@ -209,7 +209,7 @@ public class chat extends AppCompatActivity
                 }
 
                 if (friendlyMessage.getText() != null) {
-                    // write this message to the on-device index
+                    // write this message1 to the on-device index
                     FirebaseAppIndex.getInstance().update(getMessageIndexable(friendlyMessage));
                 }
 
@@ -225,7 +225,7 @@ public class chat extends AppCompatActivity
                 int friendlyMessageCount = mFirebaseAdapter.getItemCount();
                 int lastVisiblePosition = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
                 // If the recycler view is initially being loaded or the user is at the bottom of the list, scroll
-                // to the bottom of the list to show the newly added message.
+                // to the bottom of the list to show the newly added message1.
                 if (lastVisiblePosition == -1 ||
                         (positionStart >= (friendlyMessageCount - 1) && lastVisiblePosition == (positionStart - 1))) {
                     mMessageRecyclerView.scrollToPosition(positionStart);
@@ -454,7 +454,7 @@ public class chat extends AppCompatActivity
 
                                         putImageInStorage(storageReference, uri, key);
                                     } else {
-                                        Log.w(TAG, "Unable to write message to database.",
+                                        Log.w(TAG, "Unable to write message1 to database.",
                                                 databaseError.toException());
                                     }
                                 }
@@ -476,7 +476,7 @@ public class chat extends AppCompatActivity
                 payload.putString(FirebaseAnalytics.Param.VALUE, "inv_not_sent");
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, payload);
 
-                // Sending failed or it was canceled, show failure message to the user
+                // Sending failed or it was canceled, show failure message1 to the user
                 Log.d(TAG, "Failed to send invitation.");
             }
         }

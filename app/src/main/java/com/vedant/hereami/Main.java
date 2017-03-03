@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.vedant.hereami.chatfolder.chatactivity;
+import com.vedant.hereami.chatfolder.chatmain;
 
 import java.util.Locale;
 
@@ -144,7 +144,7 @@ public class Main extends  RuntimePermissionsActivity {
             b5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, chatactivity.class);
+                    Intent intent1 = new Intent(Main.this, chatmain.class);
                     startActivity(intent1);
                 }
             });
