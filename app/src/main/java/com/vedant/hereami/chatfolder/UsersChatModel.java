@@ -68,7 +68,6 @@ public class UsersChatModel implements Parcelable {
     public void setMobileno(String mobileno) {
         mmobileno = mobileno;
     }
-
     public String getProvider() {
         return provider;
     }
@@ -132,7 +131,6 @@ public class UsersChatModel implements Parcelable {
     public String getMlastmessage() {
         return mlastmessage;
     }
-
     /*create chat endpoint for firebase*/
     public String getChatRef() {
         return createUniqueChatRef();
