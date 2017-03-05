@@ -74,12 +74,15 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void configureSenderView(ViewHolderSender viewHolderSender, int position) {
         MessageChatModel senderFireMessage = mListOfFireChat.get(position);
         viewHolderSender.getSenderMessageTextView().setText(senderFireMessage.getMessage());
+        viewHolderSender.getSenderMessagetimeTextView().setText(senderFireMessage.getTimestamp());
     }
 
     private void configureRecipientView(ViewHolderRecipient viewHolderRecipient, int position) {
         MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
         viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
+        viewHolderRecipient.getRecipientMessagetimeTextView().setText(recipientFireMessage.getTimestamp());
     }
+
 
     @Override
     public int getItemCount() {
@@ -117,18 +120,26 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ViewHolderSender extends RecyclerView.ViewHolder {
 
         private TextView mSenderMessageTextView;
+        private TextView mSenderMessagetimeTextView;
 
         public ViewHolderSender(View itemView) {
             super(itemView);
             mSenderMessageTextView = (TextView) itemView.findViewById(R.id.senderMessage);
+            mSenderMessagetimeTextView = (TextView) itemView.findViewById(R.id.senderMessagetime);
         }
 
         public TextView getSenderMessageTextView() {
             return mSenderMessageTextView;
         }
+        public TextView getSenderMessagetimeTextView() {
+            return mSenderMessagetimeTextView;
+        }
 
         public void setSenderMessageTextView(TextView senderMessage) {
             mSenderMessageTextView = senderMessage;
+        }
+        public void setSenderMessagetimeTextView(TextView senderMessagetime) {
+            mSenderMessagetimeTextView = senderMessagetime;
         }
     }
 
@@ -137,18 +148,25 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class ViewHolderRecipient extends RecyclerView.ViewHolder {
 
         private TextView mRecipientMessageTextView;
+        private TextView mRecipientMessagetimeTextView;
 
         public ViewHolderRecipient(View itemView) {
             super(itemView);
             mRecipientMessageTextView = (TextView) itemView.findViewById(R.id.recipientMessage);
+            mRecipientMessagetimeTextView = (TextView) itemView.findViewById(R.id.recipientMessagetime);
         }
 
         public TextView getRecipientMessageTextView() {
             return mRecipientMessageTextView;
         }
-
+        public TextView getRecipientMessagetimeTextView() {
+            return mRecipientMessagetimeTextView;
+        }
         public void setRecipientMessageTextView(TextView recipientMessage) {
             mRecipientMessageTextView = recipientMessage;
+        }
+        public void setRecipientMessagetimeTextView(TextView recipientMessagetime) {
+            mRecipientMessagetimeTextView = recipientMessagetime;
         }
     }
 

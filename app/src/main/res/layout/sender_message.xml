@@ -8,17 +8,35 @@
         android:id="@+id/senderMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="I am doing ok"
-        android:padding="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="2dp"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="2dp"
-        android:textStyle="bold"
-        android:textSize="14sp"
+        android:background="@drawable/sender_rounded_corners"
+        android:padding="8dp"
         android:textColor="#FFFFFF"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/sender_rounded_corners" />
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:text="I am doing ok" />
+
+    <TextView
+        android:id="@+id/senderMessagetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/senderMessage"
+        android:layout_alignLeft="@+id/senderMessage"
+        android:layout_alignRight="@+id/senderMessage"
+        android:layout_alignStart="@+id/senderMessage"
+        android:layout_below="@+id/senderMessage"
+        android:background="@drawable/sender_rounded_corners"
+        android:padding="8dp"
+        android:textAlignment="textEnd"
+        android:textColor="#FFFFFF"
+        android:textSize="8sp"
+        android:textStyle="bold"
+        tools:text="12:50" />
+
 
 </RelativeLayout>
