@@ -162,19 +162,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         Log.e(">>>>>List Value", lst.size() + "");
 
-                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, R.layout.activity_listfrag, lst) {
-
-                            @NonNull
-                            @Override
-                            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                                View view = super.getView(position, convertView, parent);
-                                tv = (TextView) view.findViewById(R.id.text123);
-                                //   tv.setTextColor(Color.WHITE);
-
-
-                                return view;
-                            }
-                        };
+                        itemsAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, lst);
                         final Collator col = Collator.getInstance();
                         itemsAdapter.sort(new Comparator<String>() {
                             @Override

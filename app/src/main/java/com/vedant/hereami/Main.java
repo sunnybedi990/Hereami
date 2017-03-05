@@ -15,11 +15,12 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.chatfolder.chatmain;
+import com.vedant.hereami.chatfolder.recentchat;
 
 import java.util.Locale;
 
 public class Main extends  RuntimePermissionsActivity {
-    public Button b1, b2, b3, b4, b5;
+    public Button b1, b2, b3, b4, b5, b6, b7;
     private static final int REQUEST_PERMISSIONS = 5;
     public SharedPreferences sharedpreferences;
     public static final String mypreference123 = "mypref123";
@@ -107,6 +108,8 @@ public class Main extends  RuntimePermissionsActivity {
             b3 = (Button) findViewById(R.id.button2);
             b4 = (Button) findViewById(R.id.btn_chat);
             b5 = (Button) findViewById(R.id.btn_one);
+            b6 = (Button) findViewById(R.id.btn_propic);
+            b7 = (Button) findViewById(R.id.btn_recent);
 
 
             b1.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +148,20 @@ public class Main extends  RuntimePermissionsActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent1 = new Intent(Main.this, chatmain.class);
+                    startActivity(intent1);
+                }
+            });
+            b6.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent1 = new Intent(Main.this, userphoto.class);
+                    startActivity(intent1);
+                }
+            });
+            b7.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent1 = new Intent(Main.this, recentchat.class);
                     startActivity(intent1);
                 }
             });

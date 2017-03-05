@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -116,19 +115,9 @@ public class chatmain extends AppCompatActivity implements SwipeRefreshLayout.On
 
                         Log.e(">>>>>List Value", lst.size() + "");
 
-                        itemsAdapter = new ArrayAdapter<String>(chatmain.this, R.layout.activity_listfrag, lst) {
-
-                            @NonNull
-                            @Override
-                            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                                View view = super.getView(position, convertView, parent);
-                                tv = (TextView) view.findViewById(R.id.text123);
-                                //   tv.setTextColor(Color.WHITE);
+                        itemsAdapter = new ArrayAdapter<String>(chatmain.this, android.R.layout.simple_list_item_1, lst);
 
 
-                                return view;
-                            }
-                        };
                         final Collator col = Collator.getInstance();
                         itemsAdapter.sort(new Comparator<String>() {
                             @Override

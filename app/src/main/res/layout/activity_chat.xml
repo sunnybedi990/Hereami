@@ -6,20 +6,21 @@
     tools:context=".chatfolder.chatactivity">
 
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/divider" />
+        android:layout_above="@+id/divider"
+        android:overScrollMode="never" />
+
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="2dp"
         android:layout_gravity="bottom"
         android:background="@color/divider"
         android:layout_above="@+id/senderContainer" />
-
     <RelativeLayout
         android:id="@+id/senderContainer"
         android:layout_width="match_parent"
@@ -41,7 +42,6 @@
             android:hint="Type your message"
             android:gravity="top"
             android:layout_toStartOf="@+id/sendUserMessage" />
-
         <Button
             android:id="@+id/sendUserMessage"
             android:layout_marginRight="10dp"

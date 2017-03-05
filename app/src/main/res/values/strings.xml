@@ -41,4 +41,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="fresh_config">Fresh Config</string>
     <string name="cause_crash">Cause Crash</string>
+    <string name="title_activity_userphoto">userphoto</string>
+    <string name="title_activity_recentchat">recentchat</string>
 </resources>

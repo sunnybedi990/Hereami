@@ -93,7 +93,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mListOfFireChat.add(newFireChatMessage);
 
         /*refresh view*/
-        notifyItemInserted(getItemCount() - 1);
+        //   notifyItemInserted(getItemCount() - 1);
     }
 
     public void refillFirsTimeAdapter(List<MessageChatModel> newFireChatMessage) {
