@@ -39,15 +39,6 @@
         android:layout_below="@+id/btn_list"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:text="chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn"
-        android:layout_alignStart="@+id/btn"
-        android:layout_marginTop="20dp"
-        android:id="@+id/btn_chat" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,32 +48,22 @@
         android:id="@+id/textView2" />
 
     <Button
-        android:text="one"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_chat"
-        android:layout_alignRight="@+id/btn_chat"
-        android:layout_alignEnd="@+id/btn_chat"
-        android:layout_marginTop="20dp"
-        android:id="@+id/btn_one" />
-
-    <Button
         android:id="@+id/btn_propic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btn_one"
-        android:layout_alignRight="@+id/btn_one"
-        android:layout_below="@+id/btn_one"
+        android:text="propic"
         android:layout_marginTop="20dp"
-        android:text="propic" />
+        android:layout_below="@+id/btn"
+        android:layout_alignLeft="@+id/btn"
+        android:layout_alignStart="@+id/btn" />
 
     <Button
         android:id="@+id/btn_recent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btn_propic"
-        android:layout_alignStart="@+id/btn_propic"
+        android:layout_marginTop="19dp"
+        android:text="chats"
         android:layout_below="@+id/btn_propic"
-        android:layout_marginTop="26dp"
-        android:text="Recent chats" />
+        android:layout_alignLeft="@+id/btn_propic"
+        android:layout_alignStart="@+id/btn_propic" />
 </RelativeLayout>

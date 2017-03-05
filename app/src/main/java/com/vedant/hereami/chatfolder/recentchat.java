@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +25,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.vedant.hereami.Main;
 import com.vedant.hereami.R;
 
 import java.util.ArrayList;
@@ -106,6 +110,8 @@ public class recentchat extends Activity {
                 String temp2 = "";
                 String temp3 = "";
                 String temp4 = "";
+                String keyperson1 = "";
+                String keyperson = "";
                 for (DataSnapshot sunny : dataSnapshot.child(currentuser).getChildren()) {
 
 
@@ -124,41 +130,50 @@ public class recentchat extends Activity {
                     }
                     for (DataSnapshot currentreceipent : dataSnapshot.getChildren()) {
 
-                        if (!currentreceipent.toString().equals(currentuser)) {
-                            String keyperson = String.valueOf(currentreceipent.getKey());
-                            if (!keyperson.equals(currentuser)) {
-                                Log.e("temp3123", keyperson);
-                                for (DataSnapshot currentreceipentcild : currentreceipent.getChildren()) {
-                                    for (DataSnapshot currentreceipentcild1 : currentreceipentcild.child(currentuser).getChildren()) {
-                                        //   if (currentreceipentcild.toString().equals(currentuser)) {
-                                        String keyperson1 = String.valueOf(currentreceipentcild.getKey());
-                                        if (keyperson1.equals(currentuser)) {
-                                            Log.e("temp31111", keyperson1);
-                                        }
+                        //  if (!currentreceipent.toString().equals(currentuser)) {
+                        keyperson = String.valueOf(currentreceipent.getKey());
+                        if (!keyperson.equals(currentuser)) {
+                            lstreceptmsg.add(keyperson);
+                            Log.e("temp3123", keyperson);
 
 
-                                        //   Log.e("temp31111", String.valueOf(currentreceipentcild.toString().equals(currentuser)));
-                                        MessageChatModel newMessage = currentreceipentcild1.getValue(MessageChatModel.class);
-                                        temp3 = newMessage.getMessage();
-                                        temp4 = newMessage.getRecipient();
+                            for (DataSnapshot currentreceipentcild1 : currentreceipent.child(currentuser).getChildren()) {
+                                Log.e("temp31111", String.valueOf(currentreceipent.child(currentuser).getValue()));
 
-                                        //  lstreceptmsg.add(temp3);
-                                        //  Log.e("temp3", lstreceptmsg);
-                                        //while(temp1)
-                                        // Log.e(">>>>>>",temp1);
-                                        // Log.e(">>>>>last1111", newMessage.getMessage() + "");
-                                        //    Message todo1 = new Message();
-                                        //Message todo2 = new Message();
-                                        //String temp = todo2.setMessage(current.getValue(Message.class).getMessage());
-                                        //String sender = todo2.setSender(current.getValue(Message.class).getSender());
-                                        //Log.e(">>>>>last1111222222", temp + "");
-                                    }
-                                }
+
+                                //  if (currentreceipentcild.hasChild(currentuser)) {
+                                //   if (currentreceipentcild.toString().equals(currentuser)) {
+                                //       keyperson1 = String.valueOf(currentreceipentcild.getKey());
+                                //   if (keyperson1.equals(currentuser)) {
+
+                                // }
+                                //     Log.e("keyperson1", keyperson1);
+
+
+                                MessageChatModel newMessage = currentreceipentcild1.getValue(MessageChatModel.class);
+                                temp3 = newMessage.getMessage();
+                                temp4 = newMessage.getRecipient();
+
+                                //  lstreceptmsg.add(temp3);
+                                //  Log.e("temp3", lstreceptmsg);
+                                //while(temp1)
+                                // Log.e(">>>>>>",temp1);
+                                // Log.e(">>>>>last1111", newMessage.getMessage() + "");
+                                //    Message todo1 = new Message();
+                                //Message todo2 = new Message();
+                                //String temp = todo2.setMessage(current.getValue(Message.class).getMessage());
+                                //String sender = todo2.setSender(current.getValue(Message.class).getSender());
+                                //Log.e(">>>>>last1111222222", temp + "");
+
                             }
                         }
                     }
 
-                    Log.e(">>>>>>>>", temp1);
+
+                    //  Log.e("temp31111", keyperson1);
+                    Log.e("temp3000", keyperson);
+
+                    Log.e(">>>>>>>>temp", temp3);
                     lstmsg.add(temp1);
 
 
@@ -181,6 +196,7 @@ public class recentchat extends Activity {
                         contactmatch = getContactDisplayNameByNumber(tendigitnumber);
                         if (!contactmatch.equals("?")) {
                             lst.add(contactmatch);
+
                         }
 
                         //       lst.add(sunny.getKey());
@@ -197,22 +213,23 @@ public class recentchat extends Activity {
                         // RecentUser.setSelection(RecentmessagesAdapter.getCount() - 1);
 
                     }
+
+
+                    RecentUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            //TextView t1 = (TextView) findViewById(android.R.id.text1);
+                            Log.e(">>>>asd", lst.get(position) + "");
+
+                            Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
+
+                            Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
+                            Intent intent4 = new Intent(recentchat.this, chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
+                            startActivity(intent4);
+                        }
+                    });
                 }
-                RecentUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        //TextView t1 = (TextView) findViewById(android.R.id.text1);
-                        Log.e(">>>>asd", lst.get(position) + "");
-
-                        Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
-
-                        Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                        Intent intent4 = new Intent(recentchat.this, chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
-                        startActivity(intent4);
-                    }
-                });
-
             }
 
 
@@ -254,4 +271,39 @@ public class recentchat extends Activity {
         return name;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.new_chat, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_chat) {
+            LocationFound();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void LocationFound() {
+        Intent intent = new Intent(this, chatmain.class);
+        startActivity(intent);
+    }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+            Intent intent1 = new Intent(recentchat.this, Main.class);
+            startActivity(intent1);
+        }
+        return super.onKeyDown(keycode, event);
+    }
 }

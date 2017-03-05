@@ -43,4 +43,5 @@
     <string name="cause_crash">Cause Crash</string>
     <string name="title_activity_userphoto">userphoto</string>
     <string name="title_activity_recentchat">recentchat</string>
+    <string name="new_chat">New Chat</string>
 </resources>

@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.recentchat;
 
 import java.util.Locale;
@@ -106,8 +105,7 @@ public class Main extends  RuntimePermissionsActivity {
             b1 = (Button) findViewById(R.id.btn);
             b2 = (Button) findViewById(R.id.btn_list);
             b3 = (Button) findViewById(R.id.button2);
-            b4 = (Button) findViewById(R.id.btn_chat);
-            b5 = (Button) findViewById(R.id.btn_one);
+
             b6 = (Button) findViewById(R.id.btn_propic);
             b7 = (Button) findViewById(R.id.btn_recent);
 
@@ -133,24 +131,7 @@ public class Main extends  RuntimePermissionsActivity {
                     startActivity(intent1);
                 }
             });
-            b4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, chat.class);
-                    startActivity(intent1);
-                }
-            });
-            //  } else {
-            //      Intent b = new Intent(Main.this, name.class);
-            //      startActivity(b);
-            // }
-            b5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, chatmain.class);
-                    startActivity(intent1);
-                }
-            });
+
             b6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
