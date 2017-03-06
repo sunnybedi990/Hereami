@@ -51,6 +51,7 @@ public class recentchat extends Activity {
     public Context context;
     private String contactmatch;
     private Firebase mFirebaseMessagesChatcurrent;
+    private long sunn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,47 +134,56 @@ public class recentchat extends Activity {
                         //  if (!currentreceipent.toString().equals(currentuser)) {
                         keyperson = String.valueOf(currentreceipent.getKey());
                         if (!keyperson.equals(currentuser)) {
-                            lstreceptmsg.add(keyperson);
-                            Log.e("temp3123", keyperson);
+                            //       sunn = keyperson.length();
+                            //         lst.add(keyperson);
+                            //   lstreceptmsg.add(keyperson);
+                            Log.e("temp3123", dataSnapshot.child(keyperson).getKey());
+
+                            for (DataSnapshot currentreceipentcild2 : currentreceipent.child(currentuser).getChildren()) {
+                                Log.e("tempnonono", String.valueOf(currentreceipentcild2.getKey().contains(currentuser)));
+                                Log.e("ye dekh", String.valueOf(currentreceipentcild2.getValue()));
+                                for (DataSnapshot currentreceipentcild1 : currentreceipentcild2.child(currentuser).getChildren()) {
+                                    Log.e("temp31111", String.valueOf(currentreceipentcild2.child(currentuser).getValue()));
+
+                                    if (currentreceipentcild2.hasChild(currentuser)) {
+                                        Log.e("temp3123", "yo");
+                                    }
+
+                                    //  if (currentreceipentcild.hasChild(currentuser)) {
+                                    //   if (currentreceipentcild.toString().equals(currentuser)) {
+                                    //       keyperson1 = String.valueOf(currentreceipentcild.getKey());
+                                    //   if (keyperson1.equals(currentuser)) {
+
+                                    // }
+                                    //     Log.e("keyperson1", keyperson1);
 
 
-                            for (DataSnapshot currentreceipentcild1 : currentreceipent.child(currentuser).getChildren()) {
-                                Log.e("temp31111", String.valueOf(currentreceipent.child(currentuser).getValue()));
+                                    MessageChatModel newMessage = currentreceipentcild1.getValue(MessageChatModel.class);
+                                    temp3 = newMessage.getMessage();
+                                    temp4 = newMessage.getRecipient();
 
+                                    //  lstreceptmsg.add(temp3);
+                                    //  Log.e("temp3", lstreceptmsg);
+                                    //while(temp1)
+                                    // Log.e(">>>>>>",temp1);
+                                    // Log.e(">>>>>last1111", newMessage.getMessage() + "");
+                                    //    Message todo1 = new Message();
+                                    //Message todo2 = new Message();
+                                    //String temp = todo2.setMessage(current.getValue(Message.class).getMessage());
+                                    //String sender = todo2.setSender(current.getValue(Message.class).getSender());
+                                    //Log.e(">>>>>last1111222222", temp + "");
 
-                                //  if (currentreceipentcild.hasChild(currentuser)) {
-                                //   if (currentreceipentcild.toString().equals(currentuser)) {
-                                //       keyperson1 = String.valueOf(currentreceipentcild.getKey());
-                                //   if (keyperson1.equals(currentuser)) {
-
-                                // }
-                                //     Log.e("keyperson1", keyperson1);
-
-
-                                MessageChatModel newMessage = currentreceipentcild1.getValue(MessageChatModel.class);
-                                temp3 = newMessage.getMessage();
-                                temp4 = newMessage.getRecipient();
-
-                                //  lstreceptmsg.add(temp3);
-                                //  Log.e("temp3", lstreceptmsg);
-                                //while(temp1)
-                                // Log.e(">>>>>>",temp1);
-                                // Log.e(">>>>>last1111", newMessage.getMessage() + "");
-                                //    Message todo1 = new Message();
-                                //Message todo2 = new Message();
-                                //String temp = todo2.setMessage(current.getValue(Message.class).getMessage());
-                                //String sender = todo2.setSender(current.getValue(Message.class).getSender());
-                                //Log.e(">>>>>last1111222222", temp + "");
-
+                                }
                             }
                         }
-                    }
+                        }
 
 
                     //  Log.e("temp31111", keyperson1);
                     Log.e("temp3000", keyperson);
 
                     Log.e(">>>>>>>>temp", temp3);
+                    // lstmsg.add(temp3);
                     lstmsg.add(temp1);
 
 
@@ -229,9 +239,9 @@ public class recentchat extends Activity {
                             startActivity(intent4);
                         }
                     });
+
                 }
             }
-
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
