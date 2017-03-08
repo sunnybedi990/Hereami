@@ -3,13 +3,11 @@ package com.vedant.hereami.chatfolder;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +23,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.vedant.hereami.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 public class chatactivity extends Activity {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static final String TAG = chatactivity.class.getSimpleName();
 
-    private ListView mChatRecyclerView;
+    private RecyclerView mChatRecyclerView;
     private TextView mUserMessageChatText;
-    private ArrayAdapter mMessageChatAdapter;
+    private MessageChatAdapter mMessageChatAdapter;
 
     /* Sender and Recipient status*/
     private static final int SENDER_STATUS = 0;
@@ -70,6 +73,8 @@ public class chatactivity extends Activity {
     private int SENDERS;
     private Firebase mFirebaseMessagesChatreceipentmessagesnext;
     private TextView tv;
+    private String update_str;
+    public int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,8 @@ public class chatactivity extends Activity {
 
         message1 = bundle.getString("key_position");
         namenumber = bundle.getString("namenumber");
+        setTitle(namenumber);
+
         // Get information from the previous activity
         Intent getUsersData = getIntent();
         UsersChatModel usersDataModel = getUsersData.getParcelableExtra(ReferenceUrl.KEY_PASS_USERS_INFO);
@@ -92,16 +99,20 @@ public class chatactivity extends Activity {
         mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
 
         // Reference to recyclerView and text view
-        mChatRecyclerView = (ListView) findViewById(R.id.chat_recycler_view);
+        mChatRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
         mUserMessageChatText = (TextView) findViewById(R.id.chat_user_message);
 
-        // Set recyclerView and adapter
 
-
+        mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mChatRecyclerView.setHasFixedSize(true);
         // Initialize adapter
-
+        List<MessageChatModel> emptyMessageChat=new ArrayList<MessageChatModel>();
+        mMessageChatAdapter=new MessageChatAdapter(emptyMessageChat);
 
         // Set adapter to recyclerView
+        mChatRecyclerView.setAdapter(mMessageChatAdapter);
+
+
 
 
         // Initialize firebase for this chat
@@ -175,9 +186,19 @@ public class chatactivity extends Activity {
 
                             // String keyname = String.valueOf(last.getValue((GenericTypeIndicator<Object>) getmessage));
                             //  Message todo1 = new Message(message1);
-                            Message todo2 = new Message();
-                            String temp = todo2.setMessage(last.getValue(Message.class).getMessage());
+                        //    Message todo2 = new Message();
+                        //    String temp = todo2.setMessage(last.getValue(Message.class).getMessage());
+                        //    String sender = todo2.setSender(last.getValue(Message.class).getSender());
+                          //  MessageChatModel newMessage=last.getValue(MessageChatModel.class);
 
+
+
+             /*               if(sender.equals(currentuser)){
+                                newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
+                            }
+                            else{
+                                newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
+                            }
                             Log.e(">>>>>>>>>", temp);
                             //  t1.setText();
                             //    m = last.getValue(Message.class);
@@ -192,17 +213,24 @@ public class chatactivity extends Activity {
                                 public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                                     View view = super.getView(position, convertView, parent);
                                     tv = (TextView) view.findViewById(R.id.text123);
-                                    //   tv.setTextColor(Color.WHITE);
-
-
-                                    return view;
+                                    tv.setTextColor(Color.BLACK);
                                 }
                             };
                             mChatRecyclerView.setAdapter(mMessageChatAdapter);
 
                             mMessageChatAdapter.notifyDataSetChanged();
                             mChatRecyclerView.setSelection(mMessageChatAdapter.getCount() - 1);
+                            */
                             //  mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getCount() - 1);
+                            MessageChatModel newMessage=last.getValue(MessageChatModel.class);
+                            if(newMessage.getSender().equals(currentuser)){
+                                newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
+                            }else{
+                                newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
+                            }
+
+                            mMessageChatAdapter.refillAdapter(newMessage);
+                            mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount()-1);
 
                         }
                     }
@@ -261,7 +289,8 @@ public class chatactivity extends Activity {
         // Clean chat message1
         //   mMessageChatAdapter.cleanUp();
         if (mMessageChatAdapter != null) {
-            mMessageChatAdapter.clear();
+           // mMessageChatAdapter.clear();
+            mMessageChatAdapter.cleanUp();
         }
         this.finish();
     }
@@ -273,24 +302,54 @@ public class chatactivity extends Activity {
 
         if (!senderMessage.isEmpty()) {
 
-            // Log.e(TAG, "send message1");
+          //  String ids = TimeZone.getDefault();
+            // if no ids were returned, something is wrong. get out.
+          //  if (ids.length == 0)
+           //     System.exit(0);
 
+            // begin output
+           // System.out.println("Current Time");
+
+            TimeZone pdt = TimeZone.getDefault();
+
+            // set up rules for Daylight Saving Time
+      //      pdt.setStartRule(Calendar.APRIL, 1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+       //     pdt.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+            Calendar calendar = new GregorianCalendar(pdt);
+            Date trialTime = new Date();
+            calendar.setTime(trialTime);
+            Date now = new Date();
+
+            String tsTemp = calendar.get(Calendar.HOUR) +":"+
+            calendar.get(Calendar.MINUTE);
+        //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
+        //    String formattedTime = sdf.format(tsTemp);
+
+            // Log.e(TAG, "send message1");
+            int sendersize = mUserMessageChatText.getText().length();
+            if (sendersize < 6){
+            senderMessage = senderMessage + "       ";}
             // Send message1 to firebase
             Map<String, String> newMessage = new HashMap<String, String>();
             newMessage.put("sender", mSenderUid); // Sender uid
             newMessage.put("recipient", mRecipientUid); // Recipient uid
-            newMessage.put("message", senderMessage); // Message
+            newMessage.put("message", senderMessage);// Message
+            newMessage.put("timestamp", tsTemp); // Time stamp
 
 
-            mFirebaseMessagesChatreceipent.push().setValue(newMessage);
+
+            mFirebaseMessagesChatreceipent.push().setValue(newMessage,index);
 
             mUserMessageChatText.setText("");
+
+
         }
     }
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
-            this.onDestroy();
+            Intent intent1 = new Intent(chatactivity.this, recentchat.class);
+            startActivity(intent1);
         }
         return super.onKeyDown(keycode, event);
     }
