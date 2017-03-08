@@ -42,4 +42,5 @@ public class recentchatadapter extends ArrayAdapter<String> {
 
         return rowView;
     }
+
 }

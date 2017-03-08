@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -52,6 +53,7 @@ public class recentchat extends Activity {
     private String contactmatch;
     private Firebase mFirebaseMessagesChatcurrent;
     private long sunn;
+    private ProgressBar mProgressBarForUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,8 @@ public class recentchat extends Activity {
         lstreceptmsg = new ArrayList<String>();
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
+        mProgressBarForUsers = (ProgressBar)findViewById(R.id.progress_bar_users1);
+        showProgressBarForUsers();
         // Bundle bundle = getIntent().getExtras();
 
         // message1 = bundle.getString("key_position");
@@ -183,46 +187,49 @@ public class recentchat extends Activity {
                     Log.e("temp3000", keyperson);
 
                     Log.e(">>>>>>>>temp", temp3);
-                    // lstmsg.add(temp3);
-                    lstmsg.add(temp1);
+
+                        // lstmsg.add(temp3);
+                        lstmsg.add(temp1);
 
 
-                    String keyname = String.valueOf(sunny.getKey()).replace("+", ":");
+                        String keyname = String.valueOf(sunny.getKey()).replace("+", ":");
 
 
-                    String[] parts = keyname.split(":"); // escape .
-                    String part1 = parts[0];
-                    String part2 = parts[1];
-                    String tendigitnumber = getLastThree(part2);
-                    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
+                        String[] parts = keyname.split(":"); // escape .
+                        String part1 = parts[0];
+                        String part2 = parts[1];
+                        String tendigitnumber = getLastThree(part2);
+                        Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
 
-                    hashMap1.put(tendigitnumber, keyname.replace(":", "+"));
+                        hashMap1.put(tendigitnumber, keyname.replace(":", "+"));
 
-                    long sun = dataSnapshot.child(currentuser).getChildrenCount();
-                    if (lst.size() > sun) {
-                        lst.clear();
-                    } else {
+                        long sun = dataSnapshot.child(currentuser).getChildrenCount();
+                        if (lst.size() > sun) {
+                            lst.clear();
+                        } else {
 
-                        contactmatch = getContactDisplayNameByNumber(tendigitnumber);
-                        if (!contactmatch.equals("?")) {
-                            lst.add(contactmatch);
+                            contactmatch = getContactDisplayNameByNumber(tendigitnumber);
+                            if (!contactmatch.equals("?")) {
+                                lst.add(contactmatch);
+
+                            }
+
+                            //       lst.add(sunny.getKey());
+
+
+                            Log.e(">>>>>last", sunny.getChildren() + "");
+                            Log.e(">>>>>last123", sunny.getKey() + "");
+                            Log.e(">>>>>dsp", sunny + "");
+                            recentchatadapter rec = new recentchatadapter(recentchat.this, lst, lstmsg);
+                            //  RecentmessagesAdapter = new ArrayAdapter<String>(recentchat.this,android.R.layout.simple_list_item_1,android.R.id.text1);
+                            RecentUser.setAdapter(rec);
+
+                            rec.notifyDataSetChanged();
+                            // RecentUser.setSelection(RecentmessagesAdapter.getCount() - 1);
+                            hideProgressBarForUsers();
 
                         }
 
-                        //       lst.add(sunny.getKey());
-
-
-                        Log.e(">>>>>last", sunny.getChildren() + "");
-                        Log.e(">>>>>last123", sunny.getKey() + "");
-                        Log.e(">>>>>dsp", sunny + "");
-                        recentchatadapter rec = new recentchatadapter(recentchat.this, lst, lstmsg);
-                        //  RecentmessagesAdapter = new ArrayAdapter<String>(recentchat.this,android.R.layout.simple_list_item_1,android.R.id.text1);
-                        RecentUser.setAdapter(rec);
-
-                        rec.notifyDataSetChanged();
-                        // RecentUser.setSelection(RecentmessagesAdapter.getCount() - 1);
-
-                    }
 
 
                     RecentUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -255,6 +262,12 @@ public class recentchat extends Activity {
             return myString.substring(myString.length() - 10);
         else
             return myString;
+    }
+    public static String getfirstten(String myString1) {
+        if (myString1.length() > 10)
+            return myString1.substring((myString1.length()+10) - myString1.length());
+        else
+            return myString1;
     }
 
     public String getContactDisplayNameByNumber(String number) {
@@ -315,5 +328,15 @@ public class recentchat extends Activity {
             startActivity(intent1);
         }
         return super.onKeyDown(keycode, event);
+    }
+    private void showProgressBarForUsers() {
+        mProgressBarForUsers.setVisibility(View.VISIBLE);
+    }
+
+
+    private void hideProgressBarForUsers() {
+        if (mProgressBarForUsers.getVisibility() == View.VISIBLE) {
+            mProgressBarForUsers.setVisibility(View.GONE);
+        }
     }
 }
