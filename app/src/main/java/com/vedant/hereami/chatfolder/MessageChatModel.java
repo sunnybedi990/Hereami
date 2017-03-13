@@ -31,6 +31,7 @@ public class MessageChatModel {
     }
 
 
+
     public void setSender(String givenSender) {
         sender = givenSender;
     }
