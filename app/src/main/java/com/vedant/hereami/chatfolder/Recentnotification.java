@@ -8,11 +8,13 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -343,25 +345,31 @@ public class Recentnotification extends Service {
         // Prepare intent which is triggered if the
         // notification is selected
         Intent intent = new Intent(this, NotificationReceiverActivity.class);
+        Intent intent1 = new Intent(this, recentchat.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-
+        PendingIntent pIntent1 = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
         // Build notification
         // Actions are just fake
         Notification noti = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                noti = new Notification.Builder(this)
-                        .setContentTitle(newList.toString())
-                        .setContentText(newList1.toString()).setSmallIcon(R.drawable.image)
-                        .setContentIntent(pIntent)
-                        .addAction(R.drawable.image, "Call", pIntent)
-                        .addAction(R.drawable.image, "More", pIntent)
-                        .addAction(R.drawable.image, "And more", pIntent).build();
+                noti = new NotificationCompat.Builder(this)
+                        .setContentTitle("Recent User")
+                        .setContentText("New Message").setSmallIcon(R.drawable.image)
+                        .setContentIntent(pIntent1)
+                        .build();
             }
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // hide the notification after its selected
-        noti.flags |= Notification.FLAG_AUTO_CANCEL;
+        if (noti != null) {
+            noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            long[] pattern = {500, 500, 500};
+            noti.vibrate = pattern;
+            noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+
+        }
 
         notificationManager.notify(0, noti);
 
