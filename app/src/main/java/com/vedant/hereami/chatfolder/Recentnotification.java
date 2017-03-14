@@ -8,7 +8,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
@@ -52,7 +51,7 @@ public class Recentnotification extends Service {
     private String contactmatch;
     private String contactmatch1;
     private Firebase mFirebaseMessagesChatcurrent;
-    private long sunn;
+    private long sunn = 0;
     private ProgressBar mProgressBarForUsers;
     private List<String> lstmsg1;
     private List<String> newList;
@@ -182,8 +181,8 @@ public class Recentnotification extends Service {
                 String temp2 = "";
                 String temp3 = "";
                 String temp4 = "";
-                String keyperson1 = "";
-                String keyperson = "";
+                String keyperson1;
+                String keyperson = null;
                 for (DataSnapshot currentuserchatdatasnapshot : dataSnapshot.child(currentuser).getChildren()) {
 
 
@@ -225,12 +224,13 @@ public class Recentnotification extends Service {
 
                         }
                         //                 if (!keyperson.equals(currentuser)) {
-
+                        if (keyperson != null)
                         for (DataSnapshot findit : dataSnapshot.child(keyperson).getChildren()) {
-                            if (findit.toString().contains(currentuser)) {
+                            if (findit.getKey().contains(currentuser)) {
                                 Log.e("temp3123", findit.getKey());
-                                keyperson1 = keyperson.replace("+", ":");
 
+                                keyperson1 = keyperson.replace("+", ":");
+                                if (keyperson1 != null) {
                                 String[] parts = keyperson1.split(":"); // escape .
                                 String part1 = parts[0];
                                 String part2 = parts[1];
@@ -250,6 +250,7 @@ public class Recentnotification extends Service {
                                     }
 
 
+                                }
                                 }
                                 //  }
                             }
@@ -363,9 +364,11 @@ public class Recentnotification extends Service {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // hide the notification after its selected
         if (noti != null) {
-            noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            long[] pattern = {500, 500, 500};
-            noti.vibrate = pattern;
+            noti.defaults |= Notification.DEFAULT_SOUND;
+            //    noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            //  long[] pattern = {500, 500, 500};
+            //  noti.vibrate = pattern;
+            noti.defaults |= Notification.DEFAULT_VIBRATE;
             noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
 
