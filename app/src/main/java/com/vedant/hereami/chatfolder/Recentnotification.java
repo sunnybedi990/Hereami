@@ -7,7 +7,10 @@ import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
@@ -349,6 +352,9 @@ public class Recentnotification extends Service {
         Intent intent1 = new Intent(this, recentchat.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
         PendingIntent pIntent1 = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
+        final Resources res = context.getResources();
+        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.image);
+
         // Build notification
         // Actions are just fake
         Notification noti = null;
@@ -357,6 +363,7 @@ public class Recentnotification extends Service {
                 noti = new NotificationCompat.Builder(this)
                         .setContentTitle("Recent User")
                         .setContentText("New Message").setSmallIcon(R.drawable.image)
+                        .setLargeIcon(picture)
                         .setContentIntent(pIntent1)
                         .build();
             }
