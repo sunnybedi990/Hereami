@@ -185,8 +185,8 @@ public class Recentnotification extends Service {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
                 getNotification();
+
             }
 
             @Override
