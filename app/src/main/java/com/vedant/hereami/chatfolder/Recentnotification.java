@@ -17,16 +17,15 @@ import android.os.IBinder;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
@@ -175,168 +174,30 @@ public class Recentnotification extends Service {
     //   }
 
     public void chats() {
-        mFirebaseMessagesChat.addValueEventListener(new ValueEventListener() {
+        mFirebaseMessagesChat.addChildEventListener(new ChildEventListener() {
+
+
 
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                String temp1 = "";
-                String temp2 = "";
-                String temp3 = "";
-                String temp4 = "";
-                String keyperson1;
-                String keyperson = null;
-                for (DataSnapshot currentuserchatdatasnapshot : dataSnapshot.child(currentuser).getChildren()) {
-
-
-                    for (DataSnapshot current : currentuserchatdatasnapshot.getChildren()) {
-                        MessageChatModel newMessage = current.getValue(MessageChatModel.class);
-                        temp1 = newMessage.getMessage();
-                        temp2 = newMessage.getRecipient();
-
-                    }
-                    lstmsg.add(temp1);
-                    for (DataSnapshot currentreceipent : dataSnapshot.getChildren()) {
-
-                        //  if (!currentreceipent.toString().equals(currentuser)) {
-                        //         keyperson = String.valueOf(currentreceipent.getKey());
-
-
-                        //       sunn = keyperson.length();
-                        //         lst.add(keyperson);
-
-
-                        if (!String.valueOf(currentreceipent.getKey()).contains(currentuser)) {
-                            keyperson = currentreceipent.getKey().trim();
-                            countone = (currentreceipent.getChildrenCount());
-                            Log.e("temp312345", currentreceipent.getKey());
-                            for (DataSnapshot currentreceipentcild2 : currentreceipent.child(currentuser).getChildren()) {
-                                //        Log.e("tempnonono", String.valueOf(currentreceipentcild2.getKey().contains(currentuser)));
-                                //      Log.e("ye dekh", String.valueOf(currentreceipentcild2.getValue()));
-
-
-                                MessageChatModel newMessage = currentreceipentcild2.getValue(MessageChatModel.class);
-                                temp3 = newMessage.getMessage().trim();
-                                temp4 = newMessage.getRecipient();
-
-
-                            }
-                            Log.e("msgs34", temp3);
-
-                            lstmsg1.add(temp3);
-
-                        }
-                        //                 if (!keyperson.equals(currentuser)) {
-                        if (keyperson != null)
-                        for (DataSnapshot findit : dataSnapshot.child(keyperson).getChildren()) {
-                            if (findit.getKey().contains(currentuser)) {
-                                Log.e("temp3123", findit.getKey());
-
-                                keyperson1 = keyperson.replace("+", ":");
-                                if (keyperson1 != null) {
-                                String[] parts = keyperson1.split(":"); // escape .
-                                String part1 = parts[0];
-                                String part2 = parts[1];
-                                String tendigitnumber = getLastThree(part2);
-                                contactmatch1 = getContactDisplayNameByNumber(tendigitnumber);
-                                hashMap1.put(tendigitnumber, keyperson1.replace(":", "+"));
-                                sunn = countone - 1;
-                                //  Log.e("temp312345cou", countone + "");
-                                Log.e("temp312345cou", countone + "");
-                                if (lstreceptmsg.size() > sunn) {
-                                    lstreceptmsg.clear();
-                                } else {
-                                    if (!contactmatch1.equals("?")) {
-                                        Log.e("msgs1", contactmatch1);
-                                        lstreceptmsg.add(contactmatch1);
-
-                                    }
-
-
-                                }
-                                }
-                                //  }
-                            }
-                        }
-
-
-                    }
-
-                    Log.e("temp312345cou", countone + "");
-                    //  Log.e("temp31111", keyperson1);
-                    Log.e("temp3000", temp1);
-
-
-                    newList1 = new ArrayList<String>(lstmsg);
-                    newList1.addAll(lstmsg1);
-
-                    String keyname = String.valueOf(currentuserchatdatasnapshot.getKey()).replace("+", ":");
-
-
-                    String[] parts = keyname.split(":"); // escape .
-                    String part1 = parts[0];
-                    String part2 = parts[1];
-                    String tendigitnumber = getLastThree(part2);
-                    //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
-
-                    hashMap1.put(tendigitnumber, keyname.replace(":", "+"));
-
-                    long sun = dataSnapshot.child(currentuser).getChildrenCount() + sunn;
-                    Log.e(">>>>>dsp1", sun + "");
-
-                    contactmatch = getContactDisplayNameByNumber(tendigitnumber);
-                    if (!contactmatch.equals("?")) {
-                        Log.e("msgs2", contactmatch);
-                        lst.add(contactmatch);
-
-                    }
-
-                    //       lst.add(currentuserchatdatasnapshot.getKey());
-
-
-                    //    Log.e(">>>>>last", currentuserchatdatasnapshot.getChildren() + "");
-                    //    Log.e(">>>>>last123", currentuserchatdatasnapshot.getKey() + "");
-                    //    Log.e(">>>>>dsp", currentuserchatdatasnapshot + "");
-                    //   newList.addAll(lst);
-                    //   newList.addAll(lstreceptmsg);
-                    if (newList.size() > sun) {
-                        Log.e(">>>>>dsp5", newList.size() + "");
-                        newList.clear();
-                    } else {
-                        newList.addAll(lst);
-                        Log.e(">>>>>dsp3", newList.size() + "");
-                        newList.addAll(lstreceptmsg);
-                        Log.e(">>>>>dsp4", newList.size() + "");
-                    }
-                    Log.e(">>>>>dsp", newList.size() + "");
-                    getNotification();
-                    //                recentchatadapter rec = new recentchatadapter(recentchat.this, newList, newList1);
-                    //  RecentmessagesAdapter = new ArrayAdapter<String>(recentchat.this,android.R.layout.simple_list_item_1,android.R.id.text1);
-                    //                  RecentUser.setAdapter(rec);
-
-                    //              rec.notifyDataSetChanged();
-                    // RecentUser.setSelection(RecentmessagesAdapter.getCount() - 1);
-//                    hideProgressBarForUsers();
-
-
-        /*            RecentUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            //TextView t1 = (TextView) findViewById(android.R.id.text1);
-//                            Log.e(">>>>asd", lst.get(position) + "");
-
-                            //                          Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
-
-                            //                        Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                            Intent intent4 = new Intent(recentchat.this, chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(newList.get(position)))).putExtra("namenumber", newList.get(position) + "");
-                            startActivity(intent4);
-                        }
-                    });
-                    */
-                }
             }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                getNotification();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
