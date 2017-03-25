@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="bg_user_message">#ffffff</color>
+    <color name="refresh_progress_1">@color/colorAccent</color>
+    <color name="refresh_progress_2">@color/accent</color>
+    <color name="refresh_progress_3">@color/colorPrimary</color>
+
+    <color name="primary_dark">#E64A19</color>
+    <color name="primary">#FF5722</color>
+    <color name="accent">#448AFF</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="text_color">#FFFFFF</color>
+    <color name="text_color_icon">#212121</color>
+    <color name="test">#221224</color>
+    <color name="defaultContentColor">@android:color/black</color>
+    <color name="shadow_1">#d4d4d4</color>
+    <color name="shadow_2">#dddddd</color>
+    <color name="card_background">#ffffff</color>
+    <color name="color1">#202020</color>
+    <color name="selectedTile">#222124</color>
+    <color name="color2">#69f0ae</color>
+    <color name="color3">#7c4dff</color>
+    <color name="common_yellow">#ffee33</color>
+    <color name="common_red">#f2ef2620</color>
+    <color name="winBackground">#98cb4a</color>
+    <color name="background">#f76d3c</color>
+    <color name="dullBG">#e5e5e5</color>
+</resources>
