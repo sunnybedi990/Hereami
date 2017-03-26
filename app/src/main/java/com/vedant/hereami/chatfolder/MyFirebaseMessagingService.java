@@ -21,13 +21,23 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
+import android.util.Base64;
 import android.util.Log;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.vedant.hereami.MainActivity;
@@ -36,6 +46,9 @@ import com.vedant.hereami.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -44,6 +57,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public HashMap<String, String> hashMap = new HashMap<>();
     private String contactmatch;
     private String tendigitnumber;
+    private Bitmap image;
+    private byte[] imageAsBytes;
+    private String connectionstatus2;
+    private String sunny;
+    private Firebase mFirebaseMessagesChatconnectioncheck = new Firebase("https://iamhere-29f2b.firebaseio.com/users");
+    private Bitmap _bitmapScaled;
+    private String title;
+    private String title1;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -97,10 +118,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject data = json.getJSONObject("data");
 
             //parsing json data
-            String title1 = data.getString("title");
-            tendigitnumber = getLastThree(title1);
+            title1 = data.getString("title");
+            String[] parts = title1.replace("+", ":").split(":"); // escape .
+            String part1 = parts[0];
+            String part2 = parts[1];
+            //  String tendigitnumber = getLastThree(part2);
+            sunny = part1.replace("dot", ".");
+            tendigitnumber = getLastThree(part2);
             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
-            String title = contactmatch;
+            title = contactmatch;
+            getdp();
             String message = data.getString("message");
             String imageUrl = data.getString("image");
 
@@ -108,7 +135,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), recentchat.class);
 
             //if there is no image
             if (imageUrl.equals("null")) {
@@ -157,4 +184,55 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return myString;
     }
 
+    public void getdp() {
+        mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot1) {
+
+                for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
+                    if (connectionchild.getKey().contains(title1)) {
+
+
+                        connectionstatus2 = dataSnapshot1.child(title1).child(ReferenceUrl.image).getValue().toString();
+
+                        imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
+                        image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+
+                        System.out.println("Downloaded image with length: " + imageAsBytes.length);
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+
+                        //  String root = getFilesDir();
+                        String filepath = Environment.getExternalStorageDirectory().getPath();
+                        File myDir = new File(filepath + "/HereamI");
+                        Log.e("file", myDir.toString());
+                        myDir.mkdirs();
+                        String fname = title + ".jpg";
+//you can create a new file name "test.jpg" in sdcard folder.
+                        File file = new File(myDir, fname);
+                        if (file.exists()) file.delete();
+                        try {
+                            FileOutputStream out = new FileOutputStream(file);
+                            out.write(bytes.toByteArray());
+                            out.flush();
+                            out.close();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
 }

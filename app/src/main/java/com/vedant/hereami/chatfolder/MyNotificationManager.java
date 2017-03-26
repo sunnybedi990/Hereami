@@ -11,11 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 
 import com.vedant.hereami.R;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -81,16 +83,18 @@ public class MyNotificationManager {
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
-
+        String filepath = Environment.getExternalStorageDirectory().getPath();
+        File myDir = new File(filepath + "/HereamI");
+        Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
         Notification notification;
-        notification = mBuilder.setSmallIcon(R.mipmap.ic_launcher).setTicker(title).setWhen(0)
+        notification = mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
                 .setAutoCancel(true)
                 .setContentIntent(resultPendingIntent)
                 .setContentTitle(title)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.image)
+                .setLargeIcon(bMap)
                 .setContentText(message)
                 .build();
 

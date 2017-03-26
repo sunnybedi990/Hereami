@@ -454,7 +454,7 @@ public class chatactivity extends Activity {
     }
 
     private void sendSinglePush() {
-        final String title = user.getDisplayName();
+        final String title = message1;
         final String message = senderMessage;
         // final String image;
 
