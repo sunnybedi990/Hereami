@@ -130,12 +130,15 @@
             android:name=".chatfolder.recentchat"
             android:label="@string/title_activity_recentchat" />
 
-        <service android:name=".MyFirebaseInstanceIDService">
+        <service android:name=".chatfolder.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".MyFirebaseMessagingService">
+        <service
+            android:name=".chatfolder.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -157,7 +160,7 @@
         <activity
             android:name=".firebasepushnotification.ActivitySendPushNotification"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:label="@string/title_activity_send_push_notification"></activity>
+            android:label="@string/title_activity_send_push_notification" />
 
     </application>
 

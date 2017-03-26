@@ -19,7 +19,6 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
@@ -41,15 +40,15 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
         //calling the method store token and passing token
-        storeToken(refreshedToken);
+        //  storeToken(refreshedToken);
 
 
         // Once a token is generated, we subscribe to topic.
-        FirebaseMessaging.getInstance().subscribeToTopic(FRIENDLY_ENGAGE_TOPIC);
+        //  FirebaseMessaging.getInstance().subscribeToTopic(FRIENDLY_ENGAGE_TOPIC);
     }
 
-    private void storeToken(String token) {
+    //  private void storeToken(String token) {
         //we will save the token in sharedpreferences later
-        SharedPrefManager.getInstance(getApplicationContext()).saveDeviceToken(token);
-    }
+    //    SharedPrefManager.getInstance(getApplicationContext()).saveDeviceToken(token);
+    // }
 }

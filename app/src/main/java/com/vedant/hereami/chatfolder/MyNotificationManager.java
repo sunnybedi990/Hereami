@@ -22,6 +22,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
+/**
+ * Created by Ravi on 31/03/15.
+ */
+
 public class MyNotificationManager {
 
     public static final int ID_BIG_NOTIFICATION = 234;
@@ -50,13 +54,13 @@ public class MyNotificationManager {
         bigPictureStyle.bigPicture(getBitmapFromURL(url));
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
         Notification notification;
-        notification = mBuilder.setSmallIcon(R.mipmap.ic_launcher).setTicker(title).setWhen(0)
+        notification = mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
                 .setAutoCancel(true)
                 .setContentIntent(resultPendingIntent)
                 .setContentTitle(title)
                 .setStyle(bigPictureStyle)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.image)
+                .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.image))
                 .setContentText(message)
                 .build();
 

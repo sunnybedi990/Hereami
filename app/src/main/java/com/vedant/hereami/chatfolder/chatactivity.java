@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,6 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -32,6 +38,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.vedant.hereami.R;
+import com.vedant.hereami.firebasepushnotification.ActivitySendPushNotification;
+import com.vedant.hereami.firebasepushnotification.EndPoints;
+import com.vedant.hereami.firebasepushnotification.MyVolley;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,7 +70,7 @@ public class chatactivity extends Activity {
     private String mRecipientUid;
 
     /* Sender uid */
-    private String mSenderUid;
+    private String mSenderUid, senderMessage;
 
     /* unique Firebase ref for this chat */
     private Firebase mFirebaseMessagesChat;
@@ -384,7 +393,7 @@ public class chatactivity extends Activity {
 
 
     public void sendMessageToFireChat(View sendButton) {
-        String senderMessage = mUserMessageChatText.getText().toString();
+        senderMessage = mUserMessageChatText.getText().toString();
         senderMessage = senderMessage.trim();
 
         if (!senderMessage.isEmpty()) {
@@ -425,7 +434,7 @@ public class chatactivity extends Activity {
             newMessage.put("message", senderMessage);// Message
             newMessage.put("timestamp", tsTemp); // Time stamp
             newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
-
+            sendSinglePush();
 
             mFirebaseMessagesChatreceipent.push().setValue(newMessage, index);
 
@@ -442,6 +451,53 @@ public class chatactivity extends Activity {
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         }
         return super.onKeyDown(keycode, event);
+    }
+
+    private void sendSinglePush() {
+        final String title = user.getDisplayName();
+        final String message = senderMessage;
+        // final String image;
+
+        String[] parts = message1.replace("+", ":").split(":"); // escape .
+        String part1 = parts[0];
+//          String part2 = parts[1];
+        //  String tendigitnumber = getLastThree(part2);
+        final String email = part1.replace("dot", ".");
+        Log.e("email bol", email);
+
+//        progressDialog.setMessage("Sending Push");
+        //      progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.URL_SEND_SINGLE_PUSH,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //                    progressDialog.dismiss();
+
+                        Toast.makeText(chatactivity.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("title", title);
+                params.put("message", message);
+
+                //     if (!TextUtils.isEmpty(image))
+                //       params.put("image", image);
+
+                params.put("email", email);
+                return params;
+            }
+        };
+
+        MyVolley.getInstance(this).addToRequestQueue(stringRequest);
     }
 
 

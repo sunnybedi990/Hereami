@@ -17,6 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -24,17 +31,23 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.vedant.hereami.chatfolder.Recentnotification;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.recentchat;
 import com.vedant.hereami.firebasepushnotification.ActivitySendPushNotification;
 import com.vedant.hereami.firebasepushnotification.MainActivity5;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+
+import static com.vedant.hereami.firebasepushnotification.EndPoints.URL_REGISTER_DEVICE;
 
 public class Main extends RuntimePermissionsActivity {
     public Button b1, b2, b3, b4, b5, b6, b7, b8, b9;
@@ -123,7 +136,6 @@ public class Main extends RuntimePermissionsActivity {
             //getting current user
             user = firebaseAuth.getCurrentUser();
 
-            startService(new Intent(this, Recentnotification.class));
             usermail = user.getEmail();
             name3 = user.getDisplayName();
             if (name3 == null) {
@@ -154,6 +166,7 @@ public class Main extends RuntimePermissionsActivity {
                 connectionstatus();
                 currentuser = usermail.replace(".", "dot") + user.getDisplayName();
                 token = FirebaseInstanceId.getInstance().getToken();
+                sendTokenToServer();
                 //     ProviderQueryResult s = firebaseAuth.fetchProvidersForEmail("sunnybedi990@gmail.com").getResult();
                 //     System.out.println("getdata: " + s);
 
@@ -400,6 +413,54 @@ public class Main extends RuntimePermissionsActivity {
             return false;
         }
         return false;
+    }
+
+    private void sendTokenToServer() {
+        //  progressDialog = new ProgressDialog(this);
+        //  progressDialog.setMessage("Registering Device...");
+        //  progressDialog.show();
+
+
+        System.out.println("tokennnnn " + token);
+        final String email = user.getEmail();
+
+        if (token == null) {
+
+            Toast.makeText(this, "Token not generated", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGISTER_DEVICE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //   progressDialog.dismiss();
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            Toast.makeText(Main.this, obj.getString("message"), Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //   progressDialog.dismiss();
+                        Toast.makeText(Main.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("email", email);
+                params.put("token", token);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
 
