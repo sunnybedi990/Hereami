@@ -421,15 +421,16 @@ public class Main extends RuntimePermissionsActivity {
 
 
         System.out.println("tokennnnn " + token);
-        final String email = user.getEmail();
+        final String email1 = user.getEmail();
+        final String email = email1;
 
         if (token == null) {
 
             Toast.makeText(this, "Token not generated", Toast.LENGTH_LONG).show();
             return;
         }
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGISTER_DEVICE,
+        String urldefined = URL_REGISTER_DEVICE + "?id=" + name3;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urldefined + "",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -453,6 +454,7 @@ public class Main extends RuntimePermissionsActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
+                params.put("id", name3);
                 params.put("email", email);
                 params.put("token", token);
                 return params;
@@ -462,6 +464,15 @@ public class Main extends RuntimePermissionsActivity {
         requestQueue.add(stringRequest);
     }
 
+    public static String reverseIt(String source) {
+        int i, len = source.length();
+        StringBuilder dest = new StringBuilder(len);
 
+        for (i = (len - 1); i >= 0; i--) {
+            dest.append(source.charAt(i));
+        }
+
+        return dest.toString();
+    }
 }
 

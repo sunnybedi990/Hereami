@@ -19,7 +19,6 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
-import com.vedant.hereami.chat;
 import com.vedant.hereami.login;
 
 import java.util.ArrayList;
@@ -330,7 +329,7 @@ public class chatactivity1 extends Activity {
             logout();
             return true;
         } else if (item.getItemId() == R.id.action_user) {
-            Intent i = new Intent(this, chat.class);
+            Intent i = new Intent(this, chatactivity.class);
 
             startActivity(i);
             return true;

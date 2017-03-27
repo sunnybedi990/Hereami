@@ -462,9 +462,10 @@ public class chatactivity extends Activity {
         String part1 = parts[0];
 //          String part2 = parts[1];
         //  String tendigitnumber = getLastThree(part2);
-        final String email = part1.replace("dot", ".");
-        Log.e("email bol", email);
-        Log.e("title bol", title);
+        final String email1 = part1.replace("dot", ".");
+        final String email = email1;
+        // Log.e("email bol", reverseWords2(email));
+        Log.e("title bol", reverseIt(title));
 //        progressDialog.setMessage("Sending Push");
         //      progressDialog.show();
 
@@ -501,6 +502,16 @@ public class chatactivity extends Activity {
         MyVolley.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+    public static String reverseIt(String source) {
+        int i, len = source.length();
+        StringBuilder dest = new StringBuilder(len);
+
+        for (i = (len - 1); i >= 0; i--) {
+            dest.append(source.charAt(i));
+        }
+
+        return dest.toString();
+    }
 
 }
 
