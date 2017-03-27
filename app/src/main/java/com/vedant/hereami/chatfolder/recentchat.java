@@ -36,6 +36,7 @@ import com.vedant.hereami.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class recentchat extends Activity {
     private static final int REQUEST_PERMISSIONS = 5;
@@ -67,6 +68,7 @@ public class recentchat extends Activity {
     private List<String> timestamp1;
     private long sun;
     private List<String> timestamplist;
+    private Map<String, Integer> countMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,14 +247,58 @@ public class recentchat extends Activity {
                         //         keyperson = String.valueOf(currentreceipent.getKey());
 
 
-                        //       sunn = keyperson.length();
-                        //         lst.add(keyperson);
-
 
                         if (!String.valueOf(currentreceipent.getKey()).contains(currentuser)) {
                             keyperson = currentreceipent.getKey().trim();
-                            countone = (currentreceipent.getChildrenCount());
+
+                            //         lst.add(keyperson);
+                            Log.e("keypersonl", keyperson);
+
                             Log.e("temp312345", currentreceipent.getKey());
+                            for (DataSnapshot findit : dataSnapshot.child(keyperson).getChildren()) {
+                                if (findit.toString().contains(currentuser)) {
+                                    countone = 3;
+                                    Log.e("temp3123", findit.toString());
+                                    keyperson1 = keyperson.replace("+", ":");
+                                    Log.e("keyperson1", keyperson1);
+                                    String[] parts = keyperson1.split(":"); // escape .
+                                    String part1 = parts[0];
+                                    String part2 = parts[1];
+                                    String tendigitnumber = getLastThree(part2);
+                                    contactmatch1 = getContactDisplayNameByNumber(tendigitnumber);
+                                    Log.e("keyperson2", contactmatch1);
+                                    hashMap1.put(tendigitnumber, keyperson1.replace(":", "+"));
+                                    sunn = countone;
+                                    //  Log.e("temp312345cou", countone + "");
+                                    Log.e("temp312345cou", countone + "");
+                                    //
+                                }
+                                Log.e("countsun", sunn + "");
+                                if (findit.toString().contains(currentuser)) {
+                                    //    if (lstreceptmsg.size() > sunn) {
+                                    //      lstreceptmsg.clear();
+                                    //  lstreceptmsg.add(contactmatch1);
+                                    //  } else {
+                                    lstreceptmsg.add(contactmatch1);
+                                    countMap = new HashMap<>();
+
+
+                                    for (String word : lstreceptmsg) {
+                                        Integer count = countMap.get(word);
+                                        if (count == null) {
+                                            count = 0;
+                                        }
+                                        countMap.put(word, (count.intValue() + 1));
+                                    }
+
+                                    System.out.println(countMap.toString());
+
+                                    Log.e("msgs1", countMap.toString());
+
+                                    Log.e("msgs112", lstreceptmsg.toString());
+                                }
+                            }
+                            Log.e(">>>>>dsp7", lstreceptmsg.toString());
                             for (DataSnapshot currentreceipentcild2 : currentreceipent.child(currentuser).getChildren()) {
                                 //        Log.e("tempnonono", String.valueOf(currentreceipentcild2.getKey().contains(currentuser)));
                                 //      Log.e("ye dekh", String.valueOf(currentreceipentcild2.getValue()));
@@ -272,44 +318,10 @@ public class recentchat extends Activity {
                         }
                         //                 if (!keyperson.equals(currentuser)) {
 
-                        if (keyperson != null) {
-                            Log.e("temp3123111", keyperson);
-                            //   keyperson = "";
-                            for (DataSnapshot findit : dataSnapshot.child(keyperson).getChildren()) {
-                                if (findit.toString().contains(currentuser)) {
-                                    Log.e("temp3123", findit.toString());
-                                    keyperson1 = keyperson.replace("+", ":");
-                                    Log.e("keyperson1", keyperson1);
-                                    String[] parts = keyperson1.split(":"); // escape .
-                                    String part1 = parts[0];
-                                    String part2 = parts[1];
-                                    String tendigitnumber = getLastThree(part2);
-                                    contactmatch1 = getContactDisplayNameByNumber(tendigitnumber);
-                                    Log.e("keyperson2", contactmatch1);
-                                    hashMap1.put(tendigitnumber, keyperson1.replace(":", "+"));
-                                    sunn = countone - 1;
-                                    //  Log.e("temp312345cou", countone + "");
-                                    Log.e("temp312345cou", countone + "");
-                                    //
-                                }
-                                if (findit.toString().contains(currentuser)) {
-                                    if (lstreceptmsg.size() > sunn) {
-                                        lstreceptmsg.clear();
-                                        lstreceptmsg.add(contactmatch1);
-                                    } else {
+
+                        //   keyperson = "";
 
 
-                                        Log.e("msgs1", contactmatch1);
-                                        lstreceptmsg.add(contactmatch1);
-
-                                        //
-
-
-                                    }
-                                }
-                            }
-                            Log.e(">>>>>dsp7", lstreceptmsg.toString());
-                        }
                         Log.e(">>>>>dsp9", lstreceptmsg.toString());
 
                     }
@@ -322,7 +334,7 @@ public class recentchat extends Activity {
                     //   Log.e("temp312345cou", countone + "");
                     //  Log.e("temp31111", keyperson1);
                     Log.e("temp3000", temp1);
-
+                    Log.e("count", sunn + "");
 
                     newList1 = new ArrayList<String>(lstmsg);
                     newList1.addAll(lstmsg1);
@@ -372,9 +384,9 @@ public class recentchat extends Activity {
                 if (newList.size() > sun) {
                     Log.e(">>>>>dsp5", newList.size() + "");
                     newList.clear();
-                    //   newList.addAll(lst);
-                    //       Log.e(">>>>>dsp32", newList.size() + "");
-                    //  newList.addAll(lstreceptmsg);
+                    //    newList.addAll(lst);
+                    Log.e(">>>>>dsp32", newList.size() + "");
+                    //     newList.addAll(lstreceptmsg);
                 } else {
                     //   newList.clear();
                     //         Log.e(">>>>>dsp31", newList.size() + "");
