@@ -149,10 +149,14 @@
             android:name=".chatfolder.CreateNotificationActivity"
             android:label="@string/title_activity_create_notification" />
 
-        <service
-            android:name=".chatfolder.Recentnotification"
-            android:enabled="true"
-            android:exported="true" />
+        <activity
+            android:name=".database.database_test"
+            android:label="Data Base"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".database.DisplayContact"
+            android:label="Display Contact"
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".firebasepushnotification.MainActivity5"

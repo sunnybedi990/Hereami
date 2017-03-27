@@ -11,6 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
@@ -32,6 +39,11 @@ public class MyNotificationManager {
 
     public static final int ID_BIG_NOTIFICATION = 234;
     public static final int ID_SMALL_NOTIFICATION = 235;
+    private int notificationIdOne = 111;
+    private int notificationIdTwo = 112;
+    private int numMessagesOne = 0;
+    private int numMessagesTwo = 0;
+
 
     private Context mCtx;
 
@@ -84,23 +96,42 @@ public class MyNotificationManager {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         String filepath = Environment.getExternalStorageDirectory().getPath();
-        File myDir = new File(filepath + "/HereamI");
+        File myDir = new File(filepath + "/.HereamI");
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
-        Notification notification;
-        notification = mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
-                .setAutoCancel(true)
-                .setContentIntent(resultPendingIntent)
-                .setContentTitle(title)
-                .setSmallIcon(R.drawable.image)
-                .setLargeIcon(bMap)
-                .setContentText(message)
-                .build();
-
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
         NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
+        //Different Id's will show up as different notifications
+        int mNotificationId = 1;
+
+        //Some things we only have to set the first time.
+        boolean firstTime = true;
+        int progress = 1;
+        Notification notification;
+        if (numMessagesOne == 0) {
+            mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
+                    .setAutoCancel(true)
+                    .setContentIntent(resultPendingIntent)
+                    .setContentTitle(title)
+                    .setSmallIcon(R.drawable.image)
+                    .setLargeIcon(bMap)
+                    .setContentText(message).setNumber(++numMessagesOne);
+            //  firstTime = false;
+        } else {
+            mBuilder.setContentText(message).setNumber(++numMessagesOne);
+        }
+
+        //   notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification = mBuilder.build();
+
+        if (notification != null) {
+            notification.defaults |= Notification.DEFAULT_SOUND;
+            //    noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            //  long[] pattern = {500, 500, 500};
+            //  noti.vibrate = pattern;
+            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        }
         notificationManager.notify(ID_SMALL_NOTIFICATION, notification);
     }
 
@@ -118,5 +149,28 @@ public class MyNotificationManager {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private Bitmap getCircleBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.RED;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
     }
 }

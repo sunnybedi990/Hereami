@@ -464,7 +464,7 @@ public class chatactivity extends Activity {
         //  String tendigitnumber = getLastThree(part2);
         final String email = part1.replace("dot", ".");
         Log.e("email bol", email);
-
+        Log.e("title bol", title);
 //        progressDialog.setMessage("Sending Push");
         //      progressDialog.show();
 
@@ -494,6 +494,7 @@ public class chatactivity extends Activity {
 
                 params.put("email", email);
                 return params;
+
             }
         };
 

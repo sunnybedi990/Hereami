@@ -61,4 +61,21 @@
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
     <string name="title_activity_send_push_notification">ActivitySendPushNotification</string>
+
+    <!-- Database-->
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="street">Street</string>
+    <string name="country">City/State/Zip</string>
+    <string name="save">Save Contact</string>
+    <string name="deleteContact">Are you sure, you want to delete it.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="title_activity_database_test">database_test</string>
+    <string name="title_activity_display_contact">DisplayContact</string>
+    <string name="edit">Edit Contact</string>
+    <string name="delete">Delete Contact</string>
+    <string name="Add_New">Add New</string>
+    <string name="cancel">Cancel</string>
 </resources>

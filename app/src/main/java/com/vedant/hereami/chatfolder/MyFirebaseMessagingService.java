@@ -193,7 +193,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
                     if (connectionchild.getKey().contains(title1)) {
 
-
+                        Log.e("title bol", title1);
                         connectionstatus2 = dataSnapshot1.child(title1).child(ReferenceUrl.image).getValue().toString();
 
                         imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
@@ -205,7 +205,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                         //  String root = getFilesDir();
                         String filepath = Environment.getExternalStorageDirectory().getPath();
-                        File myDir = new File(filepath + "/HereamI");
+                        File myDir = new File(filepath + "/.HereamI");
                         Log.e("file", myDir.toString());
                         myDir.mkdirs();
                         String fname = title + ".jpg";
@@ -235,4 +235,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         });
 
     }
+
 }

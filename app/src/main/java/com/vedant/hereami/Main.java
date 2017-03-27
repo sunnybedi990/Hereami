@@ -33,8 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.recentchat;
-import com.vedant.hereami.firebasepushnotification.ActivitySendPushNotification;
-import com.vedant.hereami.firebasepushnotification.MainActivity5;
+import com.vedant.hereami.database.database_test;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -225,7 +224,7 @@ public class Main extends RuntimePermissionsActivity {
             b6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, MainActivity5.class);
+                    Intent intent1 = new Intent(Main.this, userphoto.class);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 }
@@ -241,7 +240,7 @@ public class Main extends RuntimePermissionsActivity {
             b8.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, ActivitySendPushNotification.class);
+                    Intent intent1 = new Intent(Main.this, database_test.class);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 }
