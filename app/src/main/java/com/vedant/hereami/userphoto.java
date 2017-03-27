@@ -148,6 +148,7 @@ public class userphoto extends Activity implements View.OnClickListener {
 
     public void onClick(View v) {
         if (v == mRegisterButton) {
+            if (picturePath != null)
             userpropic();
         }
     }

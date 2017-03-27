@@ -462,10 +462,10 @@ public class chatactivity extends Activity {
         String part1 = parts[0];
 //          String part2 = parts[1];
         //  String tendigitnumber = getLastThree(part2);
-        final String email1 = part1.replace("dot", ".");
-        final String email = email1;
+        final String email = part1.replace("dot", ".");
+
         // Log.e("email bol", reverseWords2(email));
-        Log.e("title bol", reverseIt(title));
+
 //        progressDialog.setMessage("Sending Push");
         //      progressDialog.show();
 

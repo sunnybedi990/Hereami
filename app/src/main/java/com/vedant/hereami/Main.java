@@ -78,7 +78,6 @@ public class Main extends RuntimePermissionsActivity {
     private Calendar calendar1;
     private int hour1;
     private int minutes1;
-    private Firebase myConnectionsStatusRef2;
     private String currentuser;
     private String token;
 
@@ -311,7 +310,7 @@ public class Main extends RuntimePermissionsActivity {
 
         myConnectionsStatusRef = mFireChatUsersRef.child(usermail.replace(".", "dot") + name3).child(ReferenceUrl.CHILD_CONNECTION);
         myConnectionsStatusRef1 = mFireChatUsersRef.child(usermail.replace(".", "dot") + name3).child(ReferenceUrl.timestamp);
-        myConnectionsStatusRef2 = mFireChatUsersRef.child(usermail.replace(".", "dot") + name3).child(ReferenceUrl.devicetokenid);
+
         mConnectedListener = mFirebaseChatRef.getRoot().child(".info/connected").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -359,7 +358,7 @@ public class Main extends RuntimePermissionsActivity {
 
                     //   String s = tsTemp;
 
-                    myConnectionsStatusRef2.setValue(token);
+
                     myConnectionsStatusRef1.setValue(tsTemp1);
                     myConnectionsStatusRef.setValue(ReferenceUrl.KEY_ONLINE);
 
@@ -421,8 +420,8 @@ public class Main extends RuntimePermissionsActivity {
 
 
         System.out.println("tokennnnn " + token);
-        final String email1 = user.getEmail();
-        final String email = email1;
+
+        final String email = user.getEmail();
 
         if (token == null) {
 
@@ -430,7 +429,7 @@ public class Main extends RuntimePermissionsActivity {
             return;
         }
         String urldefined = URL_REGISTER_DEVICE + "?id=" + name3;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, urldefined + "",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGISTER_DEVICE + "",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
