@@ -368,6 +368,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         String tsTemp = String.format("%02d:%02d", hour, minutes);
 
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.image).setValue(R.string.defaultphoto);
+        mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.imagecheck).setValue(R.string.defaultphoto);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.CHILD_CONNECTION).setValue(ReferenceUrl.KEY_ONLINE);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.timestamp).setValue(tsTemp);
     }

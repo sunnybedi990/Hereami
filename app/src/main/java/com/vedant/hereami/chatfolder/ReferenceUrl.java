@@ -13,6 +13,7 @@ public class ReferenceUrl {
     public static final String timestamp = "timestamp";
     public static final String devicetokenid = "devicetokenid";
     public static final String image = "image";
+    public static final String imagecheck = "imagecheck";
 
     // Key for passing user data between activity
     public static final String KEY_PASS_USERS_INFO = "usersData";

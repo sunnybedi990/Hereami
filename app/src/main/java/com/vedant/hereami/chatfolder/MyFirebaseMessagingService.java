@@ -22,22 +22,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
-import android.util.Base64;
 import android.util.Log;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.vedant.hereami.MainActivity;
@@ -46,9 +38,6 @@ import com.vedant.hereami.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -127,7 +116,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             tendigitnumber = getLastThree(part2);
             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
             title = contactmatch;
-            getdp();
+            //getdp();
             String message = data.getString("message");
             String imageUrl = data.getString("image");
 
@@ -184,7 +173,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return myString;
     }
 
-    public void getdp() {
+  /*  public void getdp() {
         mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
@@ -235,5 +224,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         });
 
     }
-
+*/
 }

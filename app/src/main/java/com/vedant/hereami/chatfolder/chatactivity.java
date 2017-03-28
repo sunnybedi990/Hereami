@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,9 @@ import com.vedant.hereami.firebasepushnotification.ActivitySendPushNotification;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -104,6 +108,9 @@ public class chatactivity extends Activity {
     private String connectionstatus2;
     private Bitmap image;
     private byte[] imageAsBytes;
+    private String connectionstatus3;
+    private Firebase myConnectionsStatusRef2;
+    private Firebase mFireChatUsersRef;
 
 
     @Override
@@ -149,6 +156,7 @@ public class chatactivity extends Activity {
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
         mFirebaseMessagesChat = fb_parent.child("/message");
         mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
+        mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
         Log.e(">>connect", mFirebaseMessagesChatconnectioncheck.getKey());
 //        mFirebaseMessagesChatconnection = fb_parent.child("/users").child(message1).child(ReferenceUrl.CHILD_CONNECTION);
         //      if (mFirebaseMessagesChatconnection != null)
@@ -293,6 +301,7 @@ public class chatactivity extends Activity {
 
 
                         connectionstatus2 = dataSnapshot1.child(message1).child(ReferenceUrl.image).getValue().toString();
+                        connectionstatus3 = dataSnapshot1.child(message1).child(ReferenceUrl.imagecheck).getValue().toString();
 
                         imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
                         image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
@@ -316,9 +325,38 @@ public class chatactivity extends Activity {
 
                         imageView.setLayoutParams(layoutParams);
                         actionBar.setCustomView(imageView);
+                     //   imageView.setOnClickListener();
                         Log.e("pic1", String.valueOf(image));
 
+if(!connectionstatus3.equals(connectionstatus2)) {
 
+    myConnectionsStatusRef2 = mFireChatUsersRef.child(message1).child(ReferenceUrl.imagecheck);
+    myConnectionsStatusRef2.setValue(connectionstatus2);
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+
+    String filepath = Environment.getExternalStorageDirectory().getPath();
+    File myDir = new File(filepath + "/.HereamI");
+    Log.e("file", myDir.toString());
+    myDir.mkdirs();
+    String fname = namenumber + ".jpg";
+//you can create a new file name "test.jpg" in sdcard folder.
+    File file = new File(myDir, fname);
+    if (file.exists()) file.delete();
+    try {
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(bytes.toByteArray());
+        out.flush();
+        out.close();
+        Log.e("downloadstatus", "file downloaded");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+
+}
                         //   menu.getItem(0).setIcon(new BitmapDrawable(getResources(), image));
 
 
