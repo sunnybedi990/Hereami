@@ -8,4 +8,8 @@
     <dimen name="corner">2dp</dimen>
     <dimen name="sideMargin">8dp</dimen>
 
+
+    <dimen name="large_text">16sp</dimen>
+    <dimen name="medium_text">14sp</dimen>
+
 </resources>

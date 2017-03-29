@@ -31,9 +31,9 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.recentchat;
-import com.vedant.hereami.database.database_test;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -239,7 +239,7 @@ public class Main extends RuntimePermissionsActivity {
             b8.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, database_test.class);
+                    Intent intent1 = new Intent(Main.this, TabWOIconActivity.class);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 }

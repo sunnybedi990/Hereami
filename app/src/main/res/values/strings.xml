@@ -80,4 +80,23 @@
     <string name="cancel">Cancel</string>
     <string name="defaultphoto">"/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB\\nAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEB\\nAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAAUABEDASIA\\nAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAkFBgj/xAAhEAACAgIDAAMBAQAAAAAAAAAEBQMG\\nAQIABwgJExQVEv/EABQBAQAAAAAAAAAAAAAAAAAAAAf/xAAjEQACAgEDBAMBAAAAAAAAAAABAgME\\nEQAFEwcUFyEGFVEz/9oADAMBAAIRAxEAPwCnHZPk+2+pGASyPtS3dbUCvIGcrHakD/12LC5sHlZC\\nQ6O62MyWsWqTVPO+J0JjmwMtkAKmmmhxJn7M/rnxtcvK9hzLF27cex+vHqBssNGug2Ee497VWiQQ\\ncytVgls2PGVfxF50pLbWfITWBqiKgnKhmG/P5j9I/I3ZvKfetQ64olIht2JE9ftHaDLYk8jVPS2d\\ni3BbLNlAQM8H6MpRcn6smksoAUjJVJICTnbOm+N51+Tpx6q9EWPqK2VFTXVsEVwl6wZK2M+uJVda\\nY6bg18lHuJGJEbLWYymhLACYaP8A2q2hyuzpLpLAGzbpS8rRxn5Cqo1hKwo8V3PerUjq/XK3FwFX\\nnKu04nEAlYwNGZPRcYaO7+J5ZF2MGqiEtazt/wDCWeW6NwJMndciwxOqx8XJxhZQ4QDVJeOOOOWg\\n7Udn1me9VfKlaiqixnHn7K6FlJskpmdSZtIa9WtLAGuUk4xEUrXEMetK3scONPjYmHLCL7Y8Ex5H\\n5TtRoW2+WXoNbn8q2IGrIy8EKAAQDy5d6lf3JmWJ0Y2xJ2WWxsy1jIRJvMSnjEAzLroCHtA44F3S\\nRQfBIx1mRRg4wr3EkZR+K0hLsB6ZyWOW96aqQBvISASekbscgHLLVeNWP6VjARSfYQBRhRjVtOOO\\nOOmhXX//2Q==\\n\";
 </string>
+
+    <string name="tab1">CALLS</string>
+    <string name="tab2">CHATS</string>
+    <string name="tab3">CONTACTS</string>
+    <string name="action_search">Search</string>
+    <string name="action_chat">Chat</string>
+    <string name="action_new_group">New Group</string>
+    <string name="action_new_broadcast">New broadcast</string>
+    <string name="action_whatsapp_web">WhatsApp Web</string>
+    <string name="action_starred_messages">Starred messages</string>
+    <string name="action_status">Status</string>
+
+    <string name="action_clear_call_log">Clear call log</string>
+    <string name="action_calls">Calls</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_contacts">Contacts</string>
+    <string name="action_without_icon">Without Icon</string>
+    <string name="action_with_icon">With Icon</string>
+    <string name="action_custom">Custom Tab</string>
 </resources>

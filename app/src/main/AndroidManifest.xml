@@ -165,6 +165,15 @@
             android:name=".firebasepushnotification.ActivitySendPushNotification"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:label="@string/title_activity_send_push_notification" />
+        <activity android:name=".ViewPager.TabWithIconActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            />
+        <activity android:name=".ViewPager.TabWOIconActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            />
+        <activity android:name=".ViewPager.CustomTabActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            />
 
     </application>
 

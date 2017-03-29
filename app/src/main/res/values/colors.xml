@@ -28,4 +28,7 @@
     <color name="winBackground">#98cb4a</color>
     <color name="background">#f76d3c</color>
     <color name="dullBG">#e5e5e5</color>
+
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextDisable">#66FFFFFF</color>
 </resources>
