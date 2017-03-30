@@ -134,6 +134,12 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
 
     }
 
-
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+            //    tsTemp = String.format("%02d:%02d", hour, minutes);
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keycode, event);
+    }
 
 }
