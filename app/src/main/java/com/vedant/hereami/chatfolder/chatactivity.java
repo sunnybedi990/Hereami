@@ -494,7 +494,7 @@ if(!connectionstatus3.equals(connectionstatus2)) {
     }
 
     private void sendSinglePush() {
-        final String title = message1;
+        final String title = user.getEmail().replace(".","dot")+user.getDisplayName();
         final String message = senderMessage;
         // final String image;
 

@@ -54,6 +54,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private Bitmap _bitmapScaled;
     private String title;
     private String title1;
+    private String title2;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -108,6 +109,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             //parsing json data
             title1 = data.getString("title");
+         //   String[] parts1 = title2.split("%"); // escape .
+         //   String part5 = parts1[0];
+         //   title1 = parts1[1];
+
+
             String[] parts = title1.replace("+", ":").split(":"); // escape .
             String part1 = parts[0];
             String part2 = parts[1];
@@ -124,7 +130,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), recentchat.class);
+            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position",title1.replace(".","dot")).putExtra("namenumber",title);;
 
             //if there is no image
             if (imageUrl.equals("null")) {

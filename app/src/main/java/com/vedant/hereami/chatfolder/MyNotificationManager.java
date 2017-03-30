@@ -95,6 +95,9 @@ public class MyNotificationManager {
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
+        PendingIntent pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        NotificationCompat.Action action = new NotificationCompat.Action.Builder( R.drawable.ic_action_stat_reply,"reply to "+title, pendingIntent).build();
         String filepath = Environment.getExternalStorageDirectory().getPath();
         File myDir = new File(filepath + "/.HereamI");
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
@@ -113,6 +116,7 @@ public class MyNotificationManager {
                     .setAutoCancel(true)
                     .setContentIntent(resultPendingIntent)
                     .setContentTitle(title)
+                    .addAction(action)
                     .setSmallIcon(R.drawable.image)
                     .setLargeIcon(bMap)
                     .setContentText(message).setNumber(++numMessagesOne);
