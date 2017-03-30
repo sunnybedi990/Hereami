@@ -38,7 +38,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.vedant.hereami.Fragment.ChatFragment;
 import com.vedant.hereami.R;
+import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.firebasepushnotification.ActivitySendPushNotification;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
@@ -484,7 +486,7 @@ if(!connectionstatus3.equals(connectionstatus2)) {
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
-            Intent intent1 = new Intent(chatactivity.this, recentchat.class);
+            Intent intent1 = new Intent(chatactivity.this, TabWOIconActivity.class);
             startActivity(intent1);
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         }

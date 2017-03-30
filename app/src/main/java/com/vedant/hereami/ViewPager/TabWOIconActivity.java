@@ -1,43 +1,47 @@
 package com.vedant.hereami.ViewPager;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.Fragment.ChatFragment;
 import com.vedant.hereami.Fragment.ContactsFragment;
 import com.vedant.hereami.R;
+import com.vedant.hereami.RuntimePermissionsActivity;
 import com.vedant.hereami.ViewPagerAdapter;
+import com.vedant.hereami.login;
 
-
-public class TabWOIconActivity extends AppCompatActivity {
-
+public class TabWOIconActivity extends RuntimePermissionsActivity {
+    private static final int REQUEST_PERMISSIONS = 5;
     //This is our tablayout
     private TabLayout tabLayout;
-
     //This is our viewPager
     private ViewPager viewPager;
-
     //Fragments
-
     ChatFragment chatFragment;
     CallsFragment callsFragment;
     ContactsFragment contactsFragment;
+    private FirebaseAuth firebaseAuth;
+    private CoordinatorLayout coordinatorLayout1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_without_icon);
         //Initializing viewPager
+        firebaseAuth = FirebaseAuth.getInstance();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
-
+        coordinatorLayout1 = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayoutmain1);
         //Initializing the tablayout
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
@@ -61,7 +65,7 @@ public class TabWOIconActivity extends AppCompatActivity {
         });
 
         setupViewPager(viewPager);
-
+        re();
 
     }
 
@@ -92,21 +96,44 @@ public class TabWOIconActivity extends AppCompatActivity {
                 startActivity(custom_tab);
                 finish();
                 return true;
+            case R.id.action_logout:
+                firebaseAuth.signOut();
+                //closing activity
+                finish();
+                //starting login activity
+                startActivity(new Intent(this, login.class));
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void setupViewPager(ViewPager viewPager)
-    {
+    private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         callsFragment=new CallsFragment();
         chatFragment=new ChatFragment();
         contactsFragment=new ContactsFragment();
-        adapter.addFragment(callsFragment,"CALLS");
+        adapter.addFragment(callsFragment, "Main");
         adapter.addFragment(chatFragment,"CHAT");
-        adapter.addFragment(contactsFragment,"CONTACTS");
+        //  adapter.addFragment(contactsFragment,"CONTACTS");
         viewPager.setAdapter(adapter);
     }
+
+    public void onPermissionsGranted(final int requestCode) {
+        // Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
+    }
+
+    public void re() {
+        TabWOIconActivity.super.requestAppPermissions(new
+                        String[]{
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS}, R.string
+                        .runtime_permissions_txt
+                , REQUEST_PERMISSIONS);
+
+    }
+
+
 
 }

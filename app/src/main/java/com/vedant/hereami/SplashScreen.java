@@ -3,11 +3,9 @@ package com.vedant.hereami;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.vedant.hereami.ViewPager.TabWOIconActivity;
 
 public class SplashScreen extends Activity {
     private FirebaseAuth firebaseAuth;
@@ -71,7 +70,7 @@ public class SplashScreen extends Activity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
             }
 
-            Intent i = new Intent(SplashScreen.this, Main.class);
+            Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
             i.putExtra("data", result);
             startActivity(i);
             finish();

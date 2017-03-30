@@ -1,17 +1,85 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayoutmain"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragment.CallsFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <ListView
-        android:id="@+id/listview_chatmain1"
-        android:layout_marginTop="10dp"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.vedant.hereami.Main">
 
+        <Button
+            android:text="Send Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_marginTop="58dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
-</RelativeLayout>
+        <Button
+            android:text="GET LOCATION"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:id="@+id/btn_list"
+            android:layout_below="@+id/button2"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:text="old"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/btn_list"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:id="@+id/textView2" />
+
+        <Button
+            android:id="@+id/btn_propic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="propic"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/btn"
+            android:layout_alignLeft="@+id/btn"
+            android:layout_alignStart="@+id/btn" />
+
+        <Button
+            android:id="@+id/btn_recent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:text="chats"
+            android:layout_below="@+id/btn_propic"
+            android:layout_alignLeft="@+id/btn_propic"
+            android:layout_alignStart="@+id/btn_propic" />
+
+        <Button
+            android:id="@+id/btn_regis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:text="database"
+            android:layout_below="@+id/btn_recent"
+            android:layout_alignLeft="@+id/btn_recent"
+            android:layout_alignStart="@+id/btn_recent" />
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

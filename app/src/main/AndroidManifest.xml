@@ -75,9 +75,7 @@
                 android:value=".SearchResultsActivity" />
         </activity>
         <activity android:name=".TestActivity" />
-        <activity
-            android:name=".chat"
-            android:theme="@style/Theme.AppCompat" />
+
         <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

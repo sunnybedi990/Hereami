@@ -30,8 +30,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.vedant.hereami.Main;
 import com.vedant.hereami.R;
+import com.vedant.hereami.ViewPager.TabWOIconActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,18 +108,7 @@ public class recentchat extends Activity {
         // Set sender uid;
         mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
 
-        // Reference to recyclerView and text view
-        //  mChatRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
-        //  mUserMessageChatText = (TextView) findViewById(R.id.chat_user_message);
 
-        // mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //  mChatRecyclerView.setHasFixedSize(true);
-        // Initialize adapter
-        //  List<MessageChatModel> emptyMessageChat=new ArrayList<MessageChatModel>();
-        //  mMessageChatAdapter=new MessageChatAdapter(emptyMessageChat);
-
-        // Set adapter to recyclerView
-        //  mChatRecyclerView.setAdapter(mMessageChatAdapter);
 
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
         mFirebaseMessagesChat = fb_parent.child("/message");
@@ -198,7 +187,7 @@ public class recentchat extends Activity {
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
-            Intent intent1 = new Intent(recentchat.this, Main.class);
+            Intent intent1 = new Intent(recentchat.this, TabWOIconActivity.class);
             startActivity(intent1);
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         }
@@ -208,7 +197,6 @@ public class recentchat extends Activity {
     private void showProgressBarForUsers() {
         mProgressBarForUsers.setVisibility(View.VISIBLE);
     }
-
 
     private void hideProgressBarForUsers() {
         if (mProgressBarForUsers.getVisibility() == View.VISIBLE) {
