@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.vedant.hereami.ViewPager.TabWOIconActivity;
 
 public class login extends RuntimePermissionsActivity implements View.OnClickListener {
     private EditText mUserEmail;
@@ -46,7 +47,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
             //close this activity
             finish();
             //opening profile activity
-            startActivity(new Intent(getApplicationContext(), Main.class));
+            startActivity(new Intent(getApplicationContext(), TabWOIconActivity.class));
         }
         re();
         //initializing views
@@ -116,7 +117,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
                             if (user != null) {
                                 if (user.isEmailVerified()) {
 
-                                    Intent mainIntent = new Intent(getApplicationContext(), Main.class);
+                                    Intent mainIntent = new Intent(getApplicationContext(), TabWOIconActivity.class);
                                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

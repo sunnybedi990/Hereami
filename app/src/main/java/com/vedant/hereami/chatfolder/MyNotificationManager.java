@@ -20,7 +20,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.RemoteInput;
 import android.text.Html;
+import android.widget.EditText;
 
 import com.vedant.hereami.R;
 
@@ -43,9 +45,12 @@ public class MyNotificationManager {
     private int notificationIdTwo = 112;
     private int numMessagesOne = 0;
     private int numMessagesTwo = 0;
+    //  private String senderMessage;
+    //  private Firebase mFirebaseMessagesChatreceipent;
 
-
+    private static final String KEY_TEXT_REPLY = "key_text_reply";
     private Context mCtx;
+    private EditText mUserMessageChatText;
 
     public MyNotificationManager(Context mCtx) {
         this.mCtx = mCtx;
@@ -87,17 +92,26 @@ public class MyNotificationManager {
     //the method will show a small notification
     //parameters are title for message title, message for message text and an intent that will open
     //when you will tap on the notification
-    public void showSmallNotification(String title, String message, Intent intent) {
+    public void showSmallNotification(String title, String message, Intent intent, String title8) {
+        Intent intent2 = new Intent(mCtx, notificationchat.class);
+        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         mCtx,
                         ID_SMALL_NOTIFICATION,
-                        intent,
+                        intent.putExtra("key_position", title8).putExtra("namenumber", title),
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
+        String replyLabel = mCtx.getResources().getString(R.string.reply_label);
+        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel(replyLabel)
+                .build();
+
         PendingIntent pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-        NotificationCompat.Action action = new NotificationCompat.Action.Builder( R.drawable.ic_action_stat_reply,"reply to "+title, pendingIntent).build();
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_action_stat_reply, "reply to " + title,
+
+                pendingIntent).addRemoteInput(remoteInput).build();
         String filepath = Environment.getExternalStorageDirectory().getPath();
         File myDir = new File(filepath + "/.HereamI");
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
@@ -118,16 +132,17 @@ public class MyNotificationManager {
                     .setContentTitle(title)
                     .addAction(action)
                     .setSmallIcon(R.drawable.image)
-                    .setLargeIcon(bMap)
+                    .setLargeIcon(bMap).setAutoCancel(true)
+
                     .setContentText(message).setNumber(++numMessagesOne);
             //  firstTime = false;
         } else {
             mBuilder.setContentText(message).setNumber(++numMessagesOne);
         }
 
-        //   notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification = mBuilder.build();
 
+        notification = mBuilder.build();
+        // notification.flags |= Notification.FLAG_AUTO_CANCEL;
         if (notification != null) {
             notification.defaults |= Notification.DEFAULT_SOUND;
             //    noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -135,8 +150,9 @@ public class MyNotificationManager {
             //  noti.vibrate = pattern;
             notification.defaults |= Notification.DEFAULT_VIBRATE;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        }
+
         notificationManager.notify(ID_SMALL_NOTIFICATION, notification);
+        }
     }
 
     //The method will return Bitmap from an image URL
@@ -177,4 +193,108 @@ public class MyNotificationManager {
 
         return output;
     }
+
+
+/*
+    public void sendMessageToFireChat(View sendButton) {
+        senderMessage = mUserMessageChatText.getText().toString();
+        senderMessage = senderMessage.trim();
+
+        if (!senderMessage.isEmpty()) {
+
+            //  String ids = TimeZone.getDefault();
+            // if no ids were returned, something is wrong. get out.
+            //  if (ids.length == 0)
+            //     System.exit(0);
+
+            // begin output
+            // System.out.println("Current Time");
+
+            TimeZone pdt = TimeZone.getDefault();
+
+            // set up rules for Daylight Saving Time
+            //      pdt.setStartRule(Calendar.APRIL, 1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+            //     pdt.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+            Calendar calendar = new GregorianCalendar(pdt);
+            Date trialTime = new Date();
+            calendar.setTime(trialTime);
+            Date now = new Date();
+
+            int hour = calendar.get(Calendar.HOUR);
+            int minutes = calendar.get(Calendar.MINUTE);
+            String tsTemp = String.format("%02d:%02d", hour, minutes);
+            //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
+            //    String formattedTime = sdf.format(tsTemp);
+
+            // Log.e(TAG, "send message1");
+            int sendersize = mUserMessageChatText.getText().length();
+            if (sendersize < 6) {
+                senderMessage = senderMessage + "       ";
+            }
+            // Send message1 to firebase
+            Map<String, String> newMessage = new HashMap<String, String>();
+            newMessage.put("sender", mSenderUid); // Sender uid
+            newMessage.put("recipient", mRecipientUid); // Recipient uid
+            newMessage.put("message", senderMessage);// Message
+            newMessage.put("timestamp", tsTemp); // Time stamp
+            newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
+            sendSinglePush();
+
+            mFirebaseMessagesChatreceipent.push().setValue(newMessage, index);
+
+            mUserMessageChatText.setText("");
+
+
+        }
+    }
+
+    private void sendSinglePush() {
+        final String title = user.getEmail().replace(".","dot")+user.getDisplayName();
+        final String message = senderMessage;
+        // final String image;
+
+        String[] parts = message1.replace("+", ":").split(":"); // escape .
+        String part1 = parts[0];
+//          String part2 = parts[1];
+        //  String tendigitnumber = getLastThree(part2);
+        final String email = part1.replace("dot", ".");
+
+        // Log.e("email bol", reverseWords2(email));
+
+//        progressDialog.setMessage("Sending Push");
+        //      progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.URL_SEND_SINGLE_PUSH,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //                    progressDialog.dismiss();
+
+                        Toast.makeText(chatactivity.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("title", title);
+                params.put("message", message);
+
+                //     if (!TextUtils.isEmpty(image))
+                //       params.put("image", image);
+
+                params.put("email", email);
+                return params;
+
+            }
+        };
+
+        MyVolley.getInstance(this).addToRequestQueue(stringRequest);
+    }
+*/
 }

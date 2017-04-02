@@ -99,4 +99,5 @@
     <string name="action_without_icon">Without Icon</string>
     <string name="action_with_icon">With Icon</string>
     <string name="action_custom">Custom Tab</string>
+    <string name="reply_label">\"\"</string>
 </resources>

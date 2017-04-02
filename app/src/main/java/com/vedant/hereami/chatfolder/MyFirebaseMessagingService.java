@@ -130,12 +130,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position",title1.replace(".","dot")).putExtra("namenumber",title);;
-
+            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position", title1.replace(".", "dot")).putExtra("namenumber", title);
+            String title8 = title1.replace(".", "dot");
             //if there is no image
             if (imageUrl.equals("null")) {
                 //displaying small notification
-                mNotificationManager.showSmallNotification(title, message, intent);
+                mNotificationManager.showSmallNotification(title, message, intent, title8);
             } else {
                 //if there is an image
                 //displaying a big notification

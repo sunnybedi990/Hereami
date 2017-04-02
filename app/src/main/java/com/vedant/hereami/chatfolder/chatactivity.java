@@ -8,18 +8,16 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.RemoteInput;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,10 +36,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.vedant.hereami.Fragment.ChatFragment;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
-import com.vedant.hereami.firebasepushnotification.ActivitySendPushNotification;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 
@@ -113,7 +109,8 @@ public class chatactivity extends Activity {
     private String connectionstatus3;
     private Firebase myConnectionsStatusRef2;
     private Firebase mFireChatUsersRef;
-
+    private static String KEY_TEXT_REPLY = "key_text_reply";
+    private Bundle remoteInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +119,10 @@ public class chatactivity extends Activity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        Intent intent = this.getIntent();
+        remoteInput = RemoteInput.getResultsFromIntent(intent);
+
+
         Bundle bundle = getIntent().getExtras();
 
         message1 = bundle.getString("key_position");
@@ -165,6 +166,25 @@ public class chatactivity extends Activity {
 
 
         currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
+        if (remoteInput != null) {
+
+
+            startchat();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    sendnotification();
+                    //Do something after 100ms
+                }
+            }, 5000);
+
+        } else {
+            startchat();
+        }
+    }
+
+    public void startchat() {
         mFirebaseMessagesChat.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -385,6 +405,8 @@ if(!connectionstatus3.equals(connectionstatus2)) {
 
             }
         });
+
+
     }
 
     @Override
@@ -484,15 +506,6 @@ if(!connectionstatus3.equals(connectionstatus2)) {
         }
     }
 
-    public boolean onKeyDown(int keycode, KeyEvent event) {
-        if (keycode == KeyEvent.KEYCODE_BACK) {
-            Intent intent1 = new Intent(chatactivity.this, TabWOIconActivity.class);
-            startActivity(intent1);
-            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
-        }
-        return super.onKeyDown(keycode, event);
-    }
-
     private void sendSinglePush() {
         final String title = user.getEmail().replace(".","dot")+user.getDisplayName();
         final String message = senderMessage;
@@ -542,6 +555,14 @@ if(!connectionstatus3.equals(connectionstatus2)) {
         MyVolley.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+            Intent intent1 = new Intent(chatactivity.this, TabWOIconActivity.class);
+            startActivity(intent1);
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+        }
+        return super.onKeyDown(keycode, event);
+    }
     public static String reverseIt(String source) {
         int i, len = source.length();
         StringBuilder dest = new StringBuilder(len);
@@ -553,6 +574,63 @@ if(!connectionstatus3.equals(connectionstatus2)) {
         return dest.toString();
     }
 
+    public void sendnotification() {
+        //   TextView myTextView = (TextView) findViewById(R.id.text123456);
+        String inputString = remoteInput.getCharSequence(
+                KEY_TEXT_REPLY).toString();
+        senderMessage = inputString;
+
+        if (!senderMessage.isEmpty()) {
+
+            //  String ids = TimeZone.getDefault();
+            // if no ids were returned, something is wrong. get out.
+            //  if (ids.length == 0)
+            //     System.exit(0);
+
+            // begin output
+            // System.out.println("Current Time");
+
+            TimeZone pdt = TimeZone.getDefault();
+
+            // set up rules for Daylight Saving Time
+            //      pdt.setStartRule(Calendar.APRIL, 1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+            //     pdt.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
+            Calendar calendar = new GregorianCalendar(pdt);
+            Date trialTime = new Date();
+            calendar.setTime(trialTime);
+            Date now = new Date();
+
+            int hour = calendar.get(Calendar.HOUR);
+            int minutes = calendar.get(Calendar.MINUTE);
+            String tsTemp = String.format("%02d:%02d", hour, minutes);
+            //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
+            //    String formattedTime = sdf.format(tsTemp);
+
+            // Log.e(TAG, "send message1");
+            //   int sendersize = mUserMessageChatText.getText().length();
+            //   if (sendersize < 6) {
+            //       senderMessage = senderMessage + "       ";
+            //    }
+            // Send message1 to firebase
+            Map<String, String> newMessage = new HashMap<String, String>();
+            newMessage.put("sender", mSenderUid); // Sender uid
+            newMessage.put("recipient", mRecipientUid); // Recipient uid
+            newMessage.put("message", senderMessage);// Message
+            newMessage.put("timestamp", tsTemp); // Time stamp
+            newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
+            sendSinglePush();
+            if (mFirebaseMessagesChatreceipent != null) {
+                mFirebaseMessagesChatreceipent.push().setValue(newMessage, index);
+
+            } else {
+                startchat();
+                sendnotification();
+            }
+            //    mUserMessageChatText.setText("");
+
+
+        }
+    }
 }
 
 

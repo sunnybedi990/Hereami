@@ -75,7 +75,6 @@
                 android:value=".SearchResultsActivity" />
         </activity>
         <activity android:name=".TestActivity" />
-
         <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -146,7 +145,6 @@
         <activity
             android:name=".chatfolder.CreateNotificationActivity"
             android:label="@string/title_activity_create_notification" />
-
         <activity
             android:name=".database.database_test"
             android:label="Data Base"
@@ -155,24 +153,25 @@
             android:name=".database.DisplayContact"
             android:label="Display Contact"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".firebasepushnotification.MainActivity5"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:name=".firebasepushnotification.ActivitySendPushNotification"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:label="@string/title_activity_send_push_notification" />
-        <activity android:name=".ViewPager.TabWithIconActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            />
-        <activity android:name=".ViewPager.TabWOIconActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            />
-        <activity android:name=".ViewPager.CustomTabActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            />
-
+            android:label="@string/title_activity_send_push_notification"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".ViewPager.TabWithIconActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".ViewPager.TabWOIconActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".ViewPager.CustomTabActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".chatfolder.DirectReplyActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
     </application>
 
 </manifest>

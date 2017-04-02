@@ -38,7 +38,7 @@ import com.vedant.hereami.ListActivity;
 import com.vedant.hereami.MainActivity;
 import com.vedant.hereami.R;
 import com.vedant.hereami.Sendlocation;
-import com.vedant.hereami.ViewPager.TabWOIconActivity;
+import com.vedant.hereami.chatfolder.DirectReplyActivity;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.recentchat;
 import com.vedant.hereami.login;
@@ -257,7 +257,7 @@ public class CallsFragment extends Fragment {
         b8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), TabWOIconActivity.class);
+                Intent intent1 = new Intent(getActivity(), DirectReplyActivity.class);
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
