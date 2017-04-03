@@ -105,6 +105,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
                 return true;
             case R.id.action_logout:
                 firebaseAuth.signOut();
+
                 //closing activity
                 finish();
                 //starting login activity

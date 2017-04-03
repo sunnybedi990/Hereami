@@ -111,6 +111,7 @@ public class chatactivity extends Activity {
     private Firebase mFireChatUsersRef;
     private static String KEY_TEXT_REPLY = "key_text_reply";
     private Bundle remoteInput;
+    private String message2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,19 +126,23 @@ public class chatactivity extends Activity {
 
         Bundle bundle = getIntent().getExtras();
 
-        message1 = bundle.getString("key_position");
+        message1 = bundle.getString("key_position1");
+        message2 = bundle.getString("key_position");
         namenumber = bundle.getString("namenumber");
         setTitle(namenumber);
 
         // Get information from the previous activity
         Intent getUsersData = getIntent();
         UsersChatModel usersDataModel = getUsersData.getParcelableExtra(ReferenceUrl.KEY_PASS_USERS_INFO);
-
+        mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
         // Set recipient uid
         mRecipientUid = message1;
+        if (message1 == null) {
+            message1 = message2.replace("-", "").replace(mSenderUid, "");
+        }
 
         // Set sender uid;
-        mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
+
 
         // Reference to recyclerView and text view
         mChatRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
@@ -189,121 +194,58 @@ public class chatactivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot last : dataSnapshot.getChildren()) {
-                    for (DataSnapshot fireboy : last.getChildren()) {
-                        for (DataSnapshot sunny : dataSnapshot.child(currentuser).getChildren()) {
+                    if (message2 != null) {
+                        mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
+                    } else {
+                        if (last.getKey().contains(currentuser + "-" + message1)) {
 
-                            //    Log.e(TAG, " I am onStart");
-//                                Log.e(TAG, mFirebaseMessagesChat.child(currentuser).getPath().toString().contains(currentuser) + "");
-//
-                            //                              Log.e(TAG, String.valueOf(sunny.getKey()) + "");
+                            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
+                        } else {
+                            if (last.getKey().contains(message1 + "-" + currentuser)) {
+                                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message1 + "-" + currentuser);
 
-
-                            //                            Log.e(TAG, mFirebaseMessagesChat.child(message1).getPath().toString());
-                            //                           Log.e(TAG, mFirebaseMessagesChatreceipentmessages.child(currentuser).getPath().toString());
-                            if (last.toString().contains(currentuser)) {
-                                if (String.valueOf(sunny.getKey()).contains(message1)) {
-                                    Log.e(TAG, "i am current");
-                                    mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser);
-                                    mFirebaseMessagesChatreceipent = mFirebaseMessagesChat12.child(message1);
-
-
-                                }
-
-                            }
-
-                        }
-                        for (DataSnapshot receipientsmessages : dataSnapshot.child(message1).getChildren()) {
-                            if (last.toString().contains(message1)) {
-                                if (String.valueOf(receipientsmessages.getKey()).contains(currentuser)) {
-                                    Log.e(TAG, " I am receipient");
-                                    mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message1);
-                                    mFirebaseMessagesChatreceipent = mFirebaseMessagesChat12.child(currentuser);
-
-                                    Toast.makeText(chatactivity.this, "hogaya receipient", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-
-
-                    }
-                }
-                if (mFirebaseMessagesChatreceipent == null) {
-                    mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser);
-                    mFirebaseMessagesChatreceipent = mFirebaseMessagesChat12.child(message1);
-                }
-                mFirebaseMessagesChatreceipent.addValueEventListener(new ValueEventListener() {
-
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-
-                    public void onDataChange(DataSnapshot result) {
-
-                        lst = new ArrayList<String>();
-                        //  for (DataSnapshot dsp : result.getChildren()) {
-                        for (DataSnapshot last : result.getChildren()) {
-
-                            // HashMap<String, Object> yourData = (HashMap<String, Object>) last.getValue();
-                            // Map<String, String> getmessage = new HashMap<String, String>();
-                            // getmessage.get("receipents");
-
-                            // String keyname = String.valueOf(last.getValue((GenericTypeIndicator<Object>) getmessage));
-                            //  Message todo1 = new Message(message1);
-                            //    Message todo2 = new Message();
-                            //    String temp = todo2.setMessage(last.getValue(Message.class).getMessage());
-                            //    String sender = todo2.setSender(last.getValue(Message.class).getSender());
-                            //  MessageChatModel newMessage=last.getValue(MessageChatModel.class);
-
-
-
-             /*               if(sender.equals(currentuser)){
-                                newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
-                            }
-                            else{
-                                newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
-                            }
-                            Log.e(">>>>>>>>>", temp);
-                            //  t1.setText();
-                            //    m = last.getValue(Message.class);
-                            System.out.println(">>>>>>>>" + todo2.getMessage());
-                            lst.add(temp);
-
-
-                            Log.e(">>>>>last", lst.size() + "");
-                            Log.e(">>>>>dsp", last + "");
-                            mMessageChatAdapter = new ArrayAdapter<String>(chatactivity.this, R.layout.activity_listfrag, lst) {
-                                @NonNull
-                                public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                                    View view = super.getView(position, convertView, parent);
-                                    tv = (TextView) view.findViewById(R.id.text123);
-                                    tv.setTextColor(Color.BLACK);
-                                }
-                            };
-                            mChatRecyclerView.setAdapter(mMessageChatAdapter);
-
-                            mMessageChatAdapter.notifyDataSetChanged();
-                            mChatRecyclerView.setSelection(mMessageChatAdapter.getCount() - 1);
-                            */
-                            //  mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getCount() - 1);
-                            MessageChatModel newMessage = last.getValue(MessageChatModel.class);
-                            if (newMessage.getSender().equals(currentuser)) {
-                                newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
                             } else {
-                                newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
-                            }
+                                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
 
-                            mMessageChatAdapter.refillAdapter(newMessage);
-                            mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount() - 1);
+                            }
 
                         }
                     }
 
-                    //  }
-                });
+
+                    if (mFirebaseMessagesChat12 != null) {
+                        mFirebaseMessagesChat12.addValueEventListener(new ValueEventListener() {
+
+                            public void onDataChange(DataSnapshot result) {
+
+                                lst = new ArrayList<String>();
+                                //  for (DataSnapshot dsp : result.getChildren()) {
+                                for (DataSnapshot last : result.getChildren()) {
 
 
+                                    MessageChatModel newMessage = last.getValue(MessageChatModel.class);
+                                    if (newMessage.getSender().equals(currentuser)) {
+                                        newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
+                                    } else {
+                                        newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
+                                    }
+
+                                    mMessageChatAdapter.refillAdapter(newMessage);
+                                    mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount() - 1);
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+
+                            //  }
+                        });
+
+                    }
+                }
             }
 
 
@@ -311,6 +253,8 @@ public class chatactivity extends Activity {
             public void onCancelled(FirebaseError firebaseError) {
 
             }
+
+
         });
 
         mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
@@ -477,10 +421,12 @@ if(!connectionstatus3.equals(connectionstatus2)) {
             Date trialTime = new Date();
             calendar.setTime(trialTime);
             Date now = new Date();
-
+            int date = calendar.get(Calendar.DATE);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
             int hour = calendar.get(Calendar.HOUR);
             int minutes = calendar.get(Calendar.MINUTE);
-            String tsTemp = String.format("%02d:%02d", hour, minutes);
+            String tsTemp = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
             //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
             //    String formattedTime = sdf.format(tsTemp);
 
@@ -498,7 +444,7 @@ if(!connectionstatus3.equals(connectionstatus2)) {
             newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
             sendSinglePush();
 
-            mFirebaseMessagesChatreceipent.push().setValue(newMessage, index);
+            mFirebaseMessagesChat12.push().setValue(newMessage, index);
 
             mUserMessageChatText.setText("");
 
@@ -619,8 +565,8 @@ if(!connectionstatus3.equals(connectionstatus2)) {
             newMessage.put("timestamp", tsTemp); // Time stamp
             newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
             sendSinglePush();
-            if (mFirebaseMessagesChatreceipent != null) {
-                mFirebaseMessagesChatreceipent.push().setValue(newMessage, index);
+            if (mFirebaseMessagesChat12 != null) {
+                mFirebaseMessagesChat12.push().setValue(newMessage, index);
 
             } else {
                 startchat();

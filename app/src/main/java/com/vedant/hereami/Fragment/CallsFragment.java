@@ -38,8 +38,8 @@ import com.vedant.hereami.ListActivity;
 import com.vedant.hereami.MainActivity;
 import com.vedant.hereami.R;
 import com.vedant.hereami.Sendlocation;
-import com.vedant.hereami.chatfolder.DirectReplyActivity;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
+import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.recentchat;
 import com.vedant.hereami.login;
 import com.vedant.hereami.phonenumber;
@@ -57,6 +57,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import static com.vedant.hereami.firebasepushnotification.EndPoints.URL_REGISTER_DEVICE;
+
+//import com.vedant.hereami.chatfolder.DirectReplyActivity;
 
 
 /**
@@ -94,6 +96,8 @@ public class CallsFragment extends Fragment {
     private int minutes1;
     private String currentuser;
     private String token;
+    public Thread t;
+
     public CallsFragment() {
         // Required empty public constructor
     }
@@ -125,11 +129,13 @@ public class CallsFragment extends Fragment {
         Date trialTime = new Date();
         calendar1.setTime(trialTime);
         Date now = new Date();
-
+        int date1 = calendar1.get(Calendar.DATE);
+        int month1 = calendar1.get(Calendar.MONTH);
+        int year1 = calendar1.get(Calendar.YEAR);
         hour1 = calendar1.get(Calendar.HOUR);
         minutes1 = calendar1.get(Calendar.MINUTE);
         final int ampm = calendar1.get(Calendar.AM_PM);
-        tsTemp1 = String.format("%02d:%02d", hour1, minutes1);
+        tsTemp1 = String.format("%02d:%02d", hour1, minutes1) + "%" + date1 + "/" + month1 + "/" + year1;
 
 
         //if the user is not logged in
@@ -257,7 +263,7 @@ public class CallsFragment extends Fragment {
         b8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), DirectReplyActivity.class);
+                Intent intent1 = new Intent(getActivity(), chatmain.class);
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
@@ -297,7 +303,7 @@ public class CallsFragment extends Fragment {
                 if (connected) {
 
 
-                    Thread t = new Thread() {
+                    t = new Thread() {
 
                         @Override
                         public void run() {
@@ -312,11 +318,13 @@ public class CallsFragment extends Fragment {
                                             Date trialTime = new Date();
                                             calendar.setTime(trialTime);
                                             Date now = new Date();
-
+                                            int date = calendar.get(Calendar.DATE);
+                                            int month = calendar.get(Calendar.MONTH);
+                                            int year = calendar.get(Calendar.YEAR);
                                             hour = calendar.get(Calendar.HOUR);
                                             minutes = calendar.get(Calendar.MINUTE);
                                             final int ampm = calendar.get(Calendar.AM_PM);
-                                            tsTemp = String.format("%02d:%02d", hour, minutes);
+                                            tsTemp = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
 
                                             myConnectionsStatusRef1.onDisconnect().setValue(tsTemp);
                                             //tsTemp.add(tsTemp1);

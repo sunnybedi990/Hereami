@@ -93,7 +93,7 @@ public class MyNotificationManager {
     //parameters are title for message title, message for message text and an intent that will open
     //when you will tap on the notification
     public void showSmallNotification(String title, String message, Intent intent, String title8) {
-        Intent intent2 = new Intent(mCtx, notificationchat.class);
+        Intent intent2 = new Intent(mCtx, chatactivity.class);
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(

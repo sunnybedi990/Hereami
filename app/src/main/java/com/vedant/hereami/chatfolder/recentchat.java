@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -216,182 +215,75 @@ public class recentchat extends Activity {
                 String temp4 = "";
                 String keyperson1 = "";
                 String keyperson = null;
-                for (DataSnapshot currentuserchatdatasnapshot : dataSnapshot.child(currentuser).getChildren()) {
+                for (DataSnapshot currentuserchatdatasnapshot : dataSnapshot.getChildren()) {
+                    if (currentuserchatdatasnapshot.getKey().contains(currentuser)) {
 
 
-                    for (DataSnapshot current : currentuserchatdatasnapshot.getChildren()) {
-                        MessageChatModel newMessage = current.getValue(MessageChatModel.class);
-                        temp1 = newMessage.getMessage();
-                        //  temp2 = newMessage.getRecipient();
-                        temp2 = newMessage.getTimestamp();
-
-                    }
-
-                    lstmsg.add(temp1);
-                    timestamp.add(temp2);
-                    for (DataSnapshot currentreceipent : dataSnapshot.getChildren()) {
-
-                        //  if (!currentreceipent.toString().equals(currentuser)) {
-                        //         keyperson = String.valueOf(currentreceipent.getKey());
-
-
-
-                        if (!String.valueOf(currentreceipent.getKey()).contains(currentuser)) {
-                            keyperson = currentreceipent.getKey().trim();
-
-                            //         lst.add(keyperson);
-                            Log.e("keypersonl", keyperson);
-
-                            Log.e("temp312345", currentreceipent.getKey());
-                            for (DataSnapshot findit : dataSnapshot.child(keyperson).getChildren()) {
-                                if (findit.toString().contains(currentuser)) {
-                                    countone = 3;
-                                    Log.e("temp3123", findit.toString());
-                                    keyperson1 = keyperson.replace("+", ":");
-                                    Log.e("keyperson1", keyperson1);
-                                    String[] parts = keyperson1.split(":"); // escape .
-                                    String part1 = parts[0];
-                                    String part2 = parts[1];
-                                    String tendigitnumber = getLastThree(part2);
-                                    contactmatch1 = getContactDisplayNameByNumber(tendigitnumber);
-                                    Log.e("keyperson2", contactmatch1);
-                                    hashMap1.put(tendigitnumber, keyperson1.replace(":", "+"));
-                                    sunn = countone;
-                                    //  Log.e("temp312345cou", countone + "");
-                                    Log.e("temp312345cou", countone + "");
-                                    //
-                                }
-                                Log.e("countsun", sunn + "");
-                                if (findit.toString().contains(currentuser)) {
-                                    //    if (lstreceptmsg.size() > sunn) {
-                                    //      lstreceptmsg.clear();
-                                    //  lstreceptmsg.add(contactmatch1);
-                                    //  } else {
-                                    lstreceptmsg.add(contactmatch1);
-                                    countMap = new HashMap<>();
-
-
-                                    for (String word : lstreceptmsg) {
-                                        Integer count = countMap.get(word);
-                                        if (count == null) {
-                                            count = 0;
-                                        }
-                                        countMap.put(word, (count.intValue() + 1));
-                                    }
-
-                                    System.out.println(countMap.toString());
-
-                                    Log.e("msgs1", countMap.toString());
-
-                                    Log.e("msgs112", lstreceptmsg.toString());
-                                }
-                            }
-                            Log.e(">>>>>dsp7", lstreceptmsg.toString());
-                            for (DataSnapshot currentreceipentcild2 : currentreceipent.child(currentuser).getChildren()) {
-                                //        Log.e("tempnonono", String.valueOf(currentreceipentcild2.getKey().contains(currentuser)));
-                                //      Log.e("ye dekh", String.valueOf(currentreceipentcild2.getValue()));
-
-
-                                MessageChatModel newMessage = currentreceipentcild2.getValue(MessageChatModel.class);
-                                temp3 = newMessage.getMessage().trim();
-                                //  temp4 = newMessage.getRecipient();
-                                temp4 = newMessage.getTimestamp();
-
-
-                            }
-                            Log.e("msgs34", temp3);
-                            lstmsg1.add(temp3);
-                            timestamp1.add(temp4);
+                        for (DataSnapshot current : currentuserchatdatasnapshot.getChildren()) {
+                            MessageChatModel newMessage = current.getValue(MessageChatModel.class);
+                            temp1 = newMessage.getMessage();
+                            //  temp2 = newMessage.getRecipient();
+                            temp2 = newMessage.getTimestamp();
 
                         }
-                        //                 if (!keyperson.equals(currentuser)) {
 
-
-                        //   keyperson = "";
-
-
-                        Log.e(">>>>>dsp9", lstreceptmsg.toString());
-
+                        lstmsg.add(temp1);
+                        timestamp.add(temp2);
                     }
-                    Log.e(">>>>>dsp10", lstreceptmsg.toString());
 
 
-                    Log.e(">>>>>dsp11", lstreceptmsg.toString());
+                    //      newList1 = new ArrayList<String>(lstmsg);
+                    //      newList1.addAll(lstmsg1);
+                    //      timestamplist = new ArrayList<String>(timestamp);
+                    //      timestamplist.addAll(timestamp1);
 
+                    String keyname = String.valueOf(currentuserchatdatasnapshot.getKey());
 
-                    //   Log.e("temp312345cou", countone + "");
-                    //  Log.e("temp31111", keyperson1);
-                    Log.e("temp3000", temp1);
-                    Log.e("count", sunn + "");
-
-                    newList1 = new ArrayList<String>(lstmsg);
-                    newList1.addAll(lstmsg1);
-                    timestamplist = new ArrayList<String>(timestamp);
-                    timestamplist.addAll(timestamp1);
-
-                    String keyname = String.valueOf(currentuserchatdatasnapshot.getKey()).replace("+", ":");
-
-
-                    String[] parts = keyname.split(":"); // escape .
+                    String chatuser = keyname.replace("-", "").replace(currentuser, "").replace("+", ":");
+                    String[] parts = chatuser.split(":"); // escape .
                     String part1 = parts[0];
                     String part2 = parts[1];
                     String tendigitnumber = getLastThree(part2);
                     //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
 
-                    hashMap1.put(tendigitnumber, keyname.replace(":", "+"));
+                    hashMap1.put(tendigitnumber, keyname);
 
-                    long sun1 = dataSnapshot.child(currentuser).getChildrenCount();
-                    sun = dataSnapshot.child(currentuser).getChildrenCount() + sunn;
-                    Log.e(">>>>>dsp1", sun + "");
 
                     contactmatch = getContactDisplayNameByNumber(tendigitnumber);
-                    Log.e(">>>>>dsp49", lst.size() + "");
-                    if (lst.size() > sun1) {
-                        Log.e(">>>>>dsp50", lst.size() + "");
-                        lst.clear();
-                    } else {
+                    //      Log.e(">>>>>dsp49", lst.size() + "");
+                    //       if (lst.size() > sun1) {
+                    //           Log.e(">>>>>dsp50", lst.size() + "");
+                    //           lst.clear();
+                    //       } else {
 
 
                         lst.add(contactmatch);
-                        Log.e(">>>>>dsp51", lst.size() + "");
+                    //        Log.e(">>>>>dsp51", lst.size() + "");
 
 
-                    }
-                }
-                Log.e("msgs2", lst.toString());
-                //       newList.clear();
-                //       lst.add(currentuserchatdatasnapshot.getKey());
-
-
-                //    Log.e(">>>>>last", currentuserchatdatasnapshot.getChildren() + "");
-                //    Log.e(">>>>>last123", currentuserchatdatasnapshot.getKey() + "");
-                //    Log.e(">>>>>dsp", currentuserchatdatasnapshot + "");
-                //   newList.addAll(lst);
-                //   newList.addAll(lstreceptmsg);
-
-                if (newList.size() > sun) {
-                    Log.e(">>>>>dsp5", newList.size() + "");
-                    newList.clear();
+                    //   if (newList.size() > sun) {
+                    //     Log.e(">>>>>dsp5", newList.size() + "");
+                    //   newList.clear();
                     //    newList.addAll(lst);
-                    Log.e(">>>>>dsp32", newList.size() + "");
+                    //      Log.e(">>>>>dsp32", newList.size() + "");
                     //     newList.addAll(lstreceptmsg);
-                } else {
+                    //   } else {
                     //   newList.clear();
                     //         Log.e(">>>>>dsp31", newList.size() + "");
-                    newList.addAll(lst);
+                    //     newList.addAll(lst);
                     //       Log.e(">>>>>dsp32", newList.size() + "");
-                    Log.e(">>>>>dsp33", lstreceptmsg.toString());
-                    Log.e(">>>>>dsp33", lstreceptmsg.toString());
-                    newList.addAll(lstreceptmsg);
-                    Log.e(">>>>>dsp33", lstreceptmsg.toString());
+                    //     Log.e(">>>>>dsp33", lstreceptmsg.toString());
+                    //     Log.e(">>>>>dsp33", lstreceptmsg.toString());
+                    //     newList.addAll(lstreceptmsg);
+                    //     Log.e(">>>>>dsp33", lstreceptmsg.toString());
                     //  Log.e(">>>>>dsp4", newList.toString() + "");
-                    Log.e(">>>>>dsp34", newList.size() + "");
+                    //     Log.e(">>>>>dsp34", newList.size() + "");
 
                 }
 
-                Log.e(">>>>>dsp35", newList.size() + "");
+                //     Log.e(">>>>>dsp35", newList.size() + "");
                 //       getNotification();
-                recentchatadapter rec = new recentchatadapter(recentchat.this, newList, newList1, timestamplist);
+                recentchatadapter rec = new recentchatadapter(recentchat.this, lst, lstmsg, timestamp);
                 //  RecentmessagesAdapter = new ArrayAdapter<String>(recentchat.this,android.R.layout.simple_list_item_1,android.R.id.text1);
                 RecentUser.setAdapter(rec);
 
@@ -410,7 +302,7 @@ public class recentchat extends Activity {
                         //                          Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
 
                         //                        Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                        Intent intent4 = new Intent(recentchat.this, chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(newList.get(position)))).putExtra("namenumber", newList.get(position) + "");
+                        Intent intent4 = new Intent(recentchat.this, chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
                         startActivity(intent4);
                         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }

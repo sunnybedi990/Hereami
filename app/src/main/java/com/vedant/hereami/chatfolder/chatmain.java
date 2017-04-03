@@ -152,7 +152,7 @@ public class chatmain extends AppCompatActivity implements SwipeRefreshLayout.On
                         Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
 
                         Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                        Intent intent4 = new Intent(chatmain.this, chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
+                        Intent intent4 = new Intent(chatmain.this, chatactivity.class).putExtra("key_position1", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
                         startActivity(intent4);
                         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }
