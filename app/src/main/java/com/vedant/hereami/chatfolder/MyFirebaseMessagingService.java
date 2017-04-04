@@ -30,6 +30,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.vedant.hereami.MainActivity;
@@ -55,11 +57,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private String title;
     private String title1;
     private String title2;
+    FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         //Displaying data in log
         //It is optional
+        Firebase.setAndroidContext(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 //        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
         if (remoteMessage.getData().size() > 0) {
@@ -112,9 +119,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
          //   String[] parts1 = title2.split("%"); // escape .
          //   String part5 = parts1[0];
          //   title1 = parts1[1];
+            Log.e(TAG, title1);
 
-
-            String[] parts = title1.replace("+", ":").split(":"); // escape .
+            String[] parts = title1.replace("-", "").replace(user.getEmail().replace(".", "dot") + user.getDisplayName(), "").replace("+", ":").split(":"); // escape .
             String part1 = parts[0];
             String part2 = parts[1];
             //  String tendigitnumber = getLastThree(part2);

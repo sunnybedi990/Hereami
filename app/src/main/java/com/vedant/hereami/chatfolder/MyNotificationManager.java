@@ -18,6 +18,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
@@ -51,7 +52,7 @@ public class MyNotificationManager {
     private static final String KEY_TEXT_REPLY = "key_text_reply";
     private Context mCtx;
     private EditText mUserMessageChatText;
-
+    int id = (int) System.currentTimeMillis();
     public MyNotificationManager(Context mCtx) {
         this.mCtx = mCtx;
     }
@@ -93,53 +94,48 @@ public class MyNotificationManager {
     //parameters are title for message title, message for message text and an intent that will open
     //when you will tap on the notification
     public void showSmallNotification(String title, String message, Intent intent, String title8) {
-        Intent intent2 = new Intent(mCtx, chatactivity.class);
-        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        mCtx,
-                        ID_SMALL_NOTIFICATION,
-                        intent.putExtra("key_position", title8).putExtra("namenumber", title),
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+
         String replyLabel = mCtx.getResources().getString(R.string.reply_label);
         RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
                 .setLabel(replyLabel)
                 .build();
-
+        Intent intent2;
         PendingIntent pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_action_stat_reply, "reply to " + title,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id);
+        } else {
+            intent2 = intent;
+        }
+        // mCtx.sendBroadcast(intent2);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getBroadcast(
+                        mCtx,
+                        0, intent2, PendingIntent.FLAG_ONE_SHOT);
 
-                pendingIntent).addRemoteInput(remoteInput).build();
+        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_action_stat_reply, "reply to " + title,
+                resultPendingIntent).addRemoteInput(remoteInput).setAllowGeneratedReplies(true).build();
+
         String filepath = Environment.getExternalStorageDirectory().getPath();
         File myDir = new File(filepath + "/.HereamI");
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
         NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
-        //Different Id's will show up as different notifications
-        int mNotificationId = 1;
 
-        //Some things we only have to set the first time.
-        boolean firstTime = true;
-        int progress = 1;
         Notification notification;
-        if (numMessagesOne == 0) {
+
             mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
                     .setAutoCancel(true)
-                    .setContentIntent(resultPendingIntent)
+                    .setContentIntent(pendingIntent)
                     .setContentTitle(title)
                     .addAction(action)
                     .setSmallIcon(R.drawable.image)
+
                     .setLargeIcon(bMap).setAutoCancel(true)
 
                     .setContentText(message).setNumber(++numMessagesOne);
             //  firstTime = false;
-        } else {
-            mBuilder.setContentText(message).setNumber(++numMessagesOne);
-        }
-
 
         notification = mBuilder.build();
         // notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -151,7 +147,7 @@ public class MyNotificationManager {
             notification.defaults |= Notification.DEFAULT_VIBRATE;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-        notificationManager.notify(ID_SMALL_NOTIFICATION, notification);
+            notificationManager.notify(id, notification);
         }
     }
 

@@ -5,12 +5,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.RemoteInput;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -56,7 +60,7 @@ import java.util.TimeZone;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class chatactivity extends Activity {
+public class chatactivity extends AppCompatActivity {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static final String TAG = chatactivity.class.getSimpleName();
 
@@ -112,13 +116,17 @@ public class chatactivity extends Activity {
     private static String KEY_TEXT_REPLY = "key_text_reply";
     private Bundle remoteInput;
     private String message2;
+    private CoordinatorLayout coordinatorLayout3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        coordinatorLayout3 = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayoutmain3);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         Intent intent = this.getIntent();
         remoteInput = RemoteInput.getResultsFromIntent(intent);
@@ -130,62 +138,66 @@ public class chatactivity extends Activity {
         message2 = bundle.getString("key_position");
         namenumber = bundle.getString("namenumber");
         setTitle(namenumber);
-
-        // Get information from the previous activity
-        Intent getUsersData = getIntent();
-        UsersChatModel usersDataModel = getUsersData.getParcelableExtra(ReferenceUrl.KEY_PASS_USERS_INFO);
-        mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
-        // Set recipient uid
-        mRecipientUid = message1;
-        if (message1 == null) {
-            message1 = message2.replace("-", "").replace(mSenderUid, "");
-        }
-
-        // Set sender uid;
+        if (!isInternetOn()) {
 
 
-        // Reference to recyclerView and text view
-        mChatRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
-        mUserMessageChatText = (TextView) findViewById(R.id.chat_user_message);
-        mUserMessageChatconnection = (TextView) findViewById(R.id.text_connection);
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout3, "Check Your internet connection", Snackbar.LENGTH_INDEFINITE);
 
-
-        mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mChatRecyclerView.setHasFixedSize(true);
-        // Initialize adapter
-        List<MessageChatModel> emptyMessageChat = new ArrayList<MessageChatModel>();
-        mMessageChatAdapter = new MessageChatAdapter(emptyMessageChat);
-
-        // Set adapter to recyclerView
-        mChatRecyclerView.setAdapter(mMessageChatAdapter);
-
-
-        // Initialize firebase for this chat
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
-        mFirebaseMessagesChat = fb_parent.child("/message");
-        mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
-        mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
-        Log.e(">>connect", mFirebaseMessagesChatconnectioncheck.getKey());
-//        mFirebaseMessagesChatconnection = fb_parent.child("/users").child(message1).child(ReferenceUrl.CHILD_CONNECTION);
-        //      if (mFirebaseMessagesChatconnection != null)
-
-
-        currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
-        if (remoteInput != null) {
-
-
-            startchat();
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    sendnotification();
-                    //Do something after 100ms
-                }
-            }, 5000);
-
+            snackbar.show();
         } else {
-            startchat();
+
+            // Get information from the previous activity
+            Intent getUsersData = getIntent();
+            UsersChatModel usersDataModel = getUsersData.getParcelableExtra(ReferenceUrl.KEY_PASS_USERS_INFO);
+            mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
+            // Set recipient uid
+            mRecipientUid = message1;
+            if (message1 == null) {
+                message1 = message2.replace("-", "").replace(mSenderUid, "");
+            }
+
+            // Set sender uid;
+
+
+            // Reference to recyclerView and text view
+            mChatRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
+            mUserMessageChatText = (TextView) findViewById(R.id.chat_user_message);
+            mUserMessageChatconnection = (TextView) findViewById(R.id.text_connection);
+
+
+            mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            mChatRecyclerView.setHasFixedSize(true);
+            // Initialize adapter
+            List<MessageChatModel> emptyMessageChat = new ArrayList<MessageChatModel>();
+            mMessageChatAdapter = new MessageChatAdapter(emptyMessageChat);
+
+            // Set adapter to recyclerView
+            mChatRecyclerView.setAdapter(mMessageChatAdapter);
+
+
+            // Initialize firebase for this chat
+            Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
+            mFirebaseMessagesChat = fb_parent.child("/message");
+            mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
+            mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
+            Log.e(">>connect", mFirebaseMessagesChatconnectioncheck.getKey());
+//        mFirebaseMessagesChatconnection = fb_parent.child("/users").child(message1).child(ReferenceUrl.CHILD_CONNECTION);
+            //      if (mFirebaseMessagesChatconnection != null)
+
+
+            currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
+            if (remoteInput != null) {
+
+
+                startchat();
+
+                sendnotification();
+                //Do something after 100ms
+
+            } else {
+                startchat();
+            }
         }
     }
 
@@ -206,7 +218,9 @@ public class chatactivity extends Activity {
 
                             } else {
                                 mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
-
+                                if (message2 == null) {
+                                    message2 = currentuser + "-" + message1;
+                                }
                             }
 
                         }
@@ -456,8 +470,9 @@ if(!connectionstatus3.equals(connectionstatus2)) {
         final String title = user.getEmail().replace(".","dot")+user.getDisplayName();
         final String message = senderMessage;
         // final String image;
+        final String title1 = message2;
 
-        String[] parts = message1.replace("+", ":").split(":"); // escape .
+        String[] parts = message2.replace("-", "").replace(title, "").replace("+", ":").split(":");  // escape .
         String part1 = parts[0];
 //          String part2 = parts[1];
         //  String tendigitnumber = getLastThree(part2);
@@ -486,7 +501,7 @@ if(!connectionstatus3.equals(connectionstatus2)) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("title", title);
+                params.put("title", title1);
                 params.put("message", message);
 
                 //     if (!TextUtils.isEmpty(image))
@@ -545,10 +560,13 @@ if(!connectionstatus3.equals(connectionstatus2)) {
             Date trialTime = new Date();
             calendar.setTime(trialTime);
             Date now = new Date();
-
+            int date = calendar.get(Calendar.DATE);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
             int hour = calendar.get(Calendar.HOUR);
             int minutes = calendar.get(Calendar.MINUTE);
-            String tsTemp = String.format("%02d:%02d", hour, minutes);
+            String tsTemp = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
+
             //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
             //    String formattedTime = sdf.format(tsTemp);
 
@@ -576,6 +594,33 @@ if(!connectionstatus3.equals(connectionstatus2)) {
 
 
         }
+    }
+
+    public final boolean isInternetOn() {
+
+        // get Connectivity Manager object to check connection
+        ConnectivityManager connec =
+                (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+
+        // Check for network connections
+        if (connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
+
+            // if connected with internet
+
+            Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
+            return true;
+
+        } else if (
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
+                        connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
+
+            Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return false;
     }
 }
 

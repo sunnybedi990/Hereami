@@ -32,8 +32,7 @@
         android:allowBackup="true"
         android:icon="@drawable/image"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AlertDialog.AppCompat">
+        android:supportsRtl="true">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -117,6 +116,7 @@
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:name=".chatfolder.chatactivity"
+            android:theme="@style/AppTheme"
             android:label="@string/title_activity_chat"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -169,9 +169,11 @@
         <activity
             android:name=".ViewPager.CustomTabActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-        <activity
-            android:name=".chatfolder.DirectReplyActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+
+        <receiver
+            android:name=".chatfolder.notifyme"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

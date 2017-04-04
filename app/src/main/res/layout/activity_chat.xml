@@ -1,4 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayoutmain3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".chatfolder.chatactivity">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +23,6 @@
             android:id="@+id/text_connection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="online"
             android:textColor="@color/color1"
             android:textSize="20sp" />
 
@@ -89,3 +96,4 @@
         android:visibility="gone" />
 
 </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
