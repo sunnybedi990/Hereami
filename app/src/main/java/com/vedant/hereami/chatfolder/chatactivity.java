@@ -1,7 +1,6 @@
 package com.vedant.hereami.chatfolder;
 
-import android.app.ActionBar;
-import android.app.Activity;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,11 +8,11 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.RemoteInput;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -117,6 +116,8 @@ public class chatactivity extends AppCompatActivity {
     private Bundle remoteInput;
     private String message2;
     private CoordinatorLayout coordinatorLayout3;
+    private ActionBar actionBar;
+    private String todaycheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +125,7 @@ public class chatactivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         coordinatorLayout3 = (CoordinatorLayout) findViewById(R.id
                 .coordinatorLayoutmain3);
-
+        actionBar = getSupportActionBar();
         firebaseAuth = FirebaseAuth.getInstance();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -137,7 +138,9 @@ public class chatactivity extends AppCompatActivity {
         message1 = bundle.getString("key_position1");
         message2 = bundle.getString("key_position");
         namenumber = bundle.getString("namenumber");
+
         setTitle(namenumber);
+
         if (!isInternetOn()) {
 
 
@@ -151,12 +154,23 @@ public class chatactivity extends AppCompatActivity {
             Intent getUsersData = getIntent();
             UsersChatModel usersDataModel = getUsersData.getParcelableExtra(ReferenceUrl.KEY_PASS_USERS_INFO);
             mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
+
+            Log.e("getname1", message1 + ")");
             // Set recipient uid
-            mRecipientUid = message1;
+
             if (message1 == null) {
                 message1 = message2.replace("-", "").replace(mSenderUid, "");
             }
-
+            mRecipientUid = message1;
+            TimeZone pdt = TimeZone.getDefault();
+            Calendar calendar1 = new GregorianCalendar(pdt);
+            Date trialTime = new Date();
+            calendar1.setTime(trialTime);
+            Date now = new Date();
+            int date1 = calendar1.get(Calendar.DATE);
+            int month1 = calendar1.get(Calendar.MONTH);
+            int year1 = calendar1.get(Calendar.YEAR);
+            todaycheck = date1 + "/" + month1 + "/" + year1;
             // Set sender uid;
 
 
@@ -286,8 +300,7 @@ public class chatactivity extends AppCompatActivity {
                         imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
                         image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-
-                        ActionBar actionBar = getActionBar();
+                        Log.e("getname2", message1);
                         actionBar.setDisplayOptions(actionBar.getDisplayOptions()
                                 | ActionBar.DISPLAY_SHOW_CUSTOM);
                         CircleImageView imageView = null;

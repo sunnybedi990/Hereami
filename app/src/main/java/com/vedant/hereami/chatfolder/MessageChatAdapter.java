@@ -9,17 +9,31 @@ import android.widget.TextView;
 
 import com.vedant.hereami.R;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final String todaycheck;
     private List<MessageChatModel> mListOfFireChat;
     private static final int SENDER = 0;
     private static final int RECIPIENT = 1;
+    TimeZone pdt = TimeZone.getDefault();
 
     public MessageChatAdapter(List<MessageChatModel> listOfFireChats) {
         mListOfFireChat = listOfFireChats;
+        Calendar calendar1 = new GregorianCalendar(pdt);
+        Date trialTime = new Date();
+        calendar1.setTime(trialTime);
+        Date now = new Date();
+        int date1 = calendar1.get(Calendar.DATE);
+        int month1 = calendar1.get(Calendar.MONTH);
+        int year1 = calendar1.get(Calendar.YEAR);
+        todaycheck = date1 + "/" + month1 + "/" + year1;
     }
 
     @Override
@@ -74,13 +88,33 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private void configureSenderView(ViewHolderSender viewHolderSender, int position) {
         MessageChatModel senderFireMessage = mListOfFireChat.get(position);
         viewHolderSender.getSenderMessageTextView().setText(senderFireMessage.getMessage());
-        viewHolderSender.getSenderMessagetimeTextView().setText(senderFireMessage.getTimestamp());
+        String s;
+        String[] parts1 = senderFireMessage.getTimestamp().split("%");
+        String part4 = parts1[0];
+        String part5 = parts1[1];
+
+        if (!part5.equals(todaycheck)) {
+            s = part5;
+        } else {
+            s = part4;
+        }
+        viewHolderSender.getSenderMessagetimeTextView().setText(s);
     }
 
     private void configureRecipientView(ViewHolderRecipient viewHolderRecipient, int position) {
         MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
         viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
-        viewHolderRecipient.getRecipientMessagetimeTextView().setText(recipientFireMessage.getTimestamp());
+        String s;
+        String[] parts1 = recipientFireMessage.getTimestamp().split("%");
+        String part4 = parts1[0];
+        String part5 = parts1[1];
+
+        if (!part5.equals(todaycheck)) {
+            s = part5;
+        } else {
+            s = part4;
+        }
+        viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
     }
 
 
