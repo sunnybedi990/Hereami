@@ -52,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private byte[] imageAsBytes;
     private String connectionstatus2;
     private String sunny;
-    private Firebase mFirebaseMessagesChatconnectioncheck = new Firebase("https://iamhere-29f2b.firebaseio.com/users");
+    private Firebase mFirebaseMessagesChatconnectioncheck;
     private Bitmap _bitmapScaled;
     private String title;
     private String title1;
@@ -67,6 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Firebase.setAndroidContext(this);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
+
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 //        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
         if (remoteMessage.getData().size() > 0) {
