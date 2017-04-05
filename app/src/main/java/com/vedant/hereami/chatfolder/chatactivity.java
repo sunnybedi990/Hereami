@@ -232,9 +232,9 @@ public class chatactivity extends AppCompatActivity {
 
                             } else {
                                 mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
-                                if (message2 == null) {
+                                //   if (message2 == null) {
                                     message2 = currentuser + "-" + message1;
-                                }
+
                             }
 
                         }
@@ -358,9 +358,17 @@ if(!connectionstatus3.equals(connectionstatus2)) {
                         //       menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_launcher));
                         connectionstatus = dataSnapshot1.child(message1).child(ReferenceUrl.CHILD_CONNECTION).getValue().toString();
                         connectionstatus1 = dataSnapshot1.child(message1).child(ReferenceUrl.timestamp).getValue().toString();
-
+                        String[] parts1 = connectionstatus1.split("%");
+                        String part4 = parts1[0];
+                        String part5 = parts1[1];
+                        String s;
+                        if (!part5.equals(todaycheck)) {
+                            s = connectionstatus1;
+                        } else {
+                            s = part4;
+                        }
                         if (connectionstatus.equals("offline")) {
-                            mUserMessageChatconnection.setText("last seen at " + connectionstatus1);
+                            mUserMessageChatconnection.setText("last seen at " + s);
                         } else
 
                             mUserMessageChatconnection.setText(connectionstatus);
