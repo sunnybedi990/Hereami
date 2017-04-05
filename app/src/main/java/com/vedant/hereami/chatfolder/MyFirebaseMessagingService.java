@@ -116,6 +116,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             //parsing json data
             title1 = data.getString("title");
+            String title2 = data.getString("title");
          //   String[] parts1 = title2.split("%"); // escape .
          //   String part5 = parts1[0];
          //   title1 = parts1[1];
@@ -137,7 +138,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position", title1.replace(".", "dot")).putExtra("namenumber", title);
+            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position1", title2).putExtra("namenumber", title);
             String title8 = title1.replace(".", "dot");
             //if there is no image
             if (imageUrl.equals("null")) {

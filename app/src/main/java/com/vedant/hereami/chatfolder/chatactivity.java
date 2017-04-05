@@ -200,19 +200,17 @@ public class chatactivity extends AppCompatActivity {
             //      if (mFirebaseMessagesChatconnection != null)
 
 
-            currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
-            if (remoteInput != null) {
-
-
-                startchat();
-
-                sendnotification();
-                //Do something after 100ms
-
-            } else {
-                startchat();
-            }
         }
+            currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
+
+        if (message2 != null) {
+            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
+            Log.e("getname1", "pasess1");
+            messages();
+            } else {
+            startchat();
+        }
+
     }
 
     public void startchat() {
@@ -220,70 +218,73 @@ public class chatactivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot last : dataSnapshot.getChildren()) {
-                    if (message2 != null) {
-                        mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
+
+                    Log.e("getname1", last.getKey().contains(currentuser + "-" + message1) + "");
+                    Log.e("getname8", last.getKey());
+                    if (last.getKey().contains(currentuser + "-" + message1)) {
+
+                        mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
+                        Log.e("getname1", "pasess2");
                     } else {
-                        if (last.getKey().contains(currentuser + "-" + message1)) {
-
-                            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
+                        Log.e("getname1", last.getKey().contains(message1 + "-" + currentuser) + "");
+                        if (last.getKey().contains(message1 + "-" + currentuser)) {
+                            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message1 + "-" + currentuser);
+                            Log.e("getname1", "pasess3");
                         } else {
-                            if (last.getKey().contains(message1 + "-" + currentuser)) {
-                                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message1 + "-" + currentuser);
-
-                            } else {
-                                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
-                                //   if (message2 == null) {
-                                    message2 = currentuser + "-" + message1;
-
+                            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
+                            if (message2 == null) {
+                                message2 = currentuser + "-" + message1;
                             }
-
+                            Log.e("getname1", "pasess4");
                         }
-                    }
-
-
-                    if (mFirebaseMessagesChat12 != null) {
-                        mFirebaseMessagesChat12.addValueEventListener(new ValueEventListener() {
-
-                            public void onDataChange(DataSnapshot result) {
-
-                                lst = new ArrayList<String>();
-                                //  for (DataSnapshot dsp : result.getChildren()) {
-                                for (DataSnapshot last : result.getChildren()) {
-
-
-                                    MessageChatModel newMessage = last.getValue(MessageChatModel.class);
-                                    if (newMessage.getSender().equals(currentuser)) {
-                                        newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
-                                    } else {
-                                        newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
-                                    }
-
-                                    mMessageChatAdapter.refillAdapter(newMessage);
-                                    mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount() - 1);
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
-
-                            }
-
-                            //  }
-                        });
 
                     }
+
+
+                    Log.e("getname4", mFirebaseMessagesChat12.toString());
                 }
             }
 
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        messages();
+    }
+
+    public void messages() {
+        if (mFirebaseMessagesChat12 != null) {
+            mFirebaseMessagesChat12.addValueEventListener(new ValueEventListener() {
+
+                public void onDataChange(DataSnapshot result) {
+
+                    lst = new ArrayList<String>();
+                    //  for (DataSnapshot dsp : result.getChildren()) {
+                    for (DataSnapshot last : result.getChildren()) {
+
+
+                        MessageChatModel newMessage = last.getValue(MessageChatModel.class);
+                        if (newMessage.getSender().equals(currentuser)) {
+                            newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
+                        } else {
+                            newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
+                        }
+
+                        mMessageChatAdapter.refillAdapter(newMessage);
+                        mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount() - 1);
+
+                }
+            }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
             }
 
-
+                //  }
         });
+
 
         mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -318,38 +319,38 @@ public class chatactivity extends AppCompatActivity {
 
                         imageView.setLayoutParams(layoutParams);
                         actionBar.setCustomView(imageView);
-                     //   imageView.setOnClickListener();
+                        //   imageView.setOnClickListener();
                         Log.e("pic1", String.valueOf(image));
 
-if(!connectionstatus3.equals(connectionstatus2)) {
+                        if (!connectionstatus3.equals(connectionstatus2)) {
 
-    myConnectionsStatusRef2 = mFireChatUsersRef.child(message1).child(ReferenceUrl.imagecheck);
-    myConnectionsStatusRef2.setValue(connectionstatus2);
+                            myConnectionsStatusRef2 = mFireChatUsersRef.child(message1).child(ReferenceUrl.imagecheck);
+                            myConnectionsStatusRef2.setValue(connectionstatus2);
 
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
 
-    String filepath = Environment.getExternalStorageDirectory().getPath();
-    File myDir = new File(filepath + "/.HereamI");
-    Log.e("file", myDir.toString());
-    myDir.mkdirs();
-    String fname = namenumber + ".jpg";
+                            String filepath = Environment.getExternalStorageDirectory().getPath();
+                            File myDir = new File(filepath + "/.HereamI");
+                            Log.e("file", myDir.toString());
+                            myDir.mkdirs();
+                            String fname = namenumber + ".jpg";
 //you can create a new file name "test.jpg" in sdcard folder.
-    File file = new File(myDir, fname);
-    if (file.exists()) file.delete();
-    try {
-        FileOutputStream out = new FileOutputStream(file);
-        out.write(bytes.toByteArray());
-        out.flush();
-        out.close();
-        Log.e("downloadstatus", "file downloaded");
+                            File file = new File(myDir, fname);
+                            if (file.exists()) file.delete();
+                            try {
+                                FileOutputStream out = new FileOutputStream(file);
+                                out.write(bytes.toByteArray());
+                                out.flush();
+                                out.close();
+                                Log.e("downloadstatus", "file downloaded");
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
 
-}
+                        }
                         //   menu.getItem(0).setIcon(new BitmapDrawable(getResources(), image));
 
 
@@ -386,6 +387,7 @@ if(!connectionstatus3.equals(connectionstatus2)) {
         });
 
 
+    }
     }
 
     @Override
@@ -644,6 +646,3 @@ if(!connectionstatus3.equals(connectionstatus2)) {
         return false;
     }
 }
-
-
-

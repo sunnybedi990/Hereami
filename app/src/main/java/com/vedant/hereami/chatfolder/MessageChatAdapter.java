@@ -127,6 +127,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void refillAdapter(MessageChatModel newFireChatMessage) {
 
         /*add new message1 chat to list*/
+
         mListOfFireChat.add(newFireChatMessage);
 
         /*refresh view*/
