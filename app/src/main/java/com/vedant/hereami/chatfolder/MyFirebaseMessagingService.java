@@ -74,6 +74,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
             try {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                Log.e("notidekhbaba", "notification aaya");
                 sendPushNotification(json);
             } catch (Exception e) {
                 Log.e(TAG, "Exception: " + e.getMessage());
@@ -118,6 +119,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //parsing json data
             title1 = data.getString("title");
             String title2 = data.getString("title");
+            String titletonotifyme = title2.replace("-", "").replace(user.getEmail().replace(".", "dot") + user.getDisplayName(), "");
          //   String[] parts1 = title2.split("%"); // escape .
          //   String part5 = parts1[0];
          //   title1 = parts1[1];
@@ -139,12 +141,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position1", title2).putExtra("namenumber", title);
+            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position1", titletonotifyme).putExtra("namenumber", title);
             String title8 = title1.replace(".", "dot");
             //if there is no image
             if (imageUrl.equals("null")) {
                 //displaying small notification
-                mNotificationManager.showSmallNotification(title, message, intent, title8);
+                mNotificationManager.showSmallNotification(title, message, intent, titletonotifyme);
             } else {
                 //if there is an image
                 //displaying a big notification

@@ -116,9 +116,10 @@ public class ChatFragment extends Fragment {
         todaycheck = date1 + "/" + month1 + "/" + year1;
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
         mFirebaseMessagesChat = fb_parent.child("/message");
-        mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child("/" + currentuser);
-
         currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
+        mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child(currentuser);
+
+
         chats();
     }
 
@@ -205,50 +206,51 @@ public class ChatFragment extends Fragment {
                 String temp4 = "";
                 for (DataSnapshot currentuserchatdatasnapshot : dataSnapshot.getChildren()) {
                     if (currentuserchatdatasnapshot.getKey().contains(currentuser)) {
-                        Log.e(">>>>>last", currentuserchatdatasnapshot.toString() + "");
+                        //  Log.e(">>>>>last", currentuserchatdatasnapshot.toString() + "");
 
-                        for (DataSnapshot current : currentuserchatdatasnapshot.getChildren()) {
+                        for (DataSnapshot current1 : currentuserchatdatasnapshot.getChildren()) {
+                            //  Log.e(">>>>>last123", current.toString() + "");
+                            for (DataSnapshot current : current1.getChildren()) {
+                                MessageChatModel newMessage = current.getValue(MessageChatModel.class);
 
-                            MessageChatModel newMessage = current.getValue(MessageChatModel.class);
+                                temp1 = newMessage.getMessage();
+                                //  temp2 = newMessage.getRecipient();
+                                temp2 = newMessage.getTimestamp();
 
-                            temp1 = newMessage.getMessage();
-                            //  temp2 = newMessage.getRecipient();
-                            temp2 = newMessage.getTimestamp();
 
+                            }
+                            Log.e(">>>>>last", temp1 + "");
+                            String[] parts1 = temp2.split("%");
+                            String part4 = parts1[0];
+                            String part5 = parts1[1];
+
+                            if (!part5.equals(todaycheck)) {
+                                temp5 = part5;
+                            } else {
+                                temp5 = part4;
+                            }
+                            lstmsg.add(temp1);
+                            timestamp.add(temp5);
+
+
+                            String keyname = String.valueOf(current1.getKey());
+
+                            String chatuser = keyname.replace("-", "").replace(currentuser, "").replace("+", ":");
+                            String[] parts = chatuser.split(":"); // escape .
+                            String part1 = parts[0];
+                            String part2 = parts[1];
+                            String tendigitnumber = getLastThree(part2);
+                            //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
+
+                            hashMap1.put(tendigitnumber, keyname);
+
+
+                            contactmatch = getContactDisplayNameByNumber(tendigitnumber);
+
+
+                            lst.add(contactmatch);
 
                         }
-                        Log.e(">>>>>last", temp1 + "");
-                        String[] parts1 = temp2.split("%");
-                        String part4 = parts1[0];
-                        String part5 = parts1[1];
-
-                        if (!part5.equals(todaycheck)) {
-                            temp5 = part5;
-                        } else {
-                            temp5 = part4;
-                        }
-                        lstmsg.add(temp1);
-                        timestamp.add(temp5);
-
-
-                        String keyname = String.valueOf(currentuserchatdatasnapshot.getKey());
-
-                        String chatuser = keyname.replace("-", "").replace(currentuser, "").replace("+", ":");
-                        String[] parts = chatuser.split(":"); // escape .
-                        String part1 = parts[0];
-                        String part2 = parts[1];
-                        String tendigitnumber = getLastThree(part2);
-                        //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
-
-                        hashMap1.put(tendigitnumber, keyname);
-
-
-                        contactmatch = getContactDisplayNameByNumber(tendigitnumber);
-
-
-                        lst.add(contactmatch);
-
-
                     }
                 }
 

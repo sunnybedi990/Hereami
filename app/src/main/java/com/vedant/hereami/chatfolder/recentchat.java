@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,9 +34,13 @@ import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class recentchat extends Activity {
     private static final int REQUEST_PERMISSIONS = 5;
@@ -68,6 +73,9 @@ public class recentchat extends Activity {
     private long sun;
     private List<String> timestamplist;
     private Map<String, Integer> countMap;
+    private String temp5;
+    private String todaycheck;
+    private Calendar calendar1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,13 +115,22 @@ public class recentchat extends Activity {
         // Set sender uid;
         mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
 
-
+        TimeZone pdt = TimeZone.getDefault();
+        calendar1 = new GregorianCalendar(pdt);
+        Date trialTime = new Date();
+        calendar1.setTime(trialTime);
+        Date now = new Date();
+        int date1 = calendar1.get(Calendar.DATE);
+        int month1 = calendar1.get(Calendar.MONTH);
+        int year1 = calendar1.get(Calendar.YEAR);
+        todaycheck = date1 + "/" + month1 + "/" + year1;
 
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
         mFirebaseMessagesChat = fb_parent.child("/message");
-        mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child("/" + currentuser);
-
         currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
+        mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child(currentuser);
+
+
         chats();
     }
 
@@ -213,72 +230,54 @@ public class recentchat extends Activity {
                 String temp2 = "";
                 String temp3 = "";
                 String temp4 = "";
-                String keyperson1 = "";
-                String keyperson = null;
+                //   String keyperson1 = "";
+                // String keyperson = null;
                 for (DataSnapshot currentuserchatdatasnapshot : dataSnapshot.getChildren()) {
                     if (currentuserchatdatasnapshot.getKey().contains(currentuser)) {
 
+                        for (DataSnapshot current1 : currentuserchatdatasnapshot.getChildren()) {
+                            for (DataSnapshot current : current1.getChildren()) {
+                                MessageChatModel newMessage = current.getValue(MessageChatModel.class);
 
-                        for (DataSnapshot current : currentuserchatdatasnapshot.getChildren()) {
-                            MessageChatModel newMessage = current.getValue(MessageChatModel.class);
-                            temp1 = newMessage.getMessage();
-                            //  temp2 = newMessage.getRecipient();
-                            temp2 = newMessage.getTimestamp();
+                                temp1 = newMessage.getMessage();
+                                //  temp2 = newMessage.getRecipient();
+                                temp2 = newMessage.getTimestamp();
+
+
+                            }
+                            Log.e(">>>>>last", temp1 + "");
+                            String[] parts1 = temp2.split("%");
+                            String part4 = parts1[0];
+                            String part5 = parts1[1];
+
+                            if (!part5.equals(todaycheck)) {
+                                temp5 = part5;
+                            } else {
+                                temp5 = part4;
+                            }
+                            lstmsg.add(temp1);
+                            timestamp.add(temp5);
+
+
+                            String keyname = String.valueOf(current1.getKey());
+
+                            String chatuser = keyname.replace("-", "").replace(currentuser, "").replace("+", ":");
+                            String[] parts = chatuser.split(":"); // escape .
+                            String part1 = parts[0];
+                            String part2 = parts[1];
+                            String tendigitnumber = getLastThree(part2);
+                            //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
+
+                            hashMap1.put(tendigitnumber, keyname);
+
+
+                            contactmatch = getContactDisplayNameByNumber(tendigitnumber);
+
+
+                            lst.add(contactmatch);
 
                         }
-
-                        lstmsg.add(temp1);
-                        timestamp.add(temp2);
                     }
-
-
-                    //      newList1 = new ArrayList<String>(lstmsg);
-                    //      newList1.addAll(lstmsg1);
-                    //      timestamplist = new ArrayList<String>(timestamp);
-                    //      timestamplist.addAll(timestamp1);
-
-                    String keyname = String.valueOf(currentuserchatdatasnapshot.getKey());
-
-                    String chatuser = keyname.replace("-", "").replace(currentuser, "").replace("+", ":");
-                    String[] parts = chatuser.split(":"); // escape .
-                    String part1 = parts[0];
-                    String part2 = parts[1];
-                    String tendigitnumber = getLastThree(part2);
-                    //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
-
-                    hashMap1.put(tendigitnumber, keyname);
-
-
-                    contactmatch = getContactDisplayNameByNumber(tendigitnumber);
-                    //      Log.e(">>>>>dsp49", lst.size() + "");
-                    //       if (lst.size() > sun1) {
-                    //           Log.e(">>>>>dsp50", lst.size() + "");
-                    //           lst.clear();
-                    //       } else {
-
-
-                        lst.add(contactmatch);
-                    //        Log.e(">>>>>dsp51", lst.size() + "");
-
-
-                    //   if (newList.size() > sun) {
-                    //     Log.e(">>>>>dsp5", newList.size() + "");
-                    //   newList.clear();
-                    //    newList.addAll(lst);
-                    //      Log.e(">>>>>dsp32", newList.size() + "");
-                    //     newList.addAll(lstreceptmsg);
-                    //   } else {
-                    //   newList.clear();
-                    //         Log.e(">>>>>dsp31", newList.size() + "");
-                    //     newList.addAll(lst);
-                    //       Log.e(">>>>>dsp32", newList.size() + "");
-                    //     Log.e(">>>>>dsp33", lstreceptmsg.toString());
-                    //     Log.e(">>>>>dsp33", lstreceptmsg.toString());
-                    //     newList.addAll(lstreceptmsg);
-                    //     Log.e(">>>>>dsp33", lstreceptmsg.toString());
-                    //  Log.e(">>>>>dsp4", newList.toString() + "");
-                    //     Log.e(">>>>>dsp34", newList.size() + "");
-
                 }
 
                 //     Log.e(">>>>>dsp35", newList.size() + "");

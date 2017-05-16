@@ -1,5 +1,6 @@
 package com.vedant.hereami;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -32,7 +34,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
     private ProgressDialog progressDialog;
     private FirebaseUser user;
     private CoordinatorLayout coordinatorLayout;
-
+    public String TAG;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +108,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
@@ -136,6 +139,12 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
                                 }
                                 //  startActivity(new Intent(getApplicationContext(), Main.class));
                             }
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(login.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(null);
                         }
                     }
                 });
@@ -150,7 +159,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         login.super.requestAppPermissions(new
                         String[]{
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.SEND_SMS, android.Manifest.permission.READ_SMS, android.Manifest.permission.READ_CONTACTS}, R.string
+                        android.Manifest.permission.SEND_SMS, android.Manifest.permission.READ_SMS, Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.READ_CONTACTS}, R.string
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 

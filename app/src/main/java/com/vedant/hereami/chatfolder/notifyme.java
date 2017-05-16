@@ -91,6 +91,7 @@ public class notifyme extends BroadcastReceiver {
     private int messageId;
     private CharSequence message;
     private Bundle bundle;
+    private Firebase mFirebaseMessagesChat13;
 
 
     @Override
@@ -108,15 +109,21 @@ public class notifyme extends BroadcastReceiver {
             mFirebaseMessagesChat = fb_parent.child("/message");
 
             message2 = bundle.getString("key_position");
+            messageId = bundle.getInt("KEY_NOTIFICATION_ID");
             message = remoteInput.getCharSequence(KEY_TEXT_REPLY);
             if (message2 != null) {
-                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
+                mRecipientUid = message2;
+                //    message1 = message2;
+                //    message3 = message2;
+                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message2);
+                mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message2).child(mSenderUid);
+                //  mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
             }
             this.mCtx = context;
             sendnotification();
 
             Log.e(">>dadds", message2);
-            messageId = intent.getIntExtra("KEY_NOTIFICATION_ID", 1);
+
             mRecipientUid = message2.replace("-", "").replace(mSenderUid, "");
             message1 = mRecipientUid;
         }
@@ -158,6 +165,7 @@ public class notifyme extends BroadcastReceiver {
 
         if (mFirebaseMessagesChat12 != null) {
             mFirebaseMessagesChat12.push().setValue(newMessage, index);
+            mFirebaseMessagesChat13.push().setValue(newMessage, index);
             NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(messageId);
             sendSinglePush();
@@ -203,7 +211,7 @@ public class notifyme extends BroadcastReceiver {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("title", title1);
+                params.put("title", title1 + mSenderUid);
                 params.put("message", message);
 
                 //     if (!TextUtils.isEmpty(image))
@@ -218,5 +226,10 @@ public class notifyme extends BroadcastReceiver {
         MyVolley.getInstance(mCtx.getApplicationContext()).addToRequestQueue(stringRequest);
     }
 
+    public static void cancelNotification(Context ctx, int notifyId) {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) ctx.getSystemService(ns);
+        nMgr.cancel(notifyId);
+    }
 
 }

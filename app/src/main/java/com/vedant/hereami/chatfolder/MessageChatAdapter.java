@@ -103,6 +103,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private void configureRecipientView(ViewHolderRecipient viewHolderRecipient, int position) {
         MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
+
         viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
         String s;
         String[] parts1 = recipientFireMessage.getTimestamp().split("%");
@@ -210,4 +211,25 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    public String encryption(String strNormalText) {
+        String seedValue = "YourSecKey";
+        String normalTextEnc = "";
+        try {
+            normalTextEnc = AESHelper.encrypt(seedValue, strNormalText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return normalTextEnc;
+    }
+
+    public String decryption(String strEncryptedText) {
+        String seedValue = "YourSecKey";
+        String strDecryptedText = "";
+        try {
+            strDecryptedText = AESHelper.decrypt(seedValue, strEncryptedText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strDecryptedText;
+    }
 }

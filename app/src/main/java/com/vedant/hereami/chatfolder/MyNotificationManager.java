@@ -52,7 +52,7 @@ public class MyNotificationManager {
     private static final String KEY_TEXT_REPLY = "key_text_reply";
     private Context mCtx;
     private EditText mUserMessageChatText;
-    int id = (int) System.currentTimeMillis();
+    final int id = (int) System.currentTimeMillis();
     public MyNotificationManager(Context mCtx) {
         this.mCtx = mCtx;
     }
@@ -104,6 +104,7 @@ public class MyNotificationManager {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id);
+
         } else {
             intent2 = intent;
         }
@@ -191,106 +192,5 @@ public class MyNotificationManager {
     }
 
 
-/*
-    public void sendMessageToFireChat(View sendButton) {
-        senderMessage = mUserMessageChatText.getText().toString();
-        senderMessage = senderMessage.trim();
 
-        if (!senderMessage.isEmpty()) {
-
-            //  String ids = TimeZone.getDefault();
-            // if no ids were returned, something is wrong. get out.
-            //  if (ids.length == 0)
-            //     System.exit(0);
-
-            // begin output
-            // System.out.println("Current Time");
-
-            TimeZone pdt = TimeZone.getDefault();
-
-            // set up rules for Daylight Saving Time
-            //      pdt.setStartRule(Calendar.APRIL, 1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
-            //     pdt.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
-            Calendar calendar = new GregorianCalendar(pdt);
-            Date trialTime = new Date();
-            calendar.setTime(trialTime);
-            Date now = new Date();
-
-            int hour = calendar.get(Calendar.HOUR);
-            int minutes = calendar.get(Calendar.MINUTE);
-            String tsTemp = String.format("%02d:%02d", hour, minutes);
-            //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
-            //    String formattedTime = sdf.format(tsTemp);
-
-            // Log.e(TAG, "send message1");
-            int sendersize = mUserMessageChatText.getText().length();
-            if (sendersize < 6) {
-                senderMessage = senderMessage + "       ";
-            }
-            // Send message1 to firebase
-            Map<String, String> newMessage = new HashMap<String, String>();
-            newMessage.put("sender", mSenderUid); // Sender uid
-            newMessage.put("recipient", mRecipientUid); // Recipient uid
-            newMessage.put("message", senderMessage);// Message
-            newMessage.put("timestamp", tsTemp); // Time stamp
-            newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
-            sendSinglePush();
-
-            mFirebaseMessagesChatreceipent.push().setValue(newMessage, index);
-
-            mUserMessageChatText.setText("");
-
-
-        }
-    }
-
-    private void sendSinglePush() {
-        final String title = user.getEmail().replace(".","dot")+user.getDisplayName();
-        final String message = senderMessage;
-        // final String image;
-
-        String[] parts = message1.replace("+", ":").split(":"); // escape .
-        String part1 = parts[0];
-//          String part2 = parts[1];
-        //  String tendigitnumber = getLastThree(part2);
-        final String email = part1.replace("dot", ".");
-
-        // Log.e("email bol", reverseWords2(email));
-
-//        progressDialog.setMessage("Sending Push");
-        //      progressDialog.show();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.URL_SEND_SINGLE_PUSH,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //                    progressDialog.dismiss();
-
-                        Toast.makeText(chatactivity.this, response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("title", title);
-                params.put("message", message);
-
-                //     if (!TextUtils.isEmpty(image))
-                //       params.put("image", image);
-
-                params.put("email", email);
-                return params;
-
-            }
-        };
-
-        MyVolley.getInstance(this).addToRequestQueue(stringRequest);
-    }
-*/
 }

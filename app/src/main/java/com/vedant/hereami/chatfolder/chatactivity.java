@@ -80,6 +80,7 @@ public class chatactivity extends AppCompatActivity {
     /* unique Firebase ref for this chat */
     private Firebase mFirebaseMessagesChat;
     private Firebase mFirebaseMessagesChat12;
+    private Firebase mFirebaseMessagesChat13;
     private Firebase mFirebaseMessagesChatreceipent;
     private Firebase mFirebaseMessagesChatreceipentmessages;
 
@@ -118,6 +119,7 @@ public class chatactivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout3;
     private ActionBar actionBar;
     private String todaycheck;
+    private String message3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,10 +160,7 @@ public class chatactivity extends AppCompatActivity {
             Log.e("getname1", message1 + ")");
             // Set recipient uid
 
-            if (message1 == null) {
-                message1 = message2.replace("-", "").replace(mSenderUid, "");
-            }
-            mRecipientUid = message1;
+
             TimeZone pdt = TimeZone.getDefault();
             Calendar calendar1 = new GregorianCalendar(pdt);
             Date trialTime = new Date();
@@ -198,18 +197,41 @@ public class chatactivity extends AppCompatActivity {
             Log.e(">>connect", mFirebaseMessagesChatconnectioncheck.getKey());
 //        mFirebaseMessagesChatconnection = fb_parent.child("/users").child(message1).child(ReferenceUrl.CHILD_CONNECTION);
             //      if (mFirebaseMessagesChatconnection != null)
+            if (message1 != null) {
+                mRecipientUid = message1;
+                message3 = message1;
+                //   message1 = message2.replace("-", "").replace(mSenderUid, "");
+                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message1);
+                mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message1).child(mSenderUid);
+                messages();
 
 
-        }
-            currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
-
-        if (message2 != null) {
-            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
-            Log.e("getname1", "pasess1");
-            messages();
             } else {
-            startchat();
+                if (message2 != null) {
+                    mRecipientUid = message2;
+                    //    message1 = message2;
+                    message3 = message2;
+                    mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message2);
+                    mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message2).child(mSenderUid);
+                    messages();
+                }
+            }
+
         }
+        currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
+
+        //    if (message2 != null) {
+        //      mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
+        //    messages();
+        //  }
+        //  else{
+        //      startchat();
+        //  }
+        //       Log.e("getname1", "pasess1");
+        //
+        //   } else {
+        //     startchat();
+        //   }
 
     }
 
@@ -218,30 +240,29 @@ public class chatactivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot last : dataSnapshot.getChildren()) {
+                    //  mFirebaseMessagesChat12 = last.child()
 
-                    Log.e("getname1", last.getKey().contains(currentuser + "-" + message1) + "");
-                    Log.e("getname8", last.getKey());
-                    if (last.getKey().contains(currentuser + "-" + message1)) {
+                    //           Log.e("getname1", last.getKey().contains(currentuser + "-" + message1) + "");
+                    //         Log.e("getname8", last.getKey());
+                    //       if (last.getKey().contains(currentuser + "-" + message1)) {
 
                         mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
-                        Log.e("getname1", "pasess2");
-                    } else {
-                        Log.e("getname1", last.getKey().contains(message1 + "-" + currentuser) + "");
-                        if (last.getKey().contains(message1 + "-" + currentuser)) {
-                            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message1 + "-" + currentuser);
-                            Log.e("getname1", "pasess3");
-                        } else {
-                            mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
-                            if (message2 == null) {
-                                message2 = currentuser + "-" + message1;
-                            }
-                            Log.e("getname1", "pasess4");
-                        }
-
-                    }
+                    //       Log.e("getname1", "pasess2");
+                    //    } else {
+                    //    Log.e("getname1", last.getKey().contains(message1 + "-" + currentuser) + "");
+                    //  if (last.getKey().contains(message1 + "-" + currentuser)) {
+                    //    mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message1 + "-" + currentuser);
+                    //     Log.e("getname1", "pasess3");
+                    //  } else {
+                    //      mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
+                    //          if (message2 == null) {
+                    //            message2 = currentuser + "-" + message1;
+                    //      }
+                    //    Log.e("getname1", "pasess4");
+                    //   }
 
 
-                    Log.e("getname4", mFirebaseMessagesChat12.toString());
+                    //   Log.e("getname4", mFirebaseMessagesChat12.toString());
                 }
             }
 
@@ -292,16 +313,16 @@ public class chatactivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot1) {
 
                 for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
-                    if (connectionchild.getKey().contains(message1)) {
+                    if (connectionchild.getKey().contains(message3)) {
 
 
-                        connectionstatus2 = dataSnapshot1.child(message1).child(ReferenceUrl.image).getValue().toString();
-                        connectionstatus3 = dataSnapshot1.child(message1).child(ReferenceUrl.imagecheck).getValue().toString();
+                        connectionstatus2 = dataSnapshot1.child(message3).child(ReferenceUrl.image).getValue().toString();
+                        connectionstatus3 = dataSnapshot1.child(message3).child(ReferenceUrl.imagecheck).getValue().toString();
 
                         imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
                         image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
 
-                        Log.e("getname2", message1);
+                        Log.e("getname2", message3);
                         actionBar.setDisplayOptions(actionBar.getDisplayOptions()
                                 | ActionBar.DISPLAY_SHOW_CUSTOM);
                         CircleImageView imageView = null;
@@ -324,7 +345,7 @@ public class chatactivity extends AppCompatActivity {
 
                         if (!connectionstatus3.equals(connectionstatus2)) {
 
-                            myConnectionsStatusRef2 = mFireChatUsersRef.child(message1).child(ReferenceUrl.imagecheck);
+                            myConnectionsStatusRef2 = mFireChatUsersRef.child(message3).child(ReferenceUrl.imagecheck);
                             myConnectionsStatusRef2.setValue(connectionstatus2);
 
                             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -357,8 +378,8 @@ public class chatactivity extends AppCompatActivity {
                         System.out.println("Downloaded image with length: " + imageAsBytes.length);
 
                         //       menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_launcher));
-                        connectionstatus = dataSnapshot1.child(message1).child(ReferenceUrl.CHILD_CONNECTION).getValue().toString();
-                        connectionstatus1 = dataSnapshot1.child(message1).child(ReferenceUrl.timestamp).getValue().toString();
+                        connectionstatus = dataSnapshot1.child(message3).child(ReferenceUrl.CHILD_CONNECTION).getValue().toString();
+                        connectionstatus1 = dataSnapshot1.child(message3).child(ReferenceUrl.timestamp).getValue().toString();
                         String[] parts1 = connectionstatus1.split("%");
                         String part4 = parts1[0];
                         String part5 = parts1[1];
@@ -472,6 +493,7 @@ public class chatactivity extends AppCompatActivity {
             if (sendersize < 6) {
                 senderMessage = senderMessage + "       ";
             }
+            String encryptedString = encryption(senderMessage);
             // Send message1 to firebase
             Map<String, String> newMessage = new HashMap<String, String>();
             newMessage.put("sender", mSenderUid); // Sender uid
@@ -482,6 +504,7 @@ public class chatactivity extends AppCompatActivity {
             sendSinglePush();
 
             mFirebaseMessagesChat12.push().setValue(newMessage, index);
+            mFirebaseMessagesChat13.push().setValue(newMessage, index);
 
             mUserMessageChatText.setText("");
 
@@ -493,9 +516,10 @@ public class chatactivity extends AppCompatActivity {
         final String title = user.getEmail().replace(".","dot")+user.getDisplayName();
         final String message = senderMessage;
         // final String image;
-        final String title1 = message2;
 
-        String[] parts = message2.replace("-", "").replace(title, "").replace("+", ":").split(":");  // escape .
+        final String title1 = message3;
+
+        String[] parts = message3.replace("-", "").replace(title, "").replace("+", ":").split(":");  // escape .
         String part1 = parts[0];
 //          String part2 = parts[1];
         //  String tendigitnumber = getLastThree(part2);
@@ -524,7 +548,7 @@ public class chatactivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("title", title1);
+                params.put("title", title1 + mSenderUid);
                 params.put("message", message);
 
                 //     if (!TextUtils.isEmpty(image))
@@ -644,5 +668,27 @@ public class chatactivity extends AppCompatActivity {
             return false;
         }
         return false;
+    }
+
+    public String encryption(String strNormalText) {
+        String seedValue = "YourSecKey";
+        String normalTextEnc = "";
+        try {
+            normalTextEnc = AESHelper.encrypt(seedValue, strNormalText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return normalTextEnc;
+    }
+
+    public String decryption(String strEncryptedText) {
+        String seedValue = "YourSecKey";
+        String strDecryptedText = "";
+        try {
+            strDecryptedText = AESHelper.decrypt(seedValue, strEncryptedText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strDecryptedText;
     }
 }
