@@ -1,4 +1,4 @@
-package com.vedant.hereami.chatfolder;
+package com.vedant.hereami.secureencryption;
 
 /**
  * Created by sunnybedi on 17/05/17.

@@ -92,6 +92,7 @@ public class notifyme extends BroadcastReceiver {
     private CharSequence message;
     private Bundle bundle;
     private Firebase mFirebaseMessagesChat13;
+    private String tag;
 
 
     @Override
@@ -109,6 +110,7 @@ public class notifyme extends BroadcastReceiver {
             mFirebaseMessagesChat = fb_parent.child("/message");
 
             message2 = bundle.getString("key_position");
+            tag = bundle.getString("tag");
             messageId = bundle.getInt("KEY_NOTIFICATION_ID");
             message = remoteInput.getCharSequence(KEY_TEXT_REPLY);
             if (message2 != null) {
@@ -167,7 +169,7 @@ public class notifyme extends BroadcastReceiver {
             mFirebaseMessagesChat12.push().setValue(newMessage, index);
             mFirebaseMessagesChat13.push().setValue(newMessage, index);
             NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(messageId);
+            notificationManager.cancel(tag, messageId);
             sendSinglePush();
         }
 

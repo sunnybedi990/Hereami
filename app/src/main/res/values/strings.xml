@@ -101,4 +101,5 @@
     <string name="action_custom">Custom Tab</string>
     <string name="reply_label">Reply</string>
     <string name="notif_content_sent">sent</string>
+    <string name="title_activity_broken_key_derivation">BrokenKeyDerivationActivity</string>
 </resources>

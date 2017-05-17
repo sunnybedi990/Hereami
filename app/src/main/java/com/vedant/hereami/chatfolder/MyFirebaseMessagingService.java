@@ -59,6 +59,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private String title2;
     FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+    private String titlenum;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -120,9 +121,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             title1 = data.getString("title");
             String title2 = data.getString("title");
             String titletonotifyme = title2.replace("-", "").replace(user.getEmail().replace(".", "dot") + user.getDisplayName(), "");
-         //   String[] parts1 = title2.split("%"); // escape .
-         //   String part5 = parts1[0];
-         //   title1 = parts1[1];
+            String[] parts1 = titletonotifyme.replace("+", ":").split(":"); // escape .
+            String part5 = parts1[0];
+            titlenum = parts1[1];
             Log.e(TAG, title1);
 
             String[] parts = title1.replace("-", "").replace(user.getEmail().replace(".", "dot") + user.getDisplayName(), "").replace("+", ":").split(":"); // escape .
@@ -146,7 +147,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //if there is no image
             if (imageUrl.equals("null")) {
                 //displaying small notification
-                mNotificationManager.showSmallNotification(title, message, intent, titletonotifyme);
+                mNotificationManager.showSmallNotification(title, message, intent, titletonotifyme, titlenum);
             } else {
                 //if there is an image
                 //displaying a big notification

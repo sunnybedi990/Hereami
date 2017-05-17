@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,6 +24,7 @@ import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 import android.text.Html;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.vedant.hereami.R;
@@ -52,7 +54,15 @@ public class MyNotificationManager {
     private static final String KEY_TEXT_REPLY = "key_text_reply";
     private Context mCtx;
     private EditText mUserMessageChatText;
-    final int id = (int) System.currentTimeMillis();
+    public int id;
+    private Notification notification;
+    private NotificationManager notificationManager;
+    private String part2;
+    private int notificationNumber;
+    private Intent intent2;
+    private PendingIntent pendingIntent;
+    private RemoteInput remoteInput;
+
     public MyNotificationManager(Context mCtx) {
         this.mCtx = mCtx;
     }
@@ -93,21 +103,36 @@ public class MyNotificationManager {
     //the method will show a small notification
     //parameters are title for message title, message for message text and an intent that will open
     //when you will tap on the notification
-    public void showSmallNotification(String title, String message, Intent intent, String title8) {
+    public void showSmallNotification(String title, String message, Intent intent, String title8, String titlenum) {
+
+
+        part2 = message;
+
+        //   id = Integer.valueOf(part2);
+        //   int suaa = Integer.parseInt(part2);
+        SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
+        //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
+
+
+        Log.e("notee", titlenum);
 
         String replyLabel = mCtx.getResources().getString(R.string.reply_label);
-        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+        remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
                 .setLabel(replyLabel)
                 .build();
-        Intent intent2;
-        PendingIntent pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
+
+        pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id);
-
+            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", message);
+            Log.e("notee", String.valueOf(id));
         } else {
             intent2 = intent;
+            //   notificationManager.cancel(id);
+            //  nMgr.cancel(id);
+
         }
+
         // mCtx.sendBroadcast(intent2);
         PendingIntent resultPendingIntent =
                 PendingIntent.getBroadcast(
@@ -122,11 +147,10 @@ public class MyNotificationManager {
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
-        NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Notification notification;
 
-            mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
+        mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
                     .setContentTitle(title)
@@ -147,8 +171,12 @@ public class MyNotificationManager {
             //  noti.vibrate = pattern;
             notification.defaults |= Notification.DEFAULT_VIBRATE;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-            notificationManager.notify(id, notification);
+//id = Integer.valueOf(part2);
+            notificationManager.notify(part2, id, notification);
+            SharedPreferences.Editor editor = prefs.edit();
+            notificationNumber++;
+            editor.putInt("notificationNumber", notificationNumber);
+            editor.commit();
         }
     }
 

@@ -43,10 +43,13 @@ import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
+import com.vedant.hereami.secureencryption.AESHelper;
+import com.vedant.hereami.secureencryption.InsecureSHA1PRNGKeyDerivator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,13 +59,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class chatactivity extends AppCompatActivity {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static final String TAG = chatactivity.class.getSimpleName();
-
+    public static String seedValue = "youcantseeme@9900";
     private RecyclerView mChatRecyclerView;
     private TextView mUserMessageChatText;
     private MessageChatAdapter mMessageChatAdapter;
@@ -493,7 +499,7 @@ public class chatactivity extends AppCompatActivity {
             if (sendersize < 6) {
                 senderMessage = senderMessage + "       ";
             }
-            String encryptedString = encryption(senderMessage);
+
             // Send message1 to firebase
             Map<String, String> newMessage = new HashMap<String, String>();
             newMessage.put("sender", mSenderUid); // Sender uid
@@ -671,7 +677,7 @@ public class chatactivity extends AppCompatActivity {
     }
 
     public String encryption(String strNormalText) {
-        String seedValue = "YourSecKey";
+
         String normalTextEnc = "";
         try {
             normalTextEnc = AESHelper.encrypt(seedValue, strNormalText);
@@ -690,5 +696,15 @@ public class chatactivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return strDecryptedText;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private static SecretKey deriveKeyInsecurely(String password, int
+            keySizeInBytes) {
+        byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
+        return new SecretKeySpec(
+                InsecureSHA1PRNGKeyDerivator.deriveInsecureKey(
+                        passwordBytes, keySizeInBytes),
+                "AES");
     }
 }

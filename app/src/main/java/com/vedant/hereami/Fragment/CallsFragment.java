@@ -40,9 +40,9 @@ import com.vedant.hereami.R;
 import com.vedant.hereami.Sendlocation;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.chatmain;
-import com.vedant.hereami.chatfolder.recentchat;
 import com.vedant.hereami.login;
 import com.vedant.hereami.phonenumber;
+import com.vedant.hereami.secureencryption.BrokenKeyDerivationActivity;
 import com.vedant.hereami.userphoto;
 
 import org.json.JSONException;
@@ -255,7 +255,7 @@ public class CallsFragment extends Fragment {
         b7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), recentchat.class);
+                Intent intent1 = new Intent(getActivity(), BrokenKeyDerivationActivity.class);
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }

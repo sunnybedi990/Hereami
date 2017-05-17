@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vedant.hereami.R;
+import com.vedant.hereami.secureencryption.AESHelper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.TimeZone;
 
 
 public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    public static String seedValue = "youcantseeme@9900";
     private final String todaycheck;
     private List<MessageChatModel> mListOfFireChat;
     private static final int SENDER = 0;
@@ -87,6 +88,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private void configureSenderView(ViewHolderSender viewHolderSender, int position) {
         MessageChatModel senderFireMessage = mListOfFireChat.get(position);
+
         viewHolderSender.getSenderMessageTextView().setText(senderFireMessage.getMessage());
         String s;
         String[] parts1 = senderFireMessage.getTimestamp().split("%");
@@ -99,10 +101,12 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             s = part4;
         }
         viewHolderSender.getSenderMessagetimeTextView().setText(s);
+
     }
 
     private void configureRecipientView(ViewHolderRecipient viewHolderRecipient, int position) {
         MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
+
 
         viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
         String s;
@@ -116,6 +120,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             s = part4;
         }
         viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
+
     }
 
 
@@ -211,19 +216,9 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public String encryption(String strNormalText) {
-        String seedValue = "YourSecKey";
-        String normalTextEnc = "";
-        try {
-            normalTextEnc = AESHelper.encrypt(seedValue, strNormalText);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return normalTextEnc;
-    }
 
     public String decryption(String strEncryptedText) {
-        String seedValue = "YourSecKey";
+
         String strDecryptedText = "";
         try {
             strDecryptedText = AESHelper.decrypt(seedValue, strEncryptedText);
