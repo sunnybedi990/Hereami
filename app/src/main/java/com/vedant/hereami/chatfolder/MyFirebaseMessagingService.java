@@ -131,6 +131,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String part2 = parts[1];
             //  String tendigitnumber = getLastThree(part2);
             sunny = part1.replace("dot", ".");
+
             tendigitnumber = getLastThree(part2);
             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
             title = contactmatch;
@@ -147,11 +148,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //if there is no image
             if (imageUrl.equals("null")) {
                 //displaying small notification
-                mNotificationManager.showSmallNotification(title, message, intent, titletonotifyme, titlenum);
+                mNotificationManager.showSmallNotification(title, message, intent, title8, titlenum, tendigitnumber);
             } else {
                 //if there is an image
                 //displaying a big notification
-                mNotificationManager.showBigNotification(title, message, imageUrl, intent);
+                mNotificationManager.showBigNotification(title, message, imageUrl, intent, tendigitnumber);
             }
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: " + e.getMessage());

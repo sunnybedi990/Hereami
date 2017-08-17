@@ -48,13 +48,14 @@ public class MyNotificationManager {
     private int notificationIdTwo = 112;
     private int numMessagesOne = 0;
     private int numMessagesTwo = 0;
+    private String entityid;
     //  private String senderMessage;
     //  private Firebase mFirebaseMessagesChatreceipent;
 
     private static final String KEY_TEXT_REPLY = "key_text_reply";
     private Context mCtx;
     private EditText mUserMessageChatText;
-    public int id;
+    public int id = 0;
     private Notification notification;
     private NotificationManager notificationManager;
     private String part2;
@@ -70,7 +71,7 @@ public class MyNotificationManager {
     //the method will show a big notification with an image
     //parameters are title for message title, message for message text, url of the big image and an intent that will open
     //when you will tap on the notification
-    public void showBigNotification(String title, String message, String url, Intent intent) {
+    public void showBigNotification(String title, String message, String url, Intent intent, String tendigitnumber) {
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         mCtx,
@@ -103,18 +104,21 @@ public class MyNotificationManager {
     //the method will show a small notification
     //parameters are title for message title, message for message text and an intent that will open
     //when you will tap on the notification
-    public void showSmallNotification(String title, String message, Intent intent, String title8, String titlenum) {
+    public void showSmallNotification(String title, String message, Intent intent, String title8, String titlenum, String tendigitnumber) {
 
 
         part2 = message;
-
+        id++;
+        entityid = tendigitnumber;
+        // id = idtaken;
+        //    Log.e("notee", String.valueOf(tendigitnumber));
         //   id = Integer.valueOf(part2);
         //   int suaa = Integer.parseInt(part2);
         SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
         //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
 
 
-        Log.e("notee", titlenum);
+
 
         String replyLabel = mCtx.getResources().getString(R.string.reply_label);
         remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
@@ -122,7 +126,7 @@ public class MyNotificationManager {
                 .build();
 
         pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_ONE_SHOT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", message);
             Log.e("notee", String.valueOf(id));
@@ -172,9 +176,11 @@ public class MyNotificationManager {
             notification.defaults |= Notification.DEFAULT_VIBRATE;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
 //id = Integer.valueOf(part2);
-            notificationManager.notify(part2, id, notification);
+
+            notificationManager.notify(entityid, id, notification);
             SharedPreferences.Editor editor = prefs.edit();
             notificationNumber++;
+
             editor.putInt("notificationNumber", notificationNumber);
             editor.commit();
         }

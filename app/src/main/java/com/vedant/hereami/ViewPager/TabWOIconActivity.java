@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
     CallsFragment callsFragment;
     ContactsFragment contactsFragment;
     private FirebaseAuth firebaseAuth;
+    private ArrayAdapter<String> itemsAdapter;
     private CoordinatorLayout coordinatorLayout1;
 
     @Override
@@ -79,7 +81,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
-        // Associate searchable configuration with the SearchView
+
         return true;
     }
 

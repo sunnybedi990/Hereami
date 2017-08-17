@@ -80,6 +80,7 @@ public class ChatFragment extends Fragment {
     private Calendar calendar1;
     private String temp5;
     private String todaycheck;
+    private recentchatadapter rec;
 
     public ChatFragment() {
 
@@ -135,6 +136,7 @@ public class ChatFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             inflater.inflate(R.menu.menu_chat_fragment, menu);
+
             super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -195,7 +197,7 @@ public class ChatFragment extends Fragment {
     }
 
     public void chats() {
-        mFirebaseMessagesChat.addListenerForSingleValueEvent(new ValueEventListener() {
+        mFirebaseMessagesChat.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -255,7 +257,7 @@ public class ChatFragment extends Fragment {
                 }
 
 
-                recentchatadapter rec = new recentchatadapter(getActivity(), lst, lstmsg, timestamp);
+                rec = new recentchatadapter(getActivity(), lst, lstmsg, timestamp);
                 //  RecentmessagesAdapter = new ArrayAdapter<String>(recentchat.this,android.R.layout.simple_list_item_1,android.R.id.text1);
                 RecentUser.setAdapter(rec);
 
