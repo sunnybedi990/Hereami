@@ -40,6 +40,7 @@ public class ReferenceUrl {
 
     /* Key for avatar id */
     public static final String KEY_AVATAR_ID = "avatarId";
+    public static final String STOREIMAGE = "imagestore";
 
     /* User connection status */
     public static final String KEY_ONLINE = "online";

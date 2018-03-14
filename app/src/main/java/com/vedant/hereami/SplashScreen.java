@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
+import com.vedant.hereami.chatfolder.AppUtill;
+import com.vedant.hereami.chatfolder.BadgeUtils;
 
 public class SplashScreen extends Activity {
     private FirebaseAuth firebaseAuth;
@@ -37,6 +39,8 @@ public class SplashScreen extends Activity {
         fetchWelcome();
 
 
+        AppUtill.savePreferenceLong("NOTICOUNT", 0, this);
+        BadgeUtils.clearBadge(this);
     }
 
     private void startHeavyProcessing() {

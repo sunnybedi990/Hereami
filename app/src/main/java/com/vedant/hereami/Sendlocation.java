@@ -1,6 +1,7 @@
 package com.vedant.hereami;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -113,6 +114,7 @@ public class Sendlocation extends FragmentActivity implements GoogleApiClient.Co
         this.geoFire = new GeoFire(FirebaseDatabase.getInstance().getReferenceFromUrl(GEO_FIRE_REF));
         // radius in km
         this.geoQuery = this.geoFire.queryAtLocation(INITIAL_CENTER, 1);
+        gotohome();
 
 
     }
@@ -226,5 +228,13 @@ public class Sendlocation extends FragmentActivity implements GoogleApiClient.Co
                 }
             }
         });
+    }
+
+    public void gotohome() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+
     }
 }

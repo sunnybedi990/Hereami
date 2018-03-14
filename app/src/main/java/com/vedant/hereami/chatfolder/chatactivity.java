@@ -48,7 +48,9 @@ import com.vedant.hereami.secureencryption.InsecureSHA1PRNGKeyDerivator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -126,6 +128,9 @@ public class chatactivity extends AppCompatActivity {
     private ActionBar actionBar;
     private String todaycheck;
     private String message3;
+    private String filepath;
+    private File myDir;
+    private String fname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,7 +332,39 @@ public class chatactivity extends AppCompatActivity {
 
                         imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
                         image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        if (image != null)
+                            image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
 
+                        filepath = Environment.getExternalStorageDirectory().getPath();
+                        myDir = new File(filepath + "/HereamI");
+                        String newfilename = myDir.toString();
+                        Log.e("file", myDir.toString());
+                        if (!myDir.exists()) {
+                            File wallpaperDirectory = new File(myDir.toString());
+                            wallpaperDirectory.mkdir();
+                        }
+                        fname = namenumber + ".jpg";
+//you can create a new file name "test.jpg" in sdcard folder.
+                        File file = new File(myDir, fname);
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                        try {
+                            if (image != null) {
+                                FileOutputStream out = new FileOutputStream(file);
+                                image.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                                out.flush();
+                                out.close();
+                                Log.e("downloadstatus", "file downloaded");
+                            }
+
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Log.e("getname2", message3);
                         actionBar.setDisplayOptions(actionBar.getDisplayOptions()
                                 | ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -345,7 +382,16 @@ public class chatactivity extends AppCompatActivity {
                         layoutParams.rightMargin = 80;
 
                         imageView.setLayoutParams(layoutParams);
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent4 = new Intent(chatactivity.this, viewuuserpropic.class).putExtra("image", imageAsBytes).putExtra("title", namenumber);
+                                startActivity(intent4);
+                                Log.w("MainActivity", "ActionBar's title clicked.");
+                            }
+                        });
                         actionBar.setCustomView(imageView);
+
                         //   imageView.setOnClickListener();
                         Log.e("pic1", String.valueOf(image));
 
@@ -354,32 +400,38 @@ public class chatactivity extends AppCompatActivity {
                             myConnectionsStatusRef2 = mFireChatUsersRef.child(message3).child(ReferenceUrl.imagecheck);
                             myConnectionsStatusRef2.setValue(connectionstatus2);
 
-                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                            image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                            ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
+                            image.compress(Bitmap.CompressFormat.JPEG, 40, bytes1);
 
-                            String filepath = Environment.getExternalStorageDirectory().getPath();
-                            File myDir = new File(filepath + "/.HereamI");
+                            filepath = Environment.getExternalStorageDirectory().getPath();
+                            myDir = new File(filepath + "/HereamI");
+                            String newfilename1 = myDir.toString();
                             Log.e("file", myDir.toString());
-                            myDir.mkdirs();
-                            String fname = namenumber + ".jpg";
+                            if (!myDir.exists())
+                                myDir.mkdirs();
+                            fname = namenumber + ".jpg";
 //you can create a new file name "test.jpg" in sdcard folder.
-                            File file = new File(myDir, fname);
-                            if (file.exists()) file.delete();
+                            File file1 = new File(myDir, fname);
                             try {
-                                FileOutputStream out = new FileOutputStream(file);
-                                out.write(bytes.toByteArray());
-                                out.flush();
-                                out.close();
-                                Log.e("downloadstatus", "file downloaded");
+                                if (!new File(fname).exists()) {
 
-                            } catch (Exception e) {
+
+                                    FileOutputStream out = new FileOutputStream(newfilename1);
+                                    out.write(bytes.toByteArray());
+                                    out.flush();
+                                    out.close();
+                                    Log.e("downloadstatus", "file downloaded");
+
+                                }
+
+
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
-
+                            //   menu.getItem(0).setIcon(new BitmapDrawable(getResources(), image));
                         }
-                        //   menu.getItem(0).setIcon(new BitmapDrawable(getResources(), image));
-
 
                         System.out.println("Downloaded image with length: " + imageAsBytes.length);
 
@@ -396,7 +448,7 @@ public class chatactivity extends AppCompatActivity {
                             s = part4;
                         }
                         if (connectionstatus.equals("offline")) {
-                            mUserMessageChatconnection.setText("last seen at " + s);
+                            mUserMessageChatconnection.setText("last seen at " + s.replace("%", " "));
                         } else
 
                             mUserMessageChatconnection.setText(connectionstatus);
@@ -531,7 +583,10 @@ public class chatactivity extends AppCompatActivity {
         //  String tendigitnumber = getLastThree(part2);
         final String email = part1.replace("dot", ".");
 
-        // Log.e("email bol", reverseWords2(email));
+        Log.e("email bol", title);
+        Log.e("email bol1", message);
+        Log.e("email bol2", title1);
+        Log.e("email bol3", email);
 
 //        progressDialog.setMessage("Sending Push");
         //      progressDialog.show();
@@ -707,4 +762,5 @@ public class chatactivity extends AppCompatActivity {
                         passwordBytes, keySizeInBytes),
                 "AES");
     }
+
 }

@@ -147,7 +147,7 @@ public class MyNotificationManager {
                 resultPendingIntent).addRemoteInput(remoteInput).setAllowGeneratedReplies(true).build();
 
         String filepath = Environment.getExternalStorageDirectory().getPath();
-        File myDir = new File(filepath + "/.HereamI");
+        File myDir = new File(filepath + "/HereamI");
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);

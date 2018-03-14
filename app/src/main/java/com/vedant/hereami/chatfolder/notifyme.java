@@ -114,11 +114,11 @@ public class notifyme extends BroadcastReceiver {
             messageId = bundle.getInt("KEY_NOTIFICATION_ID");
             message = remoteInput.getCharSequence(KEY_TEXT_REPLY);
             if (message2 != null) {
-                mRecipientUid = message2;
+                mRecipientUid = message2.replace("-", "").replace(mSenderUid, "");
                 //    message1 = message2;
                 //    message3 = message2;
-                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message2);
-                mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message2).child(mSenderUid);
+                mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(mRecipientUid);
+                mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(mRecipientUid).child(mSenderUid);
                 //  mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
             }
             this.mCtx = context;
@@ -181,7 +181,7 @@ public class notifyme extends BroadcastReceiver {
     private void sendSinglePush() {
         final String title = user.getEmail().replace(".", "dot") + user.getDisplayName();
         final String message = senderMessage;
-        final String title1 = message2;
+        final String title1 = message2.replace("-", "").replace(title, "");
         // final String image;
 
         String[] parts = message2.replace("-", "").replace(title, "").replace("+", ":").split(":"); // escape .
@@ -190,6 +190,10 @@ public class notifyme extends BroadcastReceiver {
         //  String tendigitnumber = getLastThree(part2);
         final String email = part1.replace("dot", ".");
 
+        Log.e("email bol", title);
+        Log.e("email bol1", message);
+        Log.e("email bol2", title1);
+        Log.e("email bol3", email);
         // Log.e("email bol", reverseWords2(email));
 
 //        progressDialog.setMessage("Sending Push");

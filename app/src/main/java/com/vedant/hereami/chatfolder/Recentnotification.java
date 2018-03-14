@@ -1,6 +1,5 @@
 package com.vedant.hereami.chatfolder;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -59,6 +58,7 @@ public class Recentnotification extends Service {
     private List<String> newList;
     private long countone;
     private List<String> newList1;
+
 
     public Recentnotification() {
     }
@@ -218,31 +218,33 @@ public class Recentnotification extends Service {
 
         // Build notification
         // Actions are just fake
-        Notification noti = null;
+
+        NotificationCompat.Builder noti = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                noti = new NotificationCompat.Builder(this)
+                noti = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setContentTitle("Recent User")
                         .setContentText("New Message").setSmallIcon(R.drawable.image)
                         .setLargeIcon(picture)
-                        .setContentIntent(pIntent1)
-                        .build();
+                        .setContentIntent(pIntent1).setDefaults(NotificationCompat.DEFAULT_ALL);
+
             }
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // hide the notification after its selected
-        if (noti != null) {
-            noti.defaults |= Notification.DEFAULT_SOUND;
-            //    noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            //  long[] pattern = {500, 500, 500};
-            //  noti.vibrate = pattern;
-            noti.defaults |= Notification.DEFAULT_VIBRATE;
-            noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
 
-        }
+        // notificationManager.notify(0, noti);
 
-        notificationManager.notify(0, noti);
+        int unOpenCount = AppUtill.getPreferenceInt("NOTICOUNT", this);
+        unOpenCount = unOpenCount + 1;
+
+        AppUtill.savePreferenceLong("NOTICOUNT", unOpenCount, this);
+        notificationManager.notify(0 /* ID of notification */, noti.build());
+
+// This is for bladge on home icon
+        //  BadgeUtils.setBadge(Recentnotification.this,(int)unOpenCount);
+
 
     }
 }
