@@ -76,6 +76,7 @@ public class recentchat extends Activity {
     private String temp5;
     private String todaycheck;
     private Calendar calendar1;
+    private int countmsgs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,7 +243,10 @@ public class recentchat extends Activity {
                                 temp1 = newMessage.getMessage();
                                 //  temp2 = newMessage.getRecipient();
                                 temp2 = newMessage.getTimestamp();
-
+                                countone = currentuserchatdatasnapshot.getChildrenCount();
+                                //           Log.e("countone", String.valueOf(countone));
+                                //         Log.e("countone", String.valueOf(current));
+                                //       Log.e("countone", String.valueOf(current1));
 
                             }
                             Log.e(">>>>>last", temp1 + "");
@@ -273,8 +277,10 @@ public class recentchat extends Activity {
 
                             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
 
+                            if (lst.size() < countone) {
+                                lst.add(contactmatch);
+                            }
 
-                            lst.add(contactmatch);
 
                         }
                     }

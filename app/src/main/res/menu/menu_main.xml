@@ -5,16 +5,16 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="Name Change"
+        android:title="Profile"
         app:showAsAction="collapseActionView" />
-    <item
-        android:id="@+id/action_logout"
-        android:title="Logout"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
     <item
         android:id="@+id/action_user"
         android:title="New Chat"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="Logout"
         android:orderInCategory="100"
         android:showAsAction="never" />
 

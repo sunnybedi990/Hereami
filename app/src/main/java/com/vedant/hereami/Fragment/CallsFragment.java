@@ -10,10 +10,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,6 +44,7 @@ import com.vedant.hereami.login;
 import com.vedant.hereami.phonenumber;
 import com.vedant.hereami.secureencryption.BrokenKeyDerivationActivity;
 import com.vedant.hereami.userphoto;
+import com.vedant.hereami.viewcurrentuserprofile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -288,6 +289,25 @@ public class CallsFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(getActivity(), viewcurrentuserprofile.class);
+            startActivity(intent);
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void connectionstatus() {
 
@@ -328,7 +348,7 @@ public class CallsFragment extends Fragment {
 
                                             myConnectionsStatusRef1.onDisconnect().setValue(tsTemp);
                                             //tsTemp.add(tsTemp1);
-                                            Log.e("ts14", String.valueOf(tsTemp));
+                                            //    Log.e("ts14", String.valueOf(tsTemp));
                                             // update TextView here!
                                         }
                                     });

@@ -35,6 +35,7 @@ import com.vedant.hereami.chatfolder.MessageChatModel;
 import com.vedant.hereami.chatfolder.chatactivity;
 import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.recentchatadapter;
+import com.vedant.hereami.viewcurrentuserprofile;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -154,6 +155,11 @@ public class ChatFragment extends Fragment {
             startActivity(intent);
             return true;
         }
+        if (id == R.id.setting) {
+            Intent intent = new Intent(getActivity(), viewcurrentuserprofile.class);
+            startActivity(intent);
+            return true;
+        }
 
 
         return super.onOptionsItemSelected(item);
@@ -218,7 +224,10 @@ public class ChatFragment extends Fragment {
                                 temp1 = newMessage.getMessage();
                                 //  temp2 = newMessage.getRecipient();
                                 temp2 = newMessage.getTimestamp();
-
+                                countone = currentuserchatdatasnapshot.getChildrenCount();
+                                //       Log.e("countone", String.valueOf(countone));
+                                //      Log.e("countonecur", String.valueOf(currentuserchatdatasnapshot));
+                                //      Log.e("countonecur1", String.valueOf(current1));
 
                             }
                             Log.e(">>>>>last", temp1 + "");
@@ -250,7 +259,9 @@ public class ChatFragment extends Fragment {
                             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
 
 
-                            lst.add(contactmatch);
+                            if (lst.size() < countone) {
+                                lst.add(contactmatch);
+                            }
 
                         }
                     }

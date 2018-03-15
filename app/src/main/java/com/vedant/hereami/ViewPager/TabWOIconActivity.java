@@ -7,10 +7,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.vedant.hereami.Fragment.CallsFragment;
@@ -78,46 +75,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
 
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.action_status:
-                Toast.makeText(this, "Home Status Click", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_settings:
-                Toast.makeText(this, "Home Settings Click", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_with_icon:
-                Intent withicon=new Intent(this,TabWithIconActivity.class);
-                startActivity(withicon);
-                finish();
-                return true;
-            case R.id.action_customtab:
-                Intent custom_tab=new Intent(this,CustomTabActivity.class);
-                startActivity(custom_tab);
-                finish();
-                return true;
-            case R.id.action_logout:
-                firebaseAuth.signOut();
-
-                //closing activity
-                finish();
-                //starting login activity
-                startActivity(new Intent(this, login.class));
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

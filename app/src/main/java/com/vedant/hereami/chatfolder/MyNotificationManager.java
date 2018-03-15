@@ -4,6 +4,7 @@ package com.vedant.hereami.chatfolder;
  * Created by sunnybedi on 14/03/17.
  */
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +36,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 
 /**
  * Created by Ravi on 31/03/15.
@@ -64,9 +67,22 @@ public class MyNotificationManager {
     private PendingIntent pendingIntent;
     private RemoteInput remoteInput;
 
+
+    //New work
+    private static final String GROUP_KEY = "Messenger";
+    private static final String MESSAGES_KEY = "Messages";
+    private static final String NOTIFICATION_ID = "com.stylingandroid.nougat.NOTIFICATION_ID";
+    private static final int SUMMARY_ID = 0;
+    private static final String EMPTY_MESSAGE_STRING = "[]";
+
+
+    // here it ends
+
+
     public MyNotificationManager(Context mCtx) {
         this.mCtx = mCtx;
     }
+
 
     //the method will show a big notification with an image
     //parameters are title for message title, message for message text, url of the big image and an intent that will open
@@ -92,18 +108,20 @@ public class MyNotificationManager {
                 .setStyle(bigPictureStyle)
                 .setSmallIcon(R.drawable.image)
                 .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.image))
-                .setContentText(message)
+                .setContentText(message).setPriority(Notification.PRIORITY_MAX)
                 .build();
 
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-        NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(ID_BIG_NOTIFICATION, notification);
     }
 
     //the method will show a small notification
     //parameters are title for message title, message for message text and an intent that will open
     //when you will tap on the notification
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void showSmallNotification(String title, String message, Intent intent, String title8, String titlenum, String tendigitnumber) {
 
 
@@ -116,8 +134,6 @@ public class MyNotificationManager {
         //   int suaa = Integer.parseInt(part2);
         SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
         //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
-
-
 
 
         String replyLabel = mCtx.getResources().getString(R.string.reply_label);
@@ -146,25 +162,22 @@ public class MyNotificationManager {
         NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_action_stat_reply, "reply to " + title,
                 resultPendingIntent).addRemoteInput(remoteInput).setAllowGeneratedReplies(true).build();
 
+
         String filepath = Environment.getExternalStorageDirectory().getPath();
         File myDir = new File(filepath + "/HereamI");
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
-
+        //   notificationManager = NotificationManagerCompat.from(mCtx);
+        notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
-        notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
 
-
-        mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle(title)
-                    .addAction(action)
-                    .setSmallIcon(R.drawable.image)
-
-                    .setLargeIcon(bMap).setAutoCancel(true)
-
-                    .setContentText(message).setNumber(++numMessagesOne);
-            //  firstTime = false;
+        mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setShowWhen(true).setWhen(System.currentTimeMillis())
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setContentTitle(title)
+                .addAction(action)
+                .setSmallIcon(R.drawable.image).setPriority(Notification.PRIORITY_MAX)
+                .setContentText(message);
+        //  firstTime = false;
 
         notification = mBuilder.build();
         // notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -175,15 +188,21 @@ public class MyNotificationManager {
             //  noti.vibrate = pattern;
             notification.defaults |= Notification.DEFAULT_VIBRATE;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
 //id = Integer.valueOf(part2);
 
             notificationManager.notify(entityid, id, notification);
+            notificationManager.cancel(id);
             SharedPreferences.Editor editor = prefs.edit();
             notificationNumber++;
 
             editor.putInt("notificationNumber", notificationNumber);
             editor.commit();
+
+
         }
+
+
     }
 
     //The method will return Bitmap from an image URL

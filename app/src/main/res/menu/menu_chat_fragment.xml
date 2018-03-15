@@ -11,4 +11,9 @@
         android:title="@string/menu_search"
         appcompat:actionViewClass="android.support.v7.widget.SearchView"
         appcompat:showAsAction="always" />
+    <item
+        android:id="@+id/setting"
+        android:title="@string/profile"
+        appcompat:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView" />
 </menu>

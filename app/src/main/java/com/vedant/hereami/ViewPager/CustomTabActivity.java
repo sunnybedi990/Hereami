@@ -1,15 +1,11 @@
 package com.vedant.hereami.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.Fragment.ChatFragment;
@@ -82,37 +78,7 @@ public class CustomTabActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        // Associate searchable configuration with the SearchView
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.action_status:
-                Toast.makeText(this, "Home Status Click", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_settings:
-                Toast.makeText(this, "Home Settings Click", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_with_icon:
-                Intent withicon=new Intent(this,TabWithIconActivity.class);
-                startActivity(withicon);
-                finish();
-                return true;
-            case R.id.action_without_icon:
-                Intent withouticon=new Intent(this,TabWOIconActivity.class);
-                startActivity(withouticon);
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     private void setupViewPager(ViewPager viewPager)
     {

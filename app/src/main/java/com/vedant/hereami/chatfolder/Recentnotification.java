@@ -1,6 +1,5 @@
 package com.vedant.hereami.chatfolder;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentResolver;
@@ -11,11 +10,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -58,6 +58,7 @@ public class Recentnotification extends Service {
     private List<String> newList;
     private long countone;
     private List<String> newList1;
+    private int numberOfBundled;
 
 
     public Recentnotification() {
@@ -78,6 +79,7 @@ public class Recentnotification extends Service {
         newList = new ArrayList<String>();
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
+
         //  mProgressBarForUsers = (ProgressBar)findViewById(R.id.progress_bar_users1);
         //  showProgressBarForUsers();
         // Bundle bundle = getIntent().getExtras();
@@ -177,7 +179,6 @@ public class Recentnotification extends Service {
         mFirebaseMessagesChat.addChildEventListener(new ChildEventListener() {
 
 
-
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -215,6 +216,43 @@ public class Recentnotification extends Service {
         PendingIntent pIntent1 = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
         final Resources res = context.getResources();
         final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.image);
+        Log.e("nooooo", "getNotification: ");
+        // Build notification
+        // Actions are just fake
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        ++numberOfBundled;
+        //   CharSequence[] issuedMessages = new CharSequence[0];
+        lst.add("New Message");
+
+        //Build and issue the group summary. Use inbox style so that all messages are displayed
+        NotificationCompat.Builder summaryBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
+                .setContentTitle("Recent User")
+                .setContentText("New Message")
+                .setSmallIcon(R.drawable.image)
+                .setGroupSummary(true)
+                .setContentIntent(pIntent1)
+                .setGroup(String.valueOf(1001));
+
+        NotificationCompat.InboxStyle inboxStyle =
+                new NotificationCompat.InboxStyle();
+        inboxStyle.setBigContentTitle("Messages:");
+        for (CharSequence cs : lst) {
+            inboxStyle.addLine(cs);
+        }
+        summaryBuilder.setStyle(inboxStyle);
+
+        notificationManager.notify(1001, summaryBuilder.build());
+
+    }
+   /* public void getNotification() {
+        // Prepare intent which is triggered if the
+        // notification is selected
+        Intent intent = new Intent(this, NotificationReceiverActivity.class);
+        Intent intent1 = new Intent(this, recentchat.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+        PendingIntent pIntent1 = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent1, 0);
+        final Resources res = context.getResources();
+        final Bitmap picture = BitmapFactory.decodeResource(res, R.drawable.image);
 
         // Build notification
         // Actions are just fake
@@ -225,7 +263,7 @@ public class Recentnotification extends Service {
                 noti = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                         .setContentTitle("Recent User")
                         .setContentText("New Message").setSmallIcon(R.drawable.image)
-                        .setLargeIcon(picture)
+                        .setLargeIcon(picture).setPriority(Notification.PRIORITY_MAX)
                         .setContentIntent(pIntent1).setDefaults(NotificationCompat.DEFAULT_ALL);
 
             }
@@ -240,13 +278,13 @@ public class Recentnotification extends Service {
         unOpenCount = unOpenCount + 1;
 
         AppUtill.savePreferenceLong("NOTICOUNT", unOpenCount, this);
-        notificationManager.notify(0 /* ID of notification */, noti.build());
+        notificationManager.notify(0 , noti.build());
+*/
 
 // This is for bladge on home icon
-        //  BadgeUtils.setBadge(Recentnotification.this,(int)unOpenCount);
+    //  BadgeUtils.setBadge(Recentnotification.this,(int)unOpenCount);
 
 
-    }
 }
 
 

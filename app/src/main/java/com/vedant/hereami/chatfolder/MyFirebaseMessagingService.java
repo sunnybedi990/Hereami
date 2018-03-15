@@ -149,6 +149,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (imageUrl.equals("null")) {
                 //displaying small notification
                 mNotificationManager.showSmallNotification(title, message, intent, title8, titlenum, tendigitnumber);
+
             } else {
                 //if there is an image
                 //displaying a big notification
