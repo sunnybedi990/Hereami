@@ -34,7 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.vedant.hereami.MainActivity;
+import com.vedant.hereami.tracking.MainActivity;
 import com.vedant.hereami.R;
 
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.tracking;
 
 import android.content.Context;
 import android.content.IntentSender;
@@ -58,12 +58,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.vedant.hereami.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static com.vedant.hereami.ReceiveSMS.mypreference;
 
 public class MainActivity extends FragmentActivity implements GeoQueryEventListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnCameraChangeListener, OnMapReadyCallback {
     private static final GeoLocation INITIAL_CENTER = new GeoLocation(23.0977, 72.5491);

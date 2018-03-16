@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.login;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.vedant.hereami.R;
+import com.vedant.hereami.RuntimePermissionsActivity;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 
 public class login extends RuntimePermissionsActivity implements View.OnClickListener {

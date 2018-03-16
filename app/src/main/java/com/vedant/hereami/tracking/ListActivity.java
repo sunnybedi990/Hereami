@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.tracking;
 
 import android.app.SearchManager;
 import android.content.ContentResolver;
@@ -31,6 +31,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.vedant.hereami.R;
 import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
 import com.vedant.hereami.swiperefresh.MyCustomHeadView;
 

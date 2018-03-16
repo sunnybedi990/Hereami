@@ -1,6 +1,6 @@
 package com.vedant.hereami.chatfolder;
 
-import com.vedant.hereami.SplashScreen;
+import com.vedant.hereami.login.SplashScreen;
 
 /**
  * Created by sunnybedi on 14/03/18.

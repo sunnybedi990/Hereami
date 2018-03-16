@@ -49,12 +49,12 @@
             android:value="AIzaSyBFjGS-SLqf3Q9mxj8Mc5PZf5XVbU7ulV0" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".tracking.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
 
         <receiver
-            android:name=".ReceiveSMS"
+            android:name=".tracking.ReceiveSMS"
             android:enabled="true"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
@@ -63,15 +63,15 @@
         </receiver>
 
         <activity
-            android:name=".Getlocation"
+            android:name=".tracking.Getlocation"
             android:label="@string/title_activity_getlocation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Sendlocation"
+            android:name=".tracking.Sendlocation"
             android:label="@string/title_activity_sendlocation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Main"
+            android:name=".tracking.Main"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
@@ -80,7 +80,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
         <activity
-            android:name=".ListActivity"
+            android:name=".tracking.ListActivity"
             android:label="@string/title_activity_getlocation"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat">
@@ -89,22 +89,22 @@
                 android:value=".SearchResultsActivity" />
         </activity>
         <activity
-            android:name=".TestActivity"
+            android:name=".tracking.TestActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Register"
+            android:name=".login.Register"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".login"
+            android:name=".login.login"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".phonenumber"
+            android:name=".login.phonenumber"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".login.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -145,7 +145,7 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".userphoto"
+            android:name=".chatfolder.userphoto"
             android:label="@string/title_activity_userphoto"
             android:screenOrientation="portrait" />
         <activity
@@ -230,11 +230,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".viewcurrentuserprofile"
+            android:name=".chatfolder.viewcurrentuserprofile"
             android:label="@string/title_activity_viewcurrentuserprofile"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".status"
+            android:name=".chatfolder.status"
             android:label="@string/title_activity_status"
             android:theme="@style/AppTheme" />
     </application>

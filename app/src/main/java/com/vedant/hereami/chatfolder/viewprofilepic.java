@@ -18,8 +18,7 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
-import com.vedant.hereami.login;
-import com.vedant.hereami.userphoto;
+import com.vedant.hereami.login.login;
 
 public class viewprofilepic extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -37,6 +36,9 @@ public class viewprofilepic extends AppCompatActivity {
     private Firebase mFirebaseMessagesChatconnectioncheck;
     private String connectionstatus, connectionstatus1;
     private String currentuser;
+    private String status;
+    private TextView statusview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class viewprofilepic extends AppCompatActivity {
         //    imageView = (ImageView) findViewById(R.id.imgView);
         //    imageView.setImageResource(R.drawable.image);
         propic = (ImageView) findViewById(R.id.imageView3);
+        statusview = (TextView) findViewById(R.id.textviewstatus);
         if (firebaseAuth.getCurrentUser() == null) {
             //closing this activity
             finish();
@@ -86,7 +89,8 @@ public class viewprofilepic extends AppCompatActivity {
 
                     Log.e("pic1", "ok");
                     connectionstatus = dataSnapshot1.child(currentuser).child(ReferenceUrl.image).getValue().toString();
-
+                    status = dataSnapshot1.child(currentuser).child(ReferenceUrl.status).getValue().toString();
+                    statusview.setText(status);
                     Log.e("pic1", connectionstatus);
                     byte[] imageAsBytes = Base64.decode(connectionstatus.getBytes(), Base64.DEFAULT);
                     Log.e("pic90", String.valueOf(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)));

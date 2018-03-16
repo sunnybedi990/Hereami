@@ -1,5 +1,6 @@
 package com.vedant.hereami.chatfolder;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -93,10 +94,13 @@ public class notifyme extends BroadcastReceiver {
     private Bundle bundle;
     private Firebase mFirebaseMessagesChat13;
     private String tag;
+    private NotificationManager notificationManager;
 
 
+    @SuppressLint("ServiceCast")
     @Override
     public void onReceive(Context context, Intent intent) {
+
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
@@ -112,6 +116,7 @@ public class notifyme extends BroadcastReceiver {
             message2 = bundle.getString("key_position");
             tag = bundle.getString("tag");
             messageId = bundle.getInt("KEY_NOTIFICATION_ID");
+
             message = remoteInput.getCharSequence(KEY_TEXT_REPLY);
             if (message2 != null) {
                 mRecipientUid = message2.replace("-", "").replace(mSenderUid, "");
@@ -230,12 +235,9 @@ public class notifyme extends BroadcastReceiver {
         };
 
         MyVolley.getInstance(mCtx.getApplicationContext()).addToRequestQueue(stringRequest);
+
     }
 
-    public static void cancelNotification(Context ctx, int notifyId) {
-        String ns = Context.NOTIFICATION_SERVICE;
-        NotificationManager nMgr = (NotificationManager) ctx.getSystemService(ns);
-        nMgr.cancel(notifyId);
-    }
+
 
 }

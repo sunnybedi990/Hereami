@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.chatfolder;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,7 +18,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.vedant.hereami.chatfolder.ReferenceUrl;
+import com.vedant.hereami.R;
+import com.vedant.hereami.login.login;
 
 public class viewcurrentuserprofile extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;

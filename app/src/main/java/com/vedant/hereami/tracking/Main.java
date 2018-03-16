@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.tracking;
 
 import android.Manifest;
 import android.content.Context;
@@ -31,9 +31,15 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.vedant.hereami.R;
+import com.vedant.hereami.RuntimePermissionsActivity;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
+import com.vedant.hereami.login.login;
+import com.vedant.hereami.name;
+import com.vedant.hereami.login.phonenumber;
 import com.vedant.hereami.secureencryption.BrokenKeyDerivationActivity;
+import com.vedant.hereami.chatfolder.userphoto;
 
 import org.json.JSONException;
 import org.json.JSONObject;

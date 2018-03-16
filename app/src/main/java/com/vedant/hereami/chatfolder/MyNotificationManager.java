@@ -58,7 +58,7 @@ public class MyNotificationManager {
     private static final String KEY_TEXT_REPLY = "key_text_reply";
     private Context mCtx;
     private EditText mUserMessageChatText;
-    public int id = 0;
+    public long id = System.currentTimeMillis();
     private Notification notification;
     private NotificationManager notificationManager;
     private String part2;
@@ -191,8 +191,9 @@ public class MyNotificationManager {
 
 //id = Integer.valueOf(part2);
 
-            notificationManager.notify(entityid, id, notification);
-            notificationManager.cancel(id);
+            notificationManager.notify(entityid, (int) id, notification);
+
+            notificationManager.cancel((int) id);
             SharedPreferences.Editor editor = prefs.edit();
             notificationNumber++;
 

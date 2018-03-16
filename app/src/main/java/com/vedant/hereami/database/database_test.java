@@ -12,7 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.vedant.hereami.Main;
+import com.vedant.hereami.tracking.Main;
 import com.vedant.hereami.R;
 
 import java.util.ArrayList;

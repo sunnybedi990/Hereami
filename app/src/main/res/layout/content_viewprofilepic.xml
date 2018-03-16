@@ -8,11 +8,27 @@
     tools:context="com.vedant.hereami.chatfolder.viewprofilepic"
     tools:showIn="@layout/activity_viewprofilepic">
 
+    <TextView
+        android:id="@+id/textviewstatus"
+        android:layout_width="408dp"
+        android:layout_height="52dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="395dp"
-        android:layout_height="587dp"
-        app:srcCompat="@drawable/ic_media_route_on_20_dark"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        android:layout_height="513dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textviewstatus"
+        app:srcCompat="@drawable/ic_media_route_on_20_dark" />
 </android.support.constraint.ConstraintLayout>

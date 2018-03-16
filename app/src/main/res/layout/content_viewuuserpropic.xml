@@ -8,14 +8,34 @@
     tools:context="com.vedant.hereami.chatfolder.viewuuserpropic"
     tools:showIn="@layout/activity_viewuuserpropic">
 
+    <TextView
+        android:id="@+id/statustextview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"
+        android:fontFamily="sans-serif"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/userpropicimageview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="551dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="TODO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/amu_bubble_shadow"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toBottomOf="@+id/statustextview"
+        app:srcCompat="@drawable/amu_bubble_shadow" />
+
 </android.support.constraint.ConstraintLayout>

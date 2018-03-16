@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.login;
 
 import android.content.IntentSender;
 import android.location.Location;
@@ -42,6 +42,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.code.Country;
 import com.vedant.hereami.code.CountryCodePicker;
@@ -106,6 +107,9 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
     private Calendar calendar;
     private Firebase myConnectionsStatusRef;
     private Firebase myConnectionsStatusRef1;
+    private EditText editTextGetname;
+    private String name;
+    private TextView wrongname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +124,9 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         user = firebaseAuth.getCurrentUser();
         // countrycode = (TextView) findViewById(R.id.textView_selectedCountry);
         editTextGetFullNumber = (EditText) findViewById(R.id.editTextGetFullNumber);
+        editTextGetname = (EditText) findViewById(R.id.editText_name);
         wrongnumber = (TextView) findViewById(R.id.txt_view_wrng);
+        wrongname = (TextView) findViewById(R.id.txt_view_wrng2);
         lst1 = new ArrayList<String>();
         // county = (Spinner) findViewById(R.id.spin_country);
         btnsubmit = (Button) findViewById(R.id.button3);
@@ -142,9 +148,15 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                 codecon = ccpGetNumber.getFullNumberWithPlus();
                 String lessplus = codecon.replace("+", "");
                 String s = editTextGetFullNumber.getText().toString();
+                 name = editTextGetname.getText().toString();
+                if(name.length() < 0){
+                    wrongname.setText("Please Enter the Name");
+                }
+
                 if (s.length() < 10 || s.length() > 10) {
                     wrongnumber.setText("Please Enter the Correct Number");
                     Log.e(">>>>asddddddd", s + "");
+
                 } else {
                     if (lst1.contains(lessplus)) {
                         wrongnumber.setText("Number is already registered. Please enter a diffrent number");
@@ -371,6 +383,8 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.imagecheck).setValue(R.string.defaultphoto);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.CHILD_CONNECTION).setValue(ReferenceUrl.KEY_ONLINE);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.timestamp).setValue(tsTemp);
+        mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.name).setValue(name);
+        mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.status).setValue("status");
     }
 }
 

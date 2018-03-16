@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.tracking;
 
 
 import android.content.BroadcastReceiver;
@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.EditText;
-import android.widget.Toast;
 
 /*
  * Created by bedi on 3/6/2016.

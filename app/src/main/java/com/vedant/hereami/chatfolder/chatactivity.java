@@ -131,6 +131,7 @@ public class chatactivity extends AppCompatActivity {
     private String filepath;
     private File myDir;
     private String fname;
+    private String connectionstatus4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -330,6 +331,8 @@ public class chatactivity extends AppCompatActivity {
                         connectionstatus2 = dataSnapshot1.child(message3).child(ReferenceUrl.image).getValue().toString();
                         connectionstatus3 = dataSnapshot1.child(message3).child(ReferenceUrl.imagecheck).getValue().toString();
 
+                        connectionstatus4 = dataSnapshot1.child(message3).child(ReferenceUrl.status).getValue().toString();
+
                         imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
                         image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -385,7 +388,7 @@ public class chatactivity extends AppCompatActivity {
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent4 = new Intent(chatactivity.this, viewuuserpropic.class).putExtra("image", imageAsBytes).putExtra("title", namenumber);
+                                Intent intent4 = new Intent(chatactivity.this, viewuuserpropic.class).putExtra("image", imageAsBytes).putExtra("title", namenumber).putExtra("status", connectionstatus4);
                                 startActivity(intent4);
                                 Log.w("MainActivity", "ActionBar's title clicked.");
                             }
@@ -399,6 +402,7 @@ public class chatactivity extends AppCompatActivity {
 
                             myConnectionsStatusRef2 = mFireChatUsersRef.child(message3).child(ReferenceUrl.imagecheck);
                             myConnectionsStatusRef2.setValue(connectionstatus2);
+
 
                             ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
                             image.compress(Bitmap.CompressFormat.JPEG, 40, bytes1);

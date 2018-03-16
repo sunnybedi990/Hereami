@@ -1,7 +1,9 @@
-package com.vedant.hereami;
+package com.vedant.hereami.tracking;
 
 import android.os.Bundle;
 import android.app.Activity;
+
+import com.vedant.hereami.R;
 
 public class Getlocation extends Activity {
 

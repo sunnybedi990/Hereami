@@ -35,7 +35,7 @@ import com.vedant.hereami.chatfolder.MessageChatModel;
 import com.vedant.hereami.chatfolder.chatactivity;
 import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.recentchatadapter;
-import com.vedant.hereami.viewcurrentuserprofile;
+import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
 
 import java.util.ArrayList;
 import java.util.Calendar;

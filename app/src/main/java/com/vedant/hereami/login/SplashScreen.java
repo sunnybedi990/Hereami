@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.vedant.hereami.BuildConfig;
+import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.chatfolder.AppUtill;
 import com.vedant.hereami.chatfolder.BadgeUtils;
