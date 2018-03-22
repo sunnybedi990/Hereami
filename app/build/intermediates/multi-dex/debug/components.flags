@@ -1,0 +1,128 @@
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/design-25.3.1.aar/77390f75ae3c1dd01a448cb824f3e4f9/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-ui-database-0.4.0.aar/4adcec49699d19a68d6bd96487b96833/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-10.2.4.aar/16b7bc25f1036a7604125e61265c46f9/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-cast-framework-10.2.4.aar/9b18fbefc0aa513e7b1416e74109a909/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-cast-10.2.4.aar/462edcf497bcd899dec2f0d21a6756ac/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/mediarouter-v7-24.0.0.aar/661bfa909f2979ec143fac65c0846f39/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/mediarouter-v7-24.0.0.aar/661bfa909f2979ec143fac65c0846f39/jars/libs/internal_impl-24.0.0.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/3d8f8ce9ee3372695db8e99ae758eddc/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/cardview-v7-25.3.1.aar/f594420ea0d2880cb7cf4e7d76668e3e/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/recyclerview-v7-25.3.1.aar/ec826ef28ee0d5f6c5889f4fcc5d169d/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/transition-25.3.1.aar/04a7ca5ad85a398acee10c9ff4a4be18/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-auth-10.2.4.aar/e889b0cfcdb461c278d4be0372f9a331/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-config-10.2.4.aar/3de293602e49fc033496ac784d485c91/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-messaging-10.2.4.aar/790be0c063d80a832c3538428c117a69/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-awareness-10.2.4.aar/4fec60060d5aac36a3cbfa2e8992ef8d/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-places-10.2.4.aar/4710f142fe77a26521796bc7ca952613/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-wallet-10.2.4.aar/61a894b152ac93c6ab26de609440709c/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-maps-10.2.4.aar/32f3604690c8c14a08f0b62d9e123749/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-fitness-10.2.4.aar/63b4cfff7bc35e557cedf7fb3b2c9e0c/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-location-10.2.4.aar/b989a5c294e6998ed0570f5e09080f26/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-storage-10.2.4.aar/ae0bb346e0187da648aad6383495e144/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-core-10.2.4.aar/eee9d47e0c0ee4191690afa7565924dd/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-crash-10.2.4.aar/e677a969f52f74307f648f0967ef68b2/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-tagmanager-10.2.4.aar/916f451297aac530ebc79e793ce8bd9a/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-tagmanager-api-10.2.4.aar/f326af6842d2865e8ddd1b42321563c0/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-analytics-10.2.4.aar/d72445511a8916cdf5f73e56c2ba4409/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-database-10.2.4.aar/039bf995797f926127978e77b2aedd86/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-database-connection-10.2.4.aar/b07d921401291e208303805b555bd551/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-analytics-impl-10.2.4.aar/e79d0cbd52ad273c3193fae5e89c69db/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-iid-10.2.4.aar/8871ff5f79ded486858afbd78f250185/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-appindexing-10.2.4.aar/5c8238f6dd77dc9ed6946f4222e7a783/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-common-10.2.4.aar/8bdd51d6ea21d08e8b2d3865a55e51dd/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-ads-10.2.4.aar/ee42ffa98e0dbd26f199b4f85cd1ac02/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-analytics-10.2.4.aar/2c97c116551d9b94d79a699b79fdcd33/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-tagmanager-v4-impl-10.2.4.aar/a6a440fd8c8d2483ea7518c344b4b317/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-analytics-impl-10.2.4.aar/c52cff3bcc88b4ce7b045c6146f7103f/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-appinvite-10.2.4.aar/aa753d7d11d928529fb8f7869e2a8a33/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-auth-10.2.4.aar/e04532b8c3596e780f9847b5628d9b5a/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-auth-base-10.2.4.aar/0d24f1f980396176e3d2f02d69c15271/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-clearcut-10.2.4.aar/b6f5220b9fd4d8c64f478ad101ff9b8e/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-games-10.2.4.aar/61858b014c1bf9f82a178f9fbb123afd/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-drive-10.2.4.aar/19ba06c8d350a209c3399cd52d55d39f/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-gcm-10.2.4.aar/cdf52efe16a3ddb958d6f655129b706a/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-identity-10.2.4.aar/6319d600e662c4ac95a38ee5e2115b5c/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-iid-10.2.4.aar/56cb17d548774b358621525db9d83d0f/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-instantapps-10.2.4.aar/60fc11cf47835eab771d90dc426d0dde/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-nearby-10.2.4.aar/06417f1c50f94641e81935ee288f7508/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-panorama-10.2.4.aar/114e1d3ab89a9f3c0fda435561902e40/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-plus-10.2.4.aar/588e58525562ae4a92ab75e70ed3e9eb/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-safetynet-10.2.4.aar/1f5cbbffb4a6d20b7c375f59888050b1/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-vision-10.2.4.aar/3c9a08b0f23285f064b43a103a8766f2/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-wearable-10.2.4.aar/a3c113982bb5819a3b16d702548b1f48/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-base-10.2.4.aar/1fdee77eed4cae369f5ed91b9e30b160/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-tasks-10.2.4.aar/9ed1cf895052295f8a37c944ab5aadd1/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/firebase-storage-common-10.2.4.aar/dc9d65e508996545590caaea6703568e/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-ads-lite-10.2.4.aar/98a442894a9b502fbc3f1e06ddd901c4/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-gass-10.2.4.aar/2dfae76617936fb259f6353c9de3eee9/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/play-services-basement-10.2.4.aar/9d4fa7e53e775899bfe1a7ea930e8bb9/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/palette-v7-24.0.0.aar/61d764e9990e4dcd7cf6abe298af0cbf/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/support-v4-25.3.1.aar/a1202d1d2dd4ee82da0c052658657b37/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/multidex-1.0.2.aar/955e8081f643d2a50c8e40c61d941ebe/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/geofire-android-2.0.0.aar/d6a9c38f10e607c644288899df72ecce/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.firebase/firebase-client-android/2.0.3/1665cb30372ae93a46d9800adf5751bc48fa202f/firebase-client-android-2.0.3.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/circleimageview-2.1.0.aar/5f9e9e0e4d968ddd33b8d6181ae6960f/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/android-maps-utils-0.4.4.aar/bcc3a090a476c537b64e3c2c117c63dc/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/3.7.0/9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4/glide-3.7.0.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.mcxiaoke.volley/library/1.0.19/a8f23f65fc1e522ee4a1a697ee569901a46741fa/library-1.0.19.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/ac6585ae3cd594849001465a09ce6399/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/animated-vector-drawable-25.3.1.aar/e66ccc3fe15303858a68fbe91180cfc8/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/support-vector-drawable-25.3.1.aar/16bbd3fd29a4e6669d3d188121d742cd/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/support-fragment-25.3.1.aar/de71e20a569da39b3cf6cb6e6c26adcf/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/support-core-ui-25.3.1.aar/b8fd4df7da8396c5f80c621ccb4ce153/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/support-media-compat-25.3.1.aar/9d2d205fd04b47922c1c66ff9d16b3c4/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/support-core-utils-25.3.1.aar/6a42471a7a113fd25d0eda18cb7f9563/jars/classes.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/transforms-1/files-1.1/support-compat-25.3.1.aar/7e8382924b739c440a5208c8d30509f8/jars/classes.jar'(**.class)
+-injars /Users/sunnybedi/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.firebase/firebase-client-jvm/2.0.3/81994bbc1bd46454616b733bf31fe4a22018e056/firebase-client-jvm-2.0.3.jar'(**.class)
+-injars /Users/sunnybedi/Library/Android/sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.2.2/3c8f6018eaa72d43b261181e801e6f8676c16ef6/jackson-databind-2.2.2.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.firebase/tubesock/0.0.10/ddce2c65136c1de8000f8932d8b7ab16d5d336b9/tubesock-0.0.10.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.5/9783d89b8eea20a517a4afc5f979bd2882b54c44/httpclient-4.3.5.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.2.2/285cb9c666f0f0f3dd8a1be04e1f457eb7b15113/jackson-annotations-2.2.2.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.2/d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b/jackson-core-2.2.2.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/31fbbff1ddbf98f3aa7377c94d33b0447c646b6e/httpcore-4.3.2.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/gradle-2.14.1/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f/commons-logging-1.1.3.jar'(**.class)
+-injars '/Applications/Android Studio.app/Contents/gradle/m2repository/commons-codec/commons-codec/1.6/commons-codec-1.6.jar'(**.class)
+-injars /Users/sunnybedi/HereAmI/app/build/intermediates/classes/debug(**.class)
+-outjars /Users/sunnybedi/HereAmI/app/build/intermediates/multi-dex/debug/componentClasses.jar
+
+-libraryjars /Users/sunnybedi/Library/Android/sdk/build-tools/26.0.2/lib/shrinkedAndroid.jar
+
+-forceprocessing
+-dontoptimize
+-dontobfuscate
+-dontusemixedcaseclassnames
+-dontpreverify
+-dontnote **
+-dontwarn **
+-printconfiguration /Users/sunnybedi/HereAmI/app/build/intermediates/multi-dex/debug/components.flags
+
+
+# Referenced at /Users/sunnybedi/HereAmI/app/build/intermediates/manifests/full/debug/AndroidManifest.xml:42
+-keep class android.support.multidex.MultiDexApplication {
+    <init>(...);
+}
+
+-keep public class * extends android.app.Instrumentation {
+    <init>();
+}
+
+-keep public class * extends android.app.Application {
+    <init>();
+    void attachBaseContext(android.content.Context);
+}
+
+-keep public class * extends android.app.backup.BackupAgent {
+    <init>();
+}
+
+-keep public class * extends java.lang.annotation.Annotation {
+    <fields>;
+    <methods>;
+}
+
+-keep class com.android.tools.ir.** {
+    <fields>;
+    <methods>;
+}
