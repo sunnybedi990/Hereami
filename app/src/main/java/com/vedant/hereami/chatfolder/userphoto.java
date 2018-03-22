@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -107,7 +106,7 @@ public class userphoto extends Activity implements View.OnClickListener {
             if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Log.e("pic2", String.valueOf(filePathColumn));
+                //       Log.e("pic2", String.valueOf(filePathColumn));
                 Cursor cursor = getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
                 cursor.moveToFirst();
@@ -115,7 +114,7 @@ public class userphoto extends Activity implements View.OnClickListener {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 picturePath = cursor.getString(columnIndex);
                 cursor.close();
-                Log.e("pic1", String.valueOf(picturePath));
+                //       Log.e("pic1", String.valueOf(picturePath));
 
                 propic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
@@ -141,7 +140,7 @@ public class userphoto extends Activity implements View.OnClickListener {
 
         // we finally have our base64 string version of the image, save it.
         myConnectionsStatusRef2.setValue(base64Image);
-        System.out.println("Stored image with length: " + bytes.length);
+        //    System.out.println("Stored image with length: " + bytes.length);
         Toast.makeText(this, "Uploaded", Toast.LENGTH_LONG).show();
     }
 
@@ -162,20 +161,20 @@ public class userphoto extends Activity implements View.OnClickListener {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot1) {
-                Log.e("pic1", "comming");
+                //           Log.e("pic1", "comming");
                 for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
-                    Log.e("pic1", "cominggg");
-                    Log.e("pic1", "okkkkkkk");
+                    //               Log.e("pic1", "cominggg");
+                    //               Log.e("pic1", "okkkkkkk");
 
-                    Log.e("pic1", "ok");
+                    //               Log.e("pic1", "ok");
                     connectionstatus = dataSnapshot1.child(currentuser).child(ReferenceUrl.image).getValue().toString();
 
-                    Log.e("pic1", connectionstatus);
+                    //               Log.e("pic1", connectionstatus);
                     byte[] imageAsBytes = Base64.decode(connectionstatus.getBytes(), Base64.DEFAULT);
-                    Log.e("pic90", String.valueOf(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)));
+                    //               Log.e("pic90", String.valueOf(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)));
                     propic.setImageBitmap(
                             BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-                    System.out.println("Downloaded image with length: " + imageAsBytes.length);
+                    //               System.out.println("Downloaded image with length: " + imageAsBytes.length);
                 }
             }
 

@@ -118,13 +118,13 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
                     // System.out.println(marker.getId());
                     //markers.put(key, marker);
                 } else {
-                    System.out.println(String.format("There is no location for key %s in GeoFire", key));
+                    //           System.out.println(String.format("There is no location for key %s in GeoFire", key));
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.err.println("There was an error getting the GeoFire location: " + databaseError);
+                //       System.err.println("There was an error getting the GeoFire location: " + databaseError);
             }
         });
 
@@ -178,7 +178,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
                                 TestActivity.this.animateMarkerTo(marker, location.latitude, location.longitude);
                                 polylineOptions.add(new LatLng(location.latitude, location.longitude));
                                 map.addPolyline(polylineOptions);
-                                System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+                                //                     System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
                                 if (marker != null) {
 
                                     marker.remove();

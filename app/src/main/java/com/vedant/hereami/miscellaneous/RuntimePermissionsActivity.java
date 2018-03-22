@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.miscellaneous;
 
 /**
  * Created by Rups on 10/17/2016.

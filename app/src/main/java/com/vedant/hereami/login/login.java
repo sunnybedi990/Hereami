@@ -21,7 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
-import com.vedant.hereami.RuntimePermissionsActivity;
+import com.vedant.hereami.miscellaneous.RuntimePermissionsActivity;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 
 public class login extends RuntimePermissionsActivity implements View.OnClickListener {

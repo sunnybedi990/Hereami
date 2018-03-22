@@ -3,7 +3,6 @@ package com.vedant.hereami.chatfolder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,7 +82,7 @@ public class status extends AppCompatActivity {
 
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot1) {
-                Log.e("pic1", "comming");
+                //    Log.e("pic1", "comming");
                 for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
 
 

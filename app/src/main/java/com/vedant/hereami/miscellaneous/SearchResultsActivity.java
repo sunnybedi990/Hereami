@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.miscellaneous;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
+
+import com.vedant.hereami.R;
 
 public class SearchResultsActivity extends ActionBarActivity {
 

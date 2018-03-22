@@ -14,8 +14,8 @@ import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.Fragment.ChatFragment;
 import com.vedant.hereami.Fragment.ContactsFragment;
 import com.vedant.hereami.R;
-import com.vedant.hereami.RuntimePermissionsActivity;
-import com.vedant.hereami.ViewPagerAdapter;
+import com.vedant.hereami.miscellaneous.RuntimePermissionsActivity;
+import com.vedant.hereami.miscellaneous.ViewPagerAdapter;
 import com.vedant.hereami.login.login;
 
 public class TabWOIconActivity extends RuntimePermissionsActivity {

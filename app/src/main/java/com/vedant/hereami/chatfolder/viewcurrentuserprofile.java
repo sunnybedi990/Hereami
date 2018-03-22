@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -108,24 +107,24 @@ public class viewcurrentuserprofile extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot1) {
-                Log.e("pic1", "comming");
+                //    Log.e("pic1", "comming");
                 for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
-                    Log.e("pic1", "cominggg");
-                    Log.e("pic1", "okkkkkkk");
+                    //      Log.e("pic1", "cominggg");
+                    //    Log.e("pic1", "okkkkkkk");
 
-                    Log.e("pic1", "ok");
+//                    Log.e("pic1", "ok");
                     connectionstatus = dataSnapshot1.child(currentuser).child(ReferenceUrl.image).getValue().toString();
                     namestatus = dataSnapshot1.child(currentuser).child(ReferenceUrl.name).getValue().toString();
                     statusstatus = dataSnapshot1.child(currentuser).child(ReferenceUrl.status).getValue().toString();
                     nametxt.setText(namestatus);
                     statustxt.setText(statusstatus);
-                    Log.e("pic1", connectionstatus);
+                    //                  Log.e("pic1", connectionstatus);
                     byte[] imageAsBytes = Base64.decode(connectionstatus.getBytes(), Base64.DEFAULT);
-                    Log.e("pic90", String.valueOf(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)));
+                    //                Log.e("pic90", String.valueOf(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)));
                     propic.setImageBitmap(
                             BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
                     dialog.dismiss();
-                    System.out.println("Downloaded image with length: " + imageAsBytes.length);
+                    //              System.out.println("Downloaded image with length: " + imageAsBytes.length);
                     propic.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

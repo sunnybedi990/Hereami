@@ -3,7 +3,6 @@ package com.vedant.hereami.chatfolder;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,7 +34,7 @@ public class viewuuserpropic extends AppCompatActivity {
         filename = bundle.getByteArray("image");
         title = bundle.getString("title");
         status = bundle.getString("status");
-        Log.e("title", title);
+        //   Log.e("title", title);
         setTitle(title);
         statusview.setText(status);
         ImageView myImage = (ImageView) findViewById(R.id.userpropicimageview);

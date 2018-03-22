@@ -9,7 +9,7 @@ import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.Fragment.ChatFragment;
 import com.vedant.hereami.Fragment.ContactsFragment;
 import com.vedant.hereami.R;
-import com.vedant.hereami.ViewPagerAdapter;
+import com.vedant.hereami.miscellaneous.ViewPagerAdapter;
 
 
 public class TabWithIconActivity extends AppCompatActivity {

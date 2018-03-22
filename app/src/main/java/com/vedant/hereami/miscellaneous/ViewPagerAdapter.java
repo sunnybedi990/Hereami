@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.miscellaneous;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

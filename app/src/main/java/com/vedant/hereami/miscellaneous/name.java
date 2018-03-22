@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.miscellaneous;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.vedant.hereami.R;
 import com.vedant.hereami.tracking.Main;
 
 public class name extends Activity {

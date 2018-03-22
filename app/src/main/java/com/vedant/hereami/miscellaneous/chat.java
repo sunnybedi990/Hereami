@@ -1,4 +1,4 @@
-package com.vedant.hereami;
+package com.vedant.hereami.miscellaneous;
 
 
 import android.content.Intent;
@@ -54,6 +54,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.CodelabPreferences;
 import com.vedant.hereami.chatfolder.FriendlyMessage;
 import com.vedant.hereami.login.login;
