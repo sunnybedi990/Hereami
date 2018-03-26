@@ -93,6 +93,7 @@ public class ChatFragment extends Fragment {
     private SharedPreferences sharedpreferences1;
     private String temp6;
     private String myencryptionkey;
+    private String tendigitnumber;
 
     public ChatFragment() {
 
@@ -147,7 +148,7 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
-        RecentUser = (ListView) view.findViewById(R.id.list_chat_fragment);
+        RecentUser = view.findViewById(R.id.list_chat_fragment);
         return view;
     }
 
@@ -276,7 +277,7 @@ public class ChatFragment extends Fragment {
                             String[] parts = chatuser.split(":"); // escape .
                             String part1 = parts[0];
                             String part2 = parts[1];
-                            String tendigitnumber = getLastThree(part2);
+                            tendigitnumber = getLastThree(part2);
                             //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
 
                             hashMap1.put(tendigitnumber, keyname);
@@ -313,7 +314,7 @@ public class ChatFragment extends Fragment {
                         //                          Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
 
                         //                        Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                        Intent intent4 = new Intent(getActivity(), chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "");
+                        Intent intent4 = new Intent(getActivity(), chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "").putExtra("number", tendigitnumber);
                         startActivity(intent4);
                         // overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }

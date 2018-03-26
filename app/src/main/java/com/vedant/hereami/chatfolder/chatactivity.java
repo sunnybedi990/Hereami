@@ -141,6 +141,7 @@ public class chatactivity extends AppCompatActivity {
     private String urifile;
     private File imageFile;
     private StorageReference islandRef;
+    private String mobilenumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +165,7 @@ public class chatactivity extends AppCompatActivity {
         message1 = bundle.getString("key_position1");
         message2 = bundle.getString("key_position");
         namenumber = bundle.getString("namenumber");
+        mobilenumber = bundle.getString("number");
 
         setTitle(namenumber);
 
@@ -381,7 +383,7 @@ public class chatactivity extends AppCompatActivity {
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent4 = new Intent(chatactivity.this, viewuuserpropic.class).putExtra("image", imageAsBytes).putExtra("title", namenumber).putExtra("status", connectionstatus4).putExtra("uri", urifile);
+                                Intent intent4 = new Intent(chatactivity.this, viewuuserpropic.class).putExtra("image", imageAsBytes).putExtra("title", namenumber).putExtra("status", connectionstatus4).putExtra("number", mobilenumber);
                                 startActivity(intent4);
                                 Log.w("MainActivity", "ActionBar's title clicked.");
                             }
