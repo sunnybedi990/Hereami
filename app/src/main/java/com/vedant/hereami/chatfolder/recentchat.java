@@ -7,12 +7,14 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -30,6 +32,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 
@@ -77,6 +80,11 @@ public class recentchat extends Activity {
     private String todaycheck;
     private Calendar calendar1;
     private int countmsgs;
+    public static final String mypreference123 = "mypref123";
+    private String myencryptionkey;
+    private Firebase mFirebaseMessagesChatconnectioncheck;
+    private String username;
+    private String publickey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +106,10 @@ public class recentchat extends Activity {
         newList = new ArrayList<String>();
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
+        SharedPreferences sharedpreferences = getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+
+        myencryptionkey = sharedpreferences.getString("private", "");
+
         mProgressBarForUsers = (ProgressBar) findViewById(R.id.progress_bar_users1);
         showProgressBarForUsers();
         // Bundle bundle = getIntent().getExtras();
@@ -128,6 +140,7 @@ public class recentchat extends Activity {
 
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
         mFirebaseMessagesChat = fb_parent.child("/message");
+        mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
         currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
         mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child(currentuser);
 
@@ -238,9 +251,36 @@ public class recentchat extends Activity {
 
                         for (DataSnapshot current1 : currentuserchatdatasnapshot.getChildren()) {
                             for (DataSnapshot current : current1.getChildren()) {
-                                MessageChatModel newMessage = current.getValue(MessageChatModel.class);
+                                username = current1.getKey().replace("-", "").replace(currentuser, "");
+                                mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
 
-                                temp1 = newMessage.getMessage();
+
+                                    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot1) {
+
+                                        for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
+                                            if (connectionchild.getKey().contains(username)) {
+
+
+                                                publickey = dataSnapshot1.child(username).child("Publickey").getValue().toString();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+                                MessageChatModel newMessage = current.getValue(MessageChatModel.class);
+                                temp3 = newMessage.getSender();
+
+                                if (temp3.equalsIgnoreCase(currentuser)) {
+                                    temp1 = CallsFragment.decryptRSAToString(newMessage.getMessage1(), myencryptionkey);
+                                } else {
+                                    temp1 = CallsFragment.decryptRSAToString(newMessage.getMessage(), publickey);
+                                }
                                 //  temp2 = newMessage.getRecipient();
                                 temp2 = newMessage.getTimestamp();
                                 countone = currentuserchatdatasnapshot.getChildrenCount();
@@ -321,6 +361,7 @@ public class recentchat extends Activity {
 
             }
         });
+
     }
 
     public void getNotification() {

@@ -4,12 +4,15 @@ package com.vedant.hereami.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +85,14 @@ public class ChatFragment extends Fragment {
     private String temp5;
     private String todaycheck;
     private recentchatadapter rec;
+    public static final String mypreference123 = "mypref123";
+
+    private Firebase mFirebaseMessagesChatconnectioncheck;
+    private String username;
+    private String publickey;
+    private SharedPreferences sharedpreferences1;
+    private String temp6;
+    private String myencryptionkey;
 
     public ChatFragment() {
 
@@ -91,10 +102,11 @@ public class ChatFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         context = getContext();
-        Firebase.setAndroidContext(getActivity());
+
         //  RecentUser = (ListView) findViewById(R.id.list_recent);
         lst = new ArrayList<String>();
         lstmsg = new ArrayList<String>();
@@ -105,6 +117,10 @@ public class ChatFragment extends Fragment {
         newList = new ArrayList<String>();
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
+        sharedpreferences1 = this.getActivity().getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+        myencryptionkey = sharedpreferences1.getString("privatekey", "");
+
+
         mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
 
         TimeZone pdt = TimeZone.getDefault();
@@ -118,6 +134,7 @@ public class ChatFragment extends Fragment {
         todaycheck = date1 + "/" + month1 + "/" + year1;
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
         mFirebaseMessagesChat = fb_parent.child("/message");
+        mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
         currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
         mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child(currentuser);
 
@@ -212,16 +229,20 @@ public class ChatFragment extends Fragment {
                 String temp2 = "";
                 String temp3 = "";
                 String temp4 = "";
+
                 for (DataSnapshot currentuserchatdatasnapshot : dataSnapshot.getChildren()) {
                     if (currentuserchatdatasnapshot.getKey().contains(currentuser)) {
+                        key();
                         //  Log.e(">>>>>last", currentuserchatdatasnapshot.toString() + "");
 
                         for (DataSnapshot current1 : currentuserchatdatasnapshot.getChildren()) {
                             //  Log.e(">>>>>last123", current.toString() + "");
                             for (DataSnapshot current : current1.getChildren()) {
-                                MessageChatModel newMessage = current.getValue(MessageChatModel.class);
 
-                                temp1 = newMessage.getMessage();
+                                MessageChatModel newMessage = current.getValue(MessageChatModel.class);
+                                temp3 = newMessage.getSender();
+                                temp1 = newMessage.getMessage1();
+                                temp4 = newMessage.getMessage();
                                 //  temp2 = newMessage.getRecipient();
                                 temp2 = newMessage.getTimestamp();
                                 countone = currentuserchatdatasnapshot.getChildrenCount();
@@ -240,12 +261,17 @@ public class ChatFragment extends Fragment {
                             } else {
                                 temp5 = part4;
                             }
-                            lstmsg.add(temp1);
+                            Log.e("users", temp3);
+
+                            temp6 = CallsFragment.decryptRSAToString(temp1, myencryptionkey) + CallsFragment.decryptRSAToString(temp1, publickey) + CallsFragment.decryptRSAToString(temp4, publickey) + CallsFragment.decryptRSAToString(temp4, myencryptionkey);
+
+
+                            lstmsg.add(temp6);
                             timestamp.add(temp5);
 
 
                             String keyname = String.valueOf(current1.getKey());
-
+                            username = keyname;
                             String chatuser = keyname.replace("-", "").replace(currentuser, "").replace("+", ":");
                             String[] parts = chatuser.split(":"); // escape .
                             String part1 = parts[0];
@@ -295,6 +321,32 @@ public class ChatFragment extends Fragment {
 
             }
 
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void key() {
+        mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
+
+
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot1) {
+
+                for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
+
+
+                    String sunn = connectionchild.getKey();
+                    Log.e("sunn", sunn);
+                    publickey = dataSnapshot1.child(username).child("Publickey").getValue().toString();
+                    Log.e("sunnq", publickey + "");
+
+                }
+            }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
