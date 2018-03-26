@@ -1,16 +1,26 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/primary"
         android:orientation="vertical"
-        android:background="@color/primary">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
 
         <!-- For the purpose of the app, many attributes are not refactored-->
@@ -19,72 +29,84 @@
             android:id="@+id/titleChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tracker"
-            android:textStyle="bold"
-            android:textColor="@color/text_color"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/log_in_margin"
+            android:text="Tracker"
+            android:textColor="@color/text_color"
             android:textSize="30sp"
-            android:layout_marginTop="@dimen/log_in_margin" />
+            android:textStyle="bold" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
 
             <EditText
-                android:inputType="textEmailAddress"
                 android:id="@+id/userEmailChat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                android:textColorHint="@color/text_color"
                 android:layout_marginLeft="@dimen/log_in_margin"
                 android:layout_marginRight="@dimen/log_in_margin"
                 android:layout_marginTop="40dp"
-                android:hint="email" />
+                android:hint="email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/text_color" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
 
             <EditText
                 android:id="@+id/passWordChat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:textColor="@color/text_color"
-                android:textColorHint="@color/text_color"
                 android:layout_marginLeft="@dimen/log_in_margin"
                 android:layout_marginRight="@dimen/log_in_margin"
-                android:hint="password" />
+                android:ems="10"
+                android:hint="password"
+                android:inputType="textPassword"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/text_color" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/btn_LogInChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LogIn"
-            android:background="@color/text_color"
-            android:textColor="@color/primary"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="@dimen/log_in_margin"
-            android:layout_marginRight="@dimen/log_in_margin" />
+            android:layout_marginRight="@dimen/log_in_margin"
+            android:layout_marginTop="10dp"
+            android:background="@color/text_color"
+            android:text="LogIn"
+            android:textColor="@color/primary" />
 
         <Button
             android:id="@+id/registerUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:textColor="@color/primary"
-            android:background="@color/text_color"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="@dimen/log_in_margin"
-            android:layout_marginRight="@dimen/log_in_margin" />
+            android:layout_marginRight="@dimen/log_in_margin"
+            android:layout_marginTop="8dp"
+            android:background="@color/text_color"
+            android:text="Register"
+            android:textColor="@color/primary" />
+
+        <TextView
+            android:id="@+id/textview_forgetpassword"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="Forget Password..??"
+            android:textAlignment="textEnd"
+            android:textColor="@color/card_background"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:typeface="serif" />
 
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</android.support.constraint.ConstraintLayout>

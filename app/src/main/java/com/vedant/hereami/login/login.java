@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +32,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
     private Button mRegisterUser;
     private FirebaseAuth firebaseAuth;
     private static final int REQUEST_PERMISSIONS = 5;
+    private TextView forgetpass;
 
     //progress dialog
     private ProgressDialog progressDialog;
@@ -43,8 +45,8 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         setContentView(R.layout.activity_log_in);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                .coordinatorLayout);
+        //   coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+        //         .coordinatorLayout);
         //if the objects getcurrentuser method is not null
         //means user is already logged in
         if (firebaseAuth.getCurrentUser() != null) {
@@ -59,11 +61,13 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         mUserPassWord = (EditText) findViewById(R.id.passWordChat);
         mLoginToMChat = (Button) findViewById(R.id.btn_LogInChat);
         mRegisterUser = (Button) findViewById(R.id.registerUser);
+        forgetpass = (TextView) findViewById(R.id.textview_forgetpassword);
 
 
         progressDialog = new ProgressDialog(this);
         mLoginToMChat.setOnClickListener(login.this);
         mRegisterUser.setOnClickListener(login.this);
+        forgetpass.setOnClickListener(login.this);
     }
 
     @Override
@@ -81,6 +85,9 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         if (view == mRegisterUser) {
             finish();
             startActivity(new Intent(this, Register.class));
+        }
+        if (view == forgetpass) {
+            forgetpassword();
         }
     }
 
@@ -165,6 +172,18 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 
+    }
+
+    private void forgetpassword() {
+        String email = mUserEmail.getText().toString().trim();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
+            return;
+        }
+        progressDialog.setMessage("Reseting Please Wait...");
+        progressDialog.show();
+        firebaseAuth.sendPasswordResetEmail(email);
+        progressDialog.dismiss();
     }
 
 }

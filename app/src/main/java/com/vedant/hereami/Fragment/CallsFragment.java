@@ -356,6 +356,13 @@ public class CallsFragment extends Fragment {
             startActivity(intent);
             return true;
         }
+        if (id == R.id.action_logout) {
+            firebaseAuth.signOut();
+            getActivity().finish();
+            //starting login activity
+            startActivity(new Intent(getActivity(), login.class));
+            return true;
+        }
 
 
         return super.onOptionsItemSelected(item);
