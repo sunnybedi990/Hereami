@@ -14,7 +14,7 @@ import android.os.IBinder;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -225,7 +225,7 @@ public class Recentnotification extends Service {
         lst.add("New Message");
 
         //Build and issue the group summary. Use inbox style so that all messages are displayed
-        NotificationCompat.Builder summaryBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
+        NotificationCompat.Builder summaryBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle("Recent User")
                 .setContentText("New Message")
                 .setSmallIcon(R.drawable.image)

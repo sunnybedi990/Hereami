@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.RemoteInput;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,7 +29,7 @@ public class DirectReplyActivity extends AppCompatActivity {
 
         if (remoteInput != null) {
 
-            TextView myTextView = (TextView) findViewById(R.id.text123456);
+            TextView myTextView = findViewById(R.id.text123456);
             String inputString = remoteInput.getCharSequence(
                     KEY_TEXT_REPLY).toString();
 

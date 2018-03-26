@@ -1,6 +1,7 @@
 package com.vedant.hereami.chatfolder;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -19,8 +21,14 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.vedant.hereami.R;
 import com.vedant.hereami.login.login;
 
@@ -45,6 +53,9 @@ public class userphoto extends Activity implements View.OnClickListener {
     private Firebase mFirebaseMessagesChatconnectioncheck;
     private String connectionstatus, connectionstatus1;
     private String currentuser;
+    private Uri selectedImage;
+    private StorageReference storageReference;
+    private FirebaseStorage storage;
 
 
     @Override
@@ -52,12 +63,14 @@ public class userphoto extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userphoto);
         firebaseAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReferenceFromUrl("gs://iamhere-29f2b.appspot.com");    //change the url according to your firebase app
         //  textViewUserEmail = (TextView) findViewById(R.id.textView2);
-        mRegisterButton = (Button) findViewById(R.id.button5);
+        mRegisterButton = findViewById(R.id.button5);
         mRegisterButton.setOnClickListener(userphoto.this);
         //    imageView = (ImageView) findViewById(R.id.imgView);
         //    imageView.setImageResource(R.drawable.image);
-        propic = (CircleImageView) findViewById(R.id.userPhoto);
+        propic = findViewById(R.id.userPhoto);
 
         //   propic.setImageResource(R.drawable.headshot_7);
         //if the user is not logged in
@@ -104,7 +117,7 @@ public class userphoto extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-                Uri selectedImage = data.getData();
+                selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 //       Log.e("pic2", String.valueOf(filePathColumn));
                 Cursor cursor = getContentResolver().query(selectedImage,
@@ -150,6 +163,7 @@ public class userphoto extends Activity implements View.OnClickListener {
         if (v == mRegisterButton) {
             if (picturePath != null)
             userpropic();
+            uploadFile();
         }
     }
 
@@ -185,6 +199,56 @@ public class userphoto extends Activity implements View.OnClickListener {
 
 
         });
+    }
+
+    private void uploadFile() {
+        //if there is a file to upload
+        if (selectedImage != null) {
+            //displaying a progress dialog while upload is going on
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading");
+            progressDialog.show();
+
+
+            StorageReference riversRef = storageReference.child("propic/" + currentuser + ".jpg");
+            riversRef.putFile(selectedImage)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //if the upload is successfull
+                            //hiding the progress dialog
+                            progressDialog.dismiss();
+
+                            //and displaying a success toast
+                            Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            //if the upload is not successfull
+                            //hiding the progress dialog
+                            progressDialog.dismiss();
+
+                            //and displaying error message
+                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            //calculating progress percentage
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                            //displaying percentage in progress dialog
+                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                        }
+                    });
+        }
+        //if there is not any file
+        else {
+            //you can display an error toast
+        }
     }
 }
 

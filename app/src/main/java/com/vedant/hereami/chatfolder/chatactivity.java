@@ -7,9 +7,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -18,7 +20,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -37,21 +38,22 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -132,15 +134,23 @@ public class chatactivity extends AppCompatActivity {
     private String connectionstatus4;
     public static final String mypreference123 = "mypref123";
     private String myencryptionkey;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private CircleImageView imageView;
+    private Uri imageUri;
+    private String urifile;
+    private File imageFile;
+    private StorageReference islandRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        coordinatorLayout3 = (CoordinatorLayout) findViewById(R.id
+        coordinatorLayout3 = findViewById(R.id
                 .coordinatorLayoutmain3);
         actionBar = getSupportActionBar();
         firebaseAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         Intent intent = this.getIntent();
@@ -188,9 +198,9 @@ public class chatactivity extends AppCompatActivity {
 
 
             // Reference to recyclerView and text view
-            mChatRecyclerView = (RecyclerView) findViewById(R.id.chat_recycler_view);
-            mUserMessageChatText = (TextView) findViewById(R.id.chat_user_message);
-            mUserMessageChatconnection = (TextView) findViewById(R.id.text_connection);
+            mChatRecyclerView = findViewById(R.id.chat_recycler_view);
+            mUserMessageChatText = findViewById(R.id.chat_user_message);
+            mUserMessageChatconnection = findViewById(R.id.text_connection);
 
 
             mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -204,6 +214,8 @@ public class chatactivity extends AppCompatActivity {
 
 
             // Initialize firebase for this chat
+            storageReference = storage.getReferenceFromUrl("gs://iamhere-29f2b.appspot.com");    //change the url according to your firebase app
+
             Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
             mFirebaseMessagesChat = fb_parent.child("/message");
             mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
@@ -218,6 +230,7 @@ public class chatactivity extends AppCompatActivity {
                 mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message1);
                 mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message1).child(mSenderUid);
                 messages();
+                downloadFile();
 
 
             } else {
@@ -228,6 +241,7 @@ public class chatactivity extends AppCompatActivity {
                     mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message2);
                     mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message2).child(mSenderUid);
                     messages();
+                    downloadFile();
                 }
             }
 
@@ -261,6 +275,7 @@ public class chatactivity extends AppCompatActivity {
                     //       if (last.getKey().contains(currentuser + "-" + message1)) {
 
                         mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(currentuser + "-" + message1);
+
                     //       Log.e("getname1", "pasess2");
                     //    } else {
                     //    Log.e("getname1", last.getKey().contains(message1 + "-" + currentuser) + "");
@@ -330,58 +345,31 @@ public class chatactivity extends AppCompatActivity {
                     if (connectionchild.getKey().contains(message3)) {
 
 
-                        connectionstatus2 = dataSnapshot1.child(message3).child(ReferenceUrl.image).getValue().toString();
-                        connectionstatus3 = dataSnapshot1.child(message3).child(ReferenceUrl.imagecheck).getValue().toString();
+
                         if (dataSnapshot1.child(message3).child("Publickey").exists()) {
                             publickey = dataSnapshot1.child(message3).child("Publickey").getValue().toString();
                         }
 
                         connectionstatus4 = dataSnapshot1.child(message3).child(ReferenceUrl.status).getValue().toString();
 
-                        imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
-                        image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        if (image != null)
-                            image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                        File imgFile = new File(Environment.getExternalStorageDirectory().getPath() + "/HereamI/" + namenumber + "1.jpg");
 
-                        filepath = Environment.getExternalStorageDirectory().getPath();
-                        myDir = new File(filepath + "/HereamI");
-                        String newfilename = myDir.toString();
-                        Log.e("file", myDir.toString());
-                        if (!myDir.exists()) {
-                            File wallpaperDirectory = new File(myDir.toString());
-                            wallpaperDirectory.mkdir();
-                        }
-                        fname = namenumber + ".jpg";
-//you can create a new file name "test.jpg" in sdcard folder.
-                        File file = new File(myDir, fname);
-                        if (file.exists()) {
-                            file.delete();
-                        }
-                        try {
-                            if (image != null) {
-                                FileOutputStream out = new FileOutputStream(file);
-                                image.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                                out.flush();
-                                out.close();
-                                Log.e("downloadstatus", "file downloaded");
-                            }
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
-
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                         Log.e("getname2", message3);
                         actionBar.setDisplayOptions(actionBar.getDisplayOptions()
                                 | ActionBar.DISPLAY_SHOW_CUSTOM);
-                        CircleImageView imageView = null;
+                        imageView = null;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                             imageView = new CircleImageView(actionBar.getThemedContext());
                         }
 //                        imageView.setScaleType(ImageView.ScaleType.CENTER);
-                        imageView.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+                        if (imgFile.exists()) {
+                            imageView.setImageBitmap(myBitmap);
+                        } else {
+
+                            imageView.setImageResource(R.drawable.headshot_7);
+                        }
                         ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
                                 ActionBar.LayoutParams.WRAP_CONTENT,
                                 ActionBar.LayoutParams.WRAP_CONTENT, Gravity.END
@@ -393,7 +381,7 @@ public class chatactivity extends AppCompatActivity {
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent4 = new Intent(chatactivity.this, viewuuserpropic.class).putExtra("image", imageAsBytes).putExtra("title", namenumber).putExtra("status", connectionstatus4);
+                                Intent intent4 = new Intent(chatactivity.this, viewuuserpropic.class).putExtra("image", imageAsBytes).putExtra("title", namenumber).putExtra("status", connectionstatus4).putExtra("uri", urifile);
                                 startActivity(intent4);
                                 Log.w("MainActivity", "ActionBar's title clicked.");
                             }
@@ -403,46 +391,6 @@ public class chatactivity extends AppCompatActivity {
                         //   imageView.setOnClickListener();
                         Log.e("pic1", String.valueOf(image));
 
-                        if (!connectionstatus3.equals(connectionstatus2)) {
-
-                            myConnectionsStatusRef2 = mFireChatUsersRef.child(message3).child(ReferenceUrl.imagecheck);
-                            myConnectionsStatusRef2.setValue(connectionstatus2);
-
-
-                            ByteArrayOutputStream bytes1 = new ByteArrayOutputStream();
-                            image.compress(Bitmap.CompressFormat.JPEG, 40, bytes1);
-
-                            filepath = Environment.getExternalStorageDirectory().getPath();
-                            myDir = new File(filepath + "/HereamI");
-                            String newfilename1 = myDir.toString();
-                            Log.e("file", myDir.toString());
-                            if (!myDir.exists())
-                                myDir.mkdirs();
-                            fname = namenumber + ".jpg";
-//you can create a new file name "test.jpg" in sdcard folder.
-                            File file1 = new File(myDir, fname);
-                            try {
-                                if (!new File(fname).exists()) {
-
-
-                                    FileOutputStream out = new FileOutputStream(newfilename1);
-                                    out.write(bytes.toByteArray());
-                                    out.flush();
-                                    out.close();
-                                    Log.e("downloadstatus", "file downloaded");
-
-                                }
-
-
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            //   menu.getItem(0).setIcon(new BitmapDrawable(getResources(), image));
-                        }
-
-                        System.out.println("Downloaded image with length: " + imageAsBytes.length);
 
                         //       menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_launcher));
                         connectionstatus = dataSnapshot1.child(message3).child(ReferenceUrl.CHILD_CONNECTION).getValue().toString();
@@ -710,6 +658,7 @@ public class chatactivity extends AppCompatActivity {
             } else {
                 startchat();
                 sendnotification();
+
             }
             //    mUserMessageChatText.setText("");
 
@@ -745,5 +694,29 @@ public class chatactivity extends AppCompatActivity {
     }
 
 
+    private void downloadFile() {
 
+        islandRef = storageReference.child("propic/" + mRecipientUid + ".jpg");
+
+        File rootPath = new File(Environment.getExternalStorageDirectory(), "/HereamI/");
+        if (!rootPath.exists()) {
+            rootPath.mkdirs();
+        }
+
+        final File localFile = new File(rootPath, namenumber + "1.jpg");
+        Log.e("firebase12 ", ";local tem file created  created " + localFile.toString());
+        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Log.e("firebase ", ";local tem file created  created " + localFile.toString());
+
+                //  updateDb(timestamp,localFile.toString(),position);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("firebase ", ";local tem file not created  created " + exception.toString());
+            }
+        });
+    }
 }
