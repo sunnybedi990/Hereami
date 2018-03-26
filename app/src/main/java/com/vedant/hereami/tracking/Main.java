@@ -32,13 +32,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.vedant.hereami.R;
-import com.vedant.hereami.miscellaneous.RuntimePermissionsActivity;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
-import com.vedant.hereami.login.login;
-import com.vedant.hereami.miscellaneous.name;
-import com.vedant.hereami.login.phonenumber;
 import com.vedant.hereami.chatfolder.userphoto;
+import com.vedant.hereami.login.login;
+import com.vedant.hereami.login.phonenumber;
+import com.vedant.hereami.miscellaneous.RuntimePermissionsActivity;
+import com.vedant.hereami.miscellaneous.name;
+import com.vedant.hereami.secureencryption.testdata;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -236,7 +237,7 @@ public class Main extends RuntimePermissionsActivity {
             b7.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(Main.this, BrokenKeyDerivationActivity.class);
+                    Intent intent1 = new Intent(Main.this, testdata.class);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 }

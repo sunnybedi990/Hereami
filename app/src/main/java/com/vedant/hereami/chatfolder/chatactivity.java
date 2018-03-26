@@ -52,7 +52,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,9 +60,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -748,36 +744,6 @@ public class chatactivity extends AppCompatActivity {
         return false;
     }
 
-    public String encryption(String strNormalText) {
 
-        String normalTextEnc = "";
-        try {
-            normalTextEnc = AESHelper.encrypt(seedValue, strNormalText);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return normalTextEnc;
-    }
-
-    public String decryption(String strEncryptedText) {
-        String seedValue = "YourSecKey";
-        String strDecryptedText = "";
-        try {
-            strDecryptedText = AESHelper.decrypt(seedValue, strEncryptedText);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strDecryptedText;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private static SecretKey deriveKeyInsecurely(String password, int
-            keySizeInBytes) {
-        byte[] passwordBytes = password.getBytes(StandardCharsets.US_ASCII);
-        return new SecretKeySpec(
-                InsecureSHA1PRNGKeyDerivator.deriveInsecureKey(
-                        passwordBytes, keySizeInBytes),
-                "AES");
-    }
 
 }

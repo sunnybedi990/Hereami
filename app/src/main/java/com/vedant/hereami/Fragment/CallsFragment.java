@@ -304,7 +304,7 @@ public class CallsFragment extends Fragment {
         b7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), BrokenKeyDerivationActivity.class);
+                Intent intent1 = new Intent(getActivity(), testdata.class);
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }

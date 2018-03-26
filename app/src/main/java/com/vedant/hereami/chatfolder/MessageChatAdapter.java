@@ -247,14 +247,5 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
 
-    public String decryption(String strEncryptedText) {
 
-        String strDecryptedText = "";
-        try {
-            strDecryptedText = AESHelper.decrypt(seedValue, strEncryptedText);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strDecryptedText;
-    }
 }
