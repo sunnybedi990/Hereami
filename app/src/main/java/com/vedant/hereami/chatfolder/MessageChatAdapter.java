@@ -1,5 +1,6 @@
 package com.vedant.hereami.chatfolder;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
-import com.vedant.hereami.secureencryption.AESHelper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,12 +21,20 @@ import java.util.TimeZone;
 public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static String seedValue = "youcantseeme@9900";
     private final String todaycheck;
+    private final String encrytionprivatekey1;
     private List<MessageChatModel> mListOfFireChat;
     private static final int SENDER = 0;
     private static final int RECIPIENT = 1;
     TimeZone pdt = TimeZone.getDefault();
 
-    public MessageChatAdapter(List<MessageChatModel> listOfFireChats) {
+    public static final String mypreference1 = "privatekey";
+    public static final String mypreference123 = "mypref123";
+    Context mcontext;
+
+
+    public MessageChatAdapter(List<MessageChatModel> listOfFireChats, String encrytionprivatekey) {
+
+        encrytionprivatekey1 = encrytionprivatekey;
         mListOfFireChat = listOfFireChats;
         Calendar calendar1 = new GregorianCalendar(pdt);
         Date trialTime = new Date();
@@ -88,8 +97,9 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private void configureSenderView(ViewHolderSender viewHolderSender, int position) {
         MessageChatModel senderFireMessage = mListOfFireChat.get(position);
-
-        viewHolderSender.getSenderMessageTextView().setText(senderFireMessage.getMessage());
+        String encrypted = senderFireMessage.getMessage1();
+        String decrypted = CallsFragment.decryptRSAToString(encrypted, encrytionprivatekey1);
+        viewHolderSender.getSenderMessageTextView().setText(decrypted);
         String s;
         String[] parts1 = senderFireMessage.getTimestamp().split("%");
         String part4 = parts1[0];
@@ -105,22 +115,41 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void configureRecipientView(ViewHolderRecipient viewHolderRecipient, int position) {
+
         MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
+        String encrypted = recipientFireMessage.getMessage();
+        String decrypted;
+        if (encrypted != null) {
+            decrypted = CallsFragment.decryptRSAToString(encrypted, encrytionprivatekey1);
 
 
-        viewHolderRecipient.getRecipientMessageTextView().setText(recipientFireMessage.getMessage());
-        String s;
-        String[] parts1 = recipientFireMessage.getTimestamp().split("%");
-        String part4 = parts1[0];
-        String part5 = parts1[1];
+            //   String decrypted = KeyStoreHelper.decrypt(KEYSTORE_KEY_ALIAS, encrypted);
+            viewHolderRecipient.getRecipientMessageTextView().setText(decrypted);
+            String s;
+            String[] parts1 = recipientFireMessage.getTimestamp().split("%");
+            String part4 = parts1[0];
+            String part5 = parts1[1];
 
-        if (!part5.equals(todaycheck)) {
-            s = part5;
+            if (!part5.equals(todaycheck)) {
+                s = part5;
+            } else {
+                s = part4;
+            }
+            viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
         } else {
-            s = part4;
-        }
-        viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
+            viewHolderRecipient.getRecipientMessageTextView().setText(encrypted);
+            String s;
+            String[] parts1 = recipientFireMessage.getTimestamp().split("%");
+            String part4 = parts1[0];
+            String part5 = parts1[1];
 
+            if (!part5.equals(todaycheck)) {
+                s = part5;
+            } else {
+                s = part4;
+            }
+            viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
+        }
     }
 
 
@@ -144,6 +173,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         /*add new message1 chat to list*/
         mListOfFireChat.clear();
+
         mListOfFireChat.addAll(newFireChatMessage);
         /*refresh view*/
         notifyItemInserted(getItemCount() - 1);

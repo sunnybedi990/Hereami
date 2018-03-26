@@ -1,7 +1,9 @@
 package com.vedant.hereami.chatfolder;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -39,12 +41,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
-import com.vedant.hereami.secureencryption.AESHelper;
-import com.vedant.hereami.secureencryption.InsecureSHA1PRNGKeyDerivator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -74,6 +75,7 @@ public class chatactivity extends AppCompatActivity {
     private RecyclerView mChatRecyclerView;
     private TextView mUserMessageChatText;
     private MessageChatAdapter mMessageChatAdapter;
+    String publickey;
 
     /* Sender and Recipient status*/
     private static final int SENDER_STATUS = 0;
@@ -132,6 +134,8 @@ public class chatactivity extends AppCompatActivity {
     private File myDir;
     private String fname;
     private String connectionstatus4;
+    public static final String mypreference123 = "mypref123";
+    private String myencryptionkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +149,10 @@ public class chatactivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         Intent intent = this.getIntent();
         remoteInput = RemoteInput.getResultsFromIntent(intent);
+        SharedPreferences sharedpreferences = getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
 
-
+        String encrytionprivatekey = sharedpreferences.getString("privatekey", "");
+        myencryptionkey = sharedpreferences.getString("publickey", "");
         Bundle bundle = getIntent().getExtras();
 
         message1 = bundle.getString("key_position1");
@@ -195,7 +201,7 @@ public class chatactivity extends AppCompatActivity {
             mChatRecyclerView.setHasFixedSize(true);
             // Initialize adapter
             List<MessageChatModel> emptyMessageChat = new ArrayList<MessageChatModel>();
-            mMessageChatAdapter = new MessageChatAdapter(emptyMessageChat);
+            mMessageChatAdapter = new MessageChatAdapter(emptyMessageChat, encrytionprivatekey);
 
             // Set adapter to recyclerView
             mChatRecyclerView.setAdapter(mMessageChatAdapter);
@@ -330,6 +336,9 @@ public class chatactivity extends AppCompatActivity {
 
                         connectionstatus2 = dataSnapshot1.child(message3).child(ReferenceUrl.image).getValue().toString();
                         connectionstatus3 = dataSnapshot1.child(message3).child(ReferenceUrl.imagecheck).getValue().toString();
+                        if (dataSnapshot1.child(message3).child("Publickey").exists()) {
+                            publickey = dataSnapshot1.child(message3).child("Publickey").getValue().toString();
+                        }
 
                         connectionstatus4 = dataSnapshot1.child(message3).child(ReferenceUrl.status).getValue().toString();
 
@@ -560,11 +569,14 @@ public class chatactivity extends AppCompatActivity {
             Map<String, String> newMessage = new HashMap<String, String>();
             newMessage.put("sender", mSenderUid); // Sender uid
             newMessage.put("recipient", mRecipientUid); // Recipient uid
-            newMessage.put("message", senderMessage);// Message
+            newMessage.put("message", CallsFragment.encryptRSAToString(senderMessage, publickey));//message
+            newMessage.put("message1", CallsFragment.encryptRSAToString(senderMessage, myencryptionkey));// mykeyMessage
             newMessage.put("timestamp", tsTemp); // Time stamp
             newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
             sendSinglePush();
-
+            Log.e("sala hua1", mSenderUid);
+            Log.e("sala hua2", mRecipientUid);
+            Log.e("sala hua3", String.valueOf(newMessage));
             mFirebaseMessagesChat12.push().setValue(newMessage, index);
             mFirebaseMessagesChat13.push().setValue(newMessage, index);
 
@@ -691,7 +703,8 @@ public class chatactivity extends AppCompatActivity {
             Map<String, String> newMessage = new HashMap<String, String>();
             newMessage.put("sender", mSenderUid); // Sender uid
             newMessage.put("recipient", mRecipientUid); // Recipient uid
-            newMessage.put("message", senderMessage);// Message
+            newMessage.put("message", CallsFragment.encryptRSAToString(senderMessage, publickey));//message
+            newMessage.put("message1", CallsFragment.encryptRSAToString(senderMessage, myencryptionkey));// mykeyMessage
             newMessage.put("timestamp", tsTemp); // Time stamp
             newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
             sendSinglePush();

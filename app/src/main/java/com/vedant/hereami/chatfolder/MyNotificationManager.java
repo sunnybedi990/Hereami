@@ -66,6 +66,8 @@ public class MyNotificationManager {
     private Intent intent2;
     private PendingIntent pendingIntent;
     private RemoteInput remoteInput;
+    public static final String mypreference123 = "mypref123";
+    private String myencryptionkey;
 
 
     //New work
@@ -134,6 +136,9 @@ public class MyNotificationManager {
         //   int suaa = Integer.parseInt(part2);
         SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
         //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
+        SharedPreferences sharedpreferences = mCtx.getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+
+        myencryptionkey = sharedpreferences.getString("publickey", "");
 
 
         String replyLabel = mCtx.getResources().getString(R.string.reply_label);
@@ -144,7 +149,7 @@ public class MyNotificationManager {
         pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", message);
+            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", message).putExtra("publickmykey", myencryptionkey);
             Log.e("notee", String.valueOf(id));
         } else {
             intent2 = intent;

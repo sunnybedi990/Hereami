@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,21 +35,30 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.vedant.hereami.tracking.ListActivity;
-import com.vedant.hereami.tracking.MainActivity;
 import com.vedant.hereami.R;
-import com.vedant.hereami.tracking.Sendlocation;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.chatmain;
-import com.vedant.hereami.login.login;
-import com.vedant.hereami.login.phonenumber;
-import com.vedant.hereami.secureencryption.BrokenKeyDerivationActivity;
 import com.vedant.hereami.chatfolder.userphoto;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
+import com.vedant.hereami.login.login;
+import com.vedant.hereami.login.phonenumber;
+import com.vedant.hereami.secureencryption.testdata;
+import com.vedant.hereami.tracking.ListActivity;
+import com.vedant.hereami.tracking.MainActivity;
+import com.vedant.hereami.tracking.Sendlocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -56,6 +66,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+
+import javax.crypto.Cipher;
 
 import static com.vedant.hereami.firebasepushnotification.EndPoints.URL_REGISTER_DEVICE;
 
@@ -99,6 +111,12 @@ public class CallsFragment extends Fragment {
     private String token;
     public Thread t;
 
+    private String publicKeyBytesBase64;
+    private String privateKeyBytesBase64;
+    public static final String mypreference1 = "privatekey";
+    public static final String mypreference = "publickey";
+
+
     public CallsFragment() {
         // Required empty public constructor
     }
@@ -137,6 +155,7 @@ public class CallsFragment extends Fragment {
         minutes1 = calendar1.get(Calendar.MINUTE);
         final int ampm = calendar1.get(Calendar.AM_PM);
         tsTemp1 = String.format("%02d:%02d", hour1, minutes1) + "%" + date1 + "/" + month1 + "/" + year1;
+
 
 
         //if the user is not logged in
@@ -195,8 +214,37 @@ public class CallsFragment extends Fragment {
             //adding listener to button
 
 
+
             sharedpreferences = getActivity().getSharedPreferences(mypreference123,
                     Context.MODE_PRIVATE);
+
+            KeyPair kp = getKeyPair();
+
+            PublicKey publicKey = kp.getPublic();
+            byte[] publicKeyBytes = publicKey.getEncoded();
+
+
+            publicKeyBytesBase64 = new String(Base64.encode(publicKeyBytes, Base64.DEFAULT));
+
+            PrivateKey privateKey = kp.getPrivate();
+            byte[] privateKeyBytes = privateKey.getEncoded();
+            privateKeyBytesBase64 = new String(Base64.encode(privateKeyBytes, Base64.DEFAULT));
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+            if (!sharedpreferences.contains(mypreference)) {
+                mFireChatUsersRef.child(usermail.replace(".", "dot") + name3).child("Publickey").setValue(publicKeyBytesBase64);
+                //   mFireChatUsersRef.setValue(publicKeyBytesBase64);
+                editor.putString("publickey", publicKeyBytesBase64);
+                editor.apply();
+                editor.commit();
+            }
+            if (!sharedpreferences.contains(mypreference1)) {
+                editor.putString("privatekey", privateKeyBytesBase64);
+                editor.apply();
+                editor.commit();
+
+            }
+
             //    if (sharedpreferences.contains(Pass)) {
             //      savedpass = (sharedpreferences.getString(Pass, ""));
 
@@ -303,6 +351,11 @@ public class CallsFragment extends Fragment {
             startActivity(intent);
             return true;
         }
+        if (id == R.id.testdata) {
+            Intent intent = new Intent(getActivity(), testdata.class);
+            startActivity(intent);
+            return true;
+        }
 
 
         return super.onOptionsItemSelected(item);
@@ -366,6 +419,7 @@ public class CallsFragment extends Fragment {
 
                     myConnectionsStatusRef1.setValue(tsTemp1);
                     myConnectionsStatusRef.setValue(ReferenceUrl.KEY_ONLINE);
+
 
                     // When getActivity() device disconnects, remove it
                     //    String s = tsTemp.toString();
@@ -477,6 +531,63 @@ public class CallsFragment extends Fragment {
         }
 
         return dest.toString();
+    }
+
+    public static KeyPair getKeyPair() {
+        KeyPair kp = null;
+        try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            kpg.initialize(2048);
+            kp = kpg.generateKeyPair();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return kp;
+    }
+
+    public static String encryptRSAToString(String clearText, String publicKey) {
+        String encryptedBase64 = "";
+        try {
+            KeyFactory keyFac = KeyFactory.getInstance("RSA");
+            KeySpec keySpec = new X509EncodedKeySpec(Base64.decode(publicKey.trim().getBytes(), Base64.DEFAULT));
+            Key key = keyFac.generatePublic(keySpec);
+
+            // get an RSA cipher object and print the provider
+            final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
+            // encrypt the plain text using the public key
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+
+            byte[] encryptedBytes = cipher.doFinal(clearText.getBytes("UTF-8"));
+            encryptedBase64 = new String(Base64.encode(encryptedBytes, Base64.DEFAULT));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return encryptedBase64.replaceAll("(\\r|\\n)", "");
+    }
+
+    public static String decryptRSAToString(String encryptedBase64, String privateKey) {
+
+        String decryptedString = "";
+        try {
+            KeyFactory keyFac = KeyFactory.getInstance("RSA");
+            KeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decode(privateKey.trim().getBytes(), Base64.DEFAULT));
+            Key key = keyFac.generatePrivate(keySpec);
+
+            // get an RSA cipher object and print the provider
+            final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
+            // encrypt the plain text using the public key
+            cipher.init(Cipher.DECRYPT_MODE, key);
+
+            byte[] encryptedBytes = Base64.decode(encryptedBase64, Base64.DEFAULT);
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            decryptedString = new String(decryptedBytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return decryptedString;
     }
 
 }

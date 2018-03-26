@@ -17,6 +17,9 @@
         android:title="Logout"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item
+        android:id="@+id/testdata"
+        android:title="testdata" />
 
 
 </menu>

@@ -12,12 +12,17 @@ public class MessageChatModel {
     private String devicetoken;
 
     private int mRecipientOrSenderStatus;
+    private String message1;
 
 
     /* Setter */
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void setMessage1(String message1) {
+        this.message1 = message1;
     }
 
 
@@ -50,6 +55,9 @@ public class MessageChatModel {
         return message;
     }
 
+    public String getMessage1() {
+        return message1;
+    }
     public String getRecipient() {
         return recipient;
     }
