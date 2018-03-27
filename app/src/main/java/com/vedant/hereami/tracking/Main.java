@@ -95,11 +95,11 @@ public class Main extends RuntimePermissionsActivity {
         //      mCurrentLocale = locale;
         setContentView(R.layout.activity_main2);
         Firebase.setAndroidContext(this);
-        coordinatorLayout1 = (CoordinatorLayout) findViewById(R.id
+        coordinatorLayout1 = findViewById(R.id
                 .coordinatorLayoutmain);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        textViewUserEmail = (TextView) findViewById(R.id.textView2);
+        textViewUserEmail = findViewById(R.id.textView2);
         mFirebaseChatRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
 
@@ -192,13 +192,13 @@ public class Main extends RuntimePermissionsActivity {
 
 
             re();
-            b1 = (Button) findViewById(R.id.btn);
-            b2 = (Button) findViewById(R.id.btn_list);
-            b3 = (Button) findViewById(R.id.button2);
+            b1 = findViewById(R.id.btn);
+            b2 = findViewById(R.id.btn_list);
+            b3 = findViewById(R.id.button2);
 
-            b6 = (Button) findViewById(R.id.btn_propic);
-            b7 = (Button) findViewById(R.id.btn_recent);
-            b8 = (Button) findViewById(R.id.btn_regis);
+            b6 = findViewById(R.id.btn_propic);
+            b7 = findViewById(R.id.btn_recent);
+            b8 = findViewById(R.id.btn_regis);
 
 
             b1.setOnClickListener(new View.OnClickListener() {
@@ -263,7 +263,7 @@ public class Main extends RuntimePermissionsActivity {
         Main.super.requestAppPermissions(new
                         String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS}, R.string
+                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE}, R.string
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 

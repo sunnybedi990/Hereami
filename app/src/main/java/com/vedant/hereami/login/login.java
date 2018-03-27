@@ -57,11 +57,11 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         }
         re();
         //initializing views
-        mUserEmail = (EditText) findViewById(R.id.userEmailChat);
-        mUserPassWord = (EditText) findViewById(R.id.passWordChat);
-        mLoginToMChat = (Button) findViewById(R.id.btn_LogInChat);
-        mRegisterUser = (Button) findViewById(R.id.registerUser);
-        forgetpass = (TextView) findViewById(R.id.textview_forgetpassword);
+        mUserEmail = findViewById(R.id.userEmailChat);
+        mUserPassWord = findViewById(R.id.passWordChat);
+        mLoginToMChat = findViewById(R.id.btn_LogInChat);
+        mRegisterUser = findViewById(R.id.registerUser);
+        forgetpass = findViewById(R.id.textview_forgetpassword);
 
 
         progressDialog = new ProgressDialog(this);
@@ -168,7 +168,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         login.super.requestAppPermissions(new
                         String[]{
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.SEND_SMS, android.Manifest.permission.READ_SMS, Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.READ_CONTACTS}, R.string
+                        android.Manifest.permission.SEND_SMS, android.Manifest.permission.READ_SMS, Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE}, R.string
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 
