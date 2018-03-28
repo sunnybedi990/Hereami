@@ -142,6 +142,7 @@ public class chatactivity extends AppCompatActivity {
     private File imageFile;
     private StorageReference islandRef;
     private String mobilenumber;
+    private String message4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,9 +165,12 @@ public class chatactivity extends AppCompatActivity {
 
         message1 = bundle.getString("key_position1");
         message2 = bundle.getString("key_position");
+        message4 = bundle.getString("key_position3");
         namenumber = bundle.getString("namenumber");
         mobilenumber = bundle.getString("number");
-
+        if (message2 == null) {
+            message2 = message4;
+        }
         setTitle(namenumber);
 
         if (!isInternetOn()) {
@@ -538,6 +542,9 @@ public class chatactivity extends AppCompatActivity {
         // final String image;
 
         final String title1 = message3;
+        Log.e("email bol4", title);
+        Log.e("email bol5", title1);
+
 
         String[] parts = message3.replace("-", "").replace(title, "").replace("+", ":").split(":");  // escape .
         String part1 = parts[0];
