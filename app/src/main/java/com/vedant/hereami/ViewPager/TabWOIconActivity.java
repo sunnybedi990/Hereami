@@ -38,9 +38,9 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
         setContentView(R.layout.activity_tab_without_icon);
         //Initializing viewPager
         firebaseAuth = FirebaseAuth.getInstance();
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
-        coordinatorLayout1 = (CoordinatorLayout) findViewById(R.id
+        coordinatorLayout1 = findViewById(R.id
                 .coordinatorLayoutmain1);
         if (firebaseAuth.getCurrentUser() == null) {
             //closing this activity
@@ -49,7 +49,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
             startActivity(new Intent(this, login.class));
         }
         //Initializing the tablayout
-        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        tabLayout = findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -82,7 +82,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
         callsFragment=new CallsFragment();
         chatFragment=new ChatFragment();
         contactsFragment=new ContactsFragment();
-        adapter.addFragment(callsFragment, "Main");
+        adapter.addFragment(callsFragment, "Tracking");
         adapter.addFragment(chatFragment,"CHAT");
         //  adapter.addFragment(contactsFragment,"CONTACTS");
         viewPager.setAdapter(adapter);
@@ -96,7 +96,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
         TabWOIconActivity.super.requestAppPermissions(new
                         String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE}, R.string
+                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE}, R.string
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 

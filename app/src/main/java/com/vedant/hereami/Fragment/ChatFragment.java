@@ -284,6 +284,9 @@ public class ChatFragment extends Fragment {
 
 
                             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
+                            if (contactmatch == null) {
+                                contactmatch = tendigitnumber;
+                            }
 
 
                             if (lst.size() < countone) {
@@ -314,7 +317,7 @@ public class ChatFragment extends Fragment {
                         //                          Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
 
                         //                        Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                        Intent intent4 = new Intent(getActivity(), chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "").putExtra("number", tendigitnumber);
+                        Intent intent4 = new Intent(getActivity(), chatactivity.class).putExtra("key_position", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("key_position3", hashMap1.get(lst.get(position))).putExtra("namenumber", lst.get(position) + "").putExtra("number", tendigitnumber);
                         startActivity(intent4);
                         // overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }

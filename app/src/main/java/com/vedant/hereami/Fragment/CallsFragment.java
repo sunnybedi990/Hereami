@@ -38,13 +38,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.chatmain;
-import com.vedant.hereami.chatfolder.userphoto;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
 import com.vedant.hereami.login.login;
 import com.vedant.hereami.login.phonenumber;
 import com.vedant.hereami.secureencryption.testdata;
 import com.vedant.hereami.tracking.ListActivity;
-import com.vedant.hereami.tracking.MainActivity;
 import com.vedant.hereami.tracking.Sendlocation;
 
 import org.json.JSONException;
@@ -257,26 +255,18 @@ public class CallsFragment extends Fragment {
         // Inflate the layout for getActivity() fragment
         View view = inflater.inflate(R.layout.fragment_calls, container, false);
         //  listView = (ListView) view.findViewById(R.id.listview_chatmain1);
-        b1 = (Button) view.findViewById(R.id.btn);
-        b2 = (Button) view.findViewById(R.id.btn_list);
-        b3 = (Button) view.findViewById(R.id.button2);
-
-        b6 = (Button) view.findViewById(R.id.btn_propic);
-        b7 = (Button) view.findViewById(R.id.btn_recent);
-        b8 = (Button) view.findViewById(R.id.btn_regis);
-        coordinatorLayout1 = (CoordinatorLayout) view.findViewById(R.id
+        b1 = view.findViewById(R.id.button6);
+        b2 = view.findViewById(R.id.button2);
+        b3 = view.findViewById(R.id.button7);
+        b4 = view.findViewById(R.id.button8);
+        coordinatorLayout1 = view.findViewById(R.id
                 .coordinatorLayoutmain);
-        textViewUserEmail = (TextView) view.findViewById(R.id.textView2);
+
+
+        //    textViewUserEmail = (TextView) view.findViewById(R.id.textView2);
+
         //    mCustomSwipeRefreshLayout = (CustomSwipeRefreshLayout) view.findViewById(R.id.swipelayout);
         b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent1);
-                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-            }
-        });
-        b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(getActivity(), ListActivity.class);
@@ -284,7 +274,7 @@ public class CallsFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
-        b3.setOnClickListener(new View.OnClickListener() {
+        b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(getActivity(), Sendlocation.class);
@@ -293,14 +283,24 @@ public class CallsFragment extends Fragment {
             }
         });
 
-        b6.setOnClickListener(new View.OnClickListener() {
+        b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), userphoto.class);
+                Intent intent1 = new Intent(getActivity(), chatmain.class);
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
+
+        b4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(getActivity(), viewcurrentuserprofile.class);
+                startActivity(intent1);
+                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+            }
+        });
+        /*
         b7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -317,7 +317,7 @@ public class CallsFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
-
+*/
         if (!isInternetOn()) {
 
 

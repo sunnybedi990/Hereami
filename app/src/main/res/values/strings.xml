@@ -110,4 +110,5 @@
     <string name="profile">Profile</string>
     <string name="title_activity_status">status</string>
     <string name="type_you_status_here">Type You Status here</string>
+    <string name="welcome_to_tracker">Welcome to Tracker</string>
 </resources>

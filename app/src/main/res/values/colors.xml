@@ -18,7 +18,7 @@
     <color name="defaultContentColor">@android:color/black</color>
     <color name="shadow_1">#d4d4d4</color>
     <color name="shadow_2">#dddddd</color>
-    <color name="card_background">#ffffff</color>
+    <color name="card_background">#502eb7</color>
     <color name="color1">#202020</color>
     <color name="selectedTile">#222124</color>
     <color name="color2">#69f0ae</color>

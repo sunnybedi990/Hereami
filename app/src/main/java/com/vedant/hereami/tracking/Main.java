@@ -192,13 +192,13 @@ public class Main extends RuntimePermissionsActivity {
 
 
             re();
-            b1 = findViewById(R.id.btn);
-            b2 = findViewById(R.id.btn_list);
+            //    b1 = findViewById(R.id.btn);
+            //    b2 = findViewById(R.id.btn_list);
             b3 = findViewById(R.id.button2);
 
-            b6 = findViewById(R.id.btn_propic);
-            b7 = findViewById(R.id.btn_recent);
-            b8 = findViewById(R.id.btn_regis);
+            //  b6 = findViewById(R.id.btn_propic);
+            //  b7 = findViewById(R.id.btn_recent);
+            //b8 = findViewById(R.id.btn_regis);
 
 
             b1.setOnClickListener(new View.OnClickListener() {
