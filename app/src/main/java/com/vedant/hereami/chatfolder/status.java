@@ -30,11 +30,12 @@ public class status extends AppCompatActivity {
     private String picturePath;
     private Button mRegisterButton;
     private Firebase myConnectionsStatusRef2;
+    private Firebase myConnectionsStatusRef3;
     private Firebase mFireChatUsersRef;
     private Firebase mFirebaseMessagesChatconnectioncheck;
     private String connectionstatus, connectionstatus1;
     private String currentuser;
-    private TextView nametxt;
+    private EditText nametxt;
     private EditText statustxt;
 
     private String username;
@@ -45,10 +46,12 @@ public class status extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
+        setTitle("Profile");
         firebaseAuth = FirebaseAuth.getInstance();
-        statustxt = (EditText) findViewById(R.id.status_edittext);
-        sendbutton = (Button) findViewById(R.id.btn_status_send);
-        cancellbutton = (Button) findViewById(R.id.btn_status_cancel);
+        statustxt = findViewById(R.id.status_edittext);
+        nametxt = findViewById(R.id.name_edittext2);
+        sendbutton = findViewById(R.id.btn_status_send);
+        cancellbutton = findViewById(R.id.btn_status_cancel);
 
         if (firebaseAuth.getCurrentUser() == null) {
             //closing this activity
@@ -64,6 +67,7 @@ public class status extends AppCompatActivity {
             Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
             mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
             myConnectionsStatusRef2 = mFireChatUsersRef.child(currentuser).child(ReferenceUrl.status);
+            myConnectionsStatusRef3 = mFireChatUsersRef.child(currentuser).child(ReferenceUrl.name);
             mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
 
 
@@ -78,7 +82,7 @@ public class status extends AppCompatActivity {
         mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
 
 
-            private String statusstatus;
+            private String statusstatus, stringname;
 
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot1) {
@@ -87,12 +91,15 @@ public class status extends AppCompatActivity {
 
 
                     statusstatus = dataSnapshot1.child(currentuser).child(ReferenceUrl.status).getValue().toString();
-
+                    stringname = dataSnapshot1.child(currentuser).child(ReferenceUrl.name).getValue().toString();
                     statustxt.setText(statusstatus);
+                    nametxt.setText(stringname);
                     sendbutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             myConnectionsStatusRef2.setValue(statustxt.getText().toString());
+                            myConnectionsStatusRef3.setValue(nametxt.getText().toString());
+
                             finish();
                         }
                     });

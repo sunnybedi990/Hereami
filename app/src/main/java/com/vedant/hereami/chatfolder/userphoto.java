@@ -8,9 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -33,6 +36,7 @@ import com.vedant.hereami.R;
 import com.vedant.hereami.login.login;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -56,6 +60,7 @@ public class userphoto extends Activity implements View.OnClickListener {
     private Uri selectedImage;
     private StorageReference storageReference;
     private FirebaseStorage storage;
+    private StorageReference riversRef;
 
 
     @Override
@@ -164,6 +169,7 @@ public class userphoto extends Activity implements View.OnClickListener {
             if (picturePath != null)
             userpropic();
             uploadFile();
+            downloadFile();
         }
     }
 
@@ -210,7 +216,7 @@ public class userphoto extends Activity implements View.OnClickListener {
             progressDialog.show();
 
 
-            StorageReference riversRef = storageReference.child("propic/" + currentuser + ".jpg");
+            riversRef = storageReference.child("propic/" + currentuser + ".jpg");
             riversRef.putFile(selectedImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -249,6 +255,32 @@ public class userphoto extends Activity implements View.OnClickListener {
         else {
             //you can display an error toast
         }
+    }
+
+    private void downloadFile() {
+
+
+        riversRef = storageReference.child("propic/" + currentuser + ".jpg");
+        File rootPath = new File(Environment.getExternalStorageDirectory(), "/HereamI/");
+        if (!rootPath.exists()) {
+            rootPath.mkdirs();
+        }
+
+        final File localFile = new File(rootPath, currentuser + "1.jpg");
+        Log.e("firebase12 ", ";local tem file created  created " + localFile.toString());
+        riversRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Log.e("firebase ", ";local tem file created  created " + localFile.toString());
+
+                //  updateDb(timestamp,localFile.toString(),position);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e("firebase ", ";local tem file not created  created " + exception.toString());
+            }
+        });
     }
 }
 
