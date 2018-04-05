@@ -508,7 +508,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == android.view.KeyEvent.KEYCODE_BACK) {
-            Intent i = new Intent(TestActivity.this, Main.class);
+            Intent i = new Intent(TestActivity.this, ListActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);

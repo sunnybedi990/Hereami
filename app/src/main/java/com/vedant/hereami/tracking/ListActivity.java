@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.SpannableString;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.vedant.hereami.R;
+import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
 import com.vedant.hereami.swiperefresh.MyCustomHeadView;
 
@@ -62,8 +64,8 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         setTitle("Users");
-        listView = (ListView) findViewById(R.id.listview1);
-        mCustomSwipeRefreshLayout = (CustomSwipeRefreshLayout) findViewById(R.id.swipelayout);
+        listView = findViewById(R.id.listview1);
+        mCustomSwipeRefreshLayout = findViewById(R.id.swipelayout);
         mCustomSwipeRefreshLayout.setOnRefreshListener(ListActivity.this);
         mCustomSwipeRefreshLayout.setCustomHeadview(new MyCustomHeadView(this));
         mCustomSwipeRefreshLayout.setProgressBarColorRes();
@@ -315,6 +317,16 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             }
         }
+    }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == android.view.KeyEvent.KEYCODE_BACK) {
+            Intent i = new Intent(ListActivity.this, TabWOIconActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+        }
+        return super.onKeyDown(keycode, event);
     }
 }
 

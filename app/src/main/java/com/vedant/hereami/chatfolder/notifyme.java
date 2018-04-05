@@ -162,7 +162,7 @@ public class notifyme extends BroadcastReceiver {
 
         senderMessage = message.toString();
 
-        TimeZone pdt = TimeZone.getDefault();
+        TimeZone pdt = TimeZone.getTimeZone("UTC");
 
         Calendar calendar = new GregorianCalendar(pdt);
         Date trialTime = new Date();
@@ -171,7 +171,7 @@ public class notifyme extends BroadcastReceiver {
         int date = calendar.get(Calendar.DATE);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);
         tsTemp = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
         if (senderMessage.length() < 6) {
@@ -226,7 +226,7 @@ public class notifyme extends BroadcastReceiver {
 
     private void sendSinglePush() {
         final String title = user.getEmail().replace(".", "dot") + user.getDisplayName();
-        final String message = senderMessage;
+        final String message = CallsFragment.encryptRSAToString(senderMessage, publickey);
         final String title1 = message2.replace("-", "").replace(title, "");
         // final String image;
 

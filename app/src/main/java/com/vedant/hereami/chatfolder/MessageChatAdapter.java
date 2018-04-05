@@ -11,10 +11,13 @@ import android.widget.TextView;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 
@@ -25,7 +28,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<MessageChatModel> mListOfFireChat;
     private static final int SENDER = 0;
     private static final int RECIPIENT = 1;
-    TimeZone pdt = TimeZone.getDefault();
+    TimeZone pdt = TimeZone.getTimeZone("UTC");
 
     public static final String mypreference1 = "privatekey";
     public static final String mypreference123 = "mypref123";
@@ -104,11 +107,30 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         String[] parts1 = senderFireMessage.getTimestamp().split("%");
         String part4 = parts1[0];
         String part5 = parts1[1];
+        String timecheck = null;
+        String dateset = null;
 
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
+        SimpleDateFormat df1 = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        //    SimpleDateFormat df1 = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+
+        try {
+            df.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date date = df.parse(senderFireMessage.getTimestamp().replace("%", " "));
+            df1.setTimeZone(TimeZone.getDefault());
+            timecheck = df1.format(date);
+            df2.setTimeZone(TimeZone.getDefault());
+            dateset = df2.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if (!part5.equals(todaycheck)) {
-            s = part5;
+            //  s = part5;
+            s = dateset;
         } else {
-            s = part4;
+            //  s = part4;
+            s = timecheck;
         }
         viewHolderSender.getSenderMessagetimeTextView().setText(s);
 
@@ -195,8 +217,8 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public ViewHolderSender(View itemView) {
             super(itemView);
-            mSenderMessageTextView = (TextView) itemView.findViewById(R.id.senderMessage);
-            mSenderMessagetimeTextView = (TextView) itemView.findViewById(R.id.senderMessagetime);
+            mSenderMessageTextView = itemView.findViewById(R.id.senderMessage);
+            mSenderMessagetimeTextView = itemView.findViewById(R.id.senderMessagetime);
         }
 
         public TextView getSenderMessageTextView() {
@@ -225,8 +247,8 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public ViewHolderRecipient(View itemView) {
             super(itemView);
-            mRecipientMessageTextView = (TextView) itemView.findViewById(R.id.recipientMessage);
-            mRecipientMessagetimeTextView = (TextView) itemView.findViewById(R.id.recipientMessagetime);
+            mRecipientMessageTextView = itemView.findViewById(R.id.recipientMessage);
+            mRecipientMessagetimeTextView = itemView.findViewById(R.id.recipientMessagetime);
         }
 
         public TextView getRecipientMessageTextView() {

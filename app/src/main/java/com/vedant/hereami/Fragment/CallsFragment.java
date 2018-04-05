@@ -57,6 +57,7 @@ import java.security.PublicKey;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -138,10 +139,11 @@ public class CallsFragment extends Fragment {
         mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
 
 
+
         // set up rules for Daylight Saving Time
         //      pdt.setStartRule(Calendar.APRIL, 1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
         //     pdt.setEndRule(Calendar.OCTOBER, -1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
-        TimeZone pdt = TimeZone.getDefault();
+        TimeZone pdt = TimeZone.getTimeZone("UTC");
         calendar1 = new GregorianCalendar(pdt);
         Date trialTime = new Date();
         calendar1.setTime(trialTime);
@@ -149,7 +151,7 @@ public class CallsFragment extends Fragment {
         int date1 = calendar1.get(Calendar.DATE);
         int month1 = calendar1.get(Calendar.MONTH);
         int year1 = calendar1.get(Calendar.YEAR);
-        hour1 = calendar1.get(Calendar.HOUR);
+        hour1 = calendar1.get(Calendar.HOUR_OF_DAY);
         minutes1 = calendar1.get(Calendar.MINUTE);
         final int ampm = calendar1.get(Calendar.AM_PM);
         tsTemp1 = String.format("%02d:%02d", hour1, minutes1) + "%" + date1 + "/" + month1 + "/" + year1;
@@ -194,6 +196,7 @@ public class CallsFragment extends Fragment {
             } else {
 //                textViewUserEmail.setText("Welcome " + usermail);
                 System.out.println("Main.onCreate: " + FirebaseInstanceId.getInstance().getToken());
+
                 connectionstatus();
                 currentuser = usermail.replace(".", "dot") + user.getDisplayName();
                 token = FirebaseInstanceId.getInstance().getToken();
@@ -393,7 +396,7 @@ public class CallsFragment extends Fragment {
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            TimeZone pdt = TimeZone.getDefault();
+                                            TimeZone pdt = TimeZone.getTimeZone("UTC");
                                             calendar = new GregorianCalendar(pdt);
                                             Date trialTime = new Date();
                                             calendar.setTime(trialTime);
@@ -401,9 +404,11 @@ public class CallsFragment extends Fragment {
                                             int date = calendar.get(Calendar.DATE);
                                             int month = calendar.get(Calendar.MONTH);
                                             int year = calendar.get(Calendar.YEAR);
-                                            hour = calendar.get(Calendar.HOUR);
+                                            hour = calendar.get(Calendar.HOUR_OF_DAY);
                                             minutes = calendar.get(Calendar.MINUTE);
                                             final int ampm = calendar.get(Calendar.AM_PM);
+                                            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm", Locale.ENGLISH);
+                                            String test = sdf.format(calendar.getTime());
                                             tsTemp = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
 
                                             myConnectionsStatusRef1.onDisconnect().setValue(tsTemp);
@@ -596,5 +601,6 @@ public class CallsFragment extends Fragment {
 
         return decryptedString;
     }
+
 
 }

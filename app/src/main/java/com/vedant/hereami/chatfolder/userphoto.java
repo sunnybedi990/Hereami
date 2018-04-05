@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +31,6 @@ import com.google.firebase.storage.UploadTask;
 import com.vedant.hereami.R;
 import com.vedant.hereami.login.login;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -61,6 +56,7 @@ public class userphoto extends Activity implements View.OnClickListener {
     private StorageReference storageReference;
     private FirebaseStorage storage;
     private StorageReference riversRef;
+    private Bitmap myBitmap;
 
 
     @Override
@@ -98,7 +94,16 @@ public class userphoto extends Activity implements View.OnClickListener {
             mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
             myConnectionsStatusRef2 = mFireChatUsersRef.child(usermail.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.image);
             mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
-            previewStoredFirebaseImage();
+            File imgFile = new File(Environment.getExternalStorageDirectory().getPath() + "/HereamI/" + currentuser + "1.jpg");
+            if (imgFile.exists()) {
+
+                myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                propic.setImageBitmap(myBitmap);
+            } else {
+                propic.setImageResource(R.drawable.headshot_7);
+                downloadFile();
+            }
+            //  previewStoredFirebaseImage();
             //     Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
 
             propic.setOnClickListener(new View.OnClickListener() {
@@ -146,33 +151,34 @@ public class userphoto extends Activity implements View.OnClickListener {
         }
     }
 
-    public void userpropic() {
+    /*
+        public void userpropic() {
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
-        Bitmap bitmap = BitmapFactory.decodeFile(picturePath, options);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
+            Bitmap bitmap = BitmapFactory.decodeFile(picturePath, options);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] bytes = baos.toByteArray();
+            String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
 
-        // we finally have our base64 string version of the image, save it.
-        myConnectionsStatusRef2.setValue(base64Image);
-        //    System.out.println("Stored image with length: " + bytes.length);
-        Toast.makeText(this, "Uploaded", Toast.LENGTH_LONG).show();
-    }
-
+            // we finally have our base64 string version of the image, save it.
+            myConnectionsStatusRef2.setValue(base64Image);
+            //    System.out.println("Stored image with length: " + bytes.length);
+            Toast.makeText(this, "Uploaded", Toast.LENGTH_LONG).show();
+        }
+    */
     @Override
 
     public void onClick(View v) {
         if (v == mRegisterButton) {
             if (picturePath != null)
-            userpropic();
+                //      userpropic();
             uploadFile();
             downloadFile();
         }
     }
-
+/*
     private void previewStoredFirebaseImage() {
 
 
@@ -206,6 +212,7 @@ public class userphoto extends Activity implements View.OnClickListener {
 
         });
     }
+    */
 
     private void uploadFile() {
         //if there is a file to upload

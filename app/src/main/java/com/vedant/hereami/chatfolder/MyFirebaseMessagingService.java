@@ -20,6 +20,7 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.RingtoneManager;
@@ -34,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.tracking.MainActivity;
 import com.vedant.hereami.R;
 
@@ -61,6 +63,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private FirebaseUser user;
     private String titlenum;
 
+    public static final String mypreference123 = "mypref123";
+    private SharedPreferences sharedpreferences;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         //Displaying data in log
@@ -68,7 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Firebase.setAndroidContext(this);
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
-
+        sharedpreferences = getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 //        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
         if (remoteMessage.getData().size() > 0) {
@@ -136,7 +141,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
             title = contactmatch;
             //getdp();
+            String encrytionprivatekey = sharedpreferences.getString("privatekey", "");
             String message = data.getString("message");
+            String decryptedmessage = CallsFragment.decryptRSAToString(message, encrytionprivatekey);
             String imageUrl = data.getString("image");
 
             //creating MyNotificationManager object
@@ -148,12 +155,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //if there is no image
             if (imageUrl.equals("null")) {
                 //displaying small notification
-                mNotificationManager.showSmallNotification(title, message, intent, title8, titlenum, tendigitnumber);
+                mNotificationManager.showSmallNotification(title, decryptedmessage, intent, title8, titlenum, tendigitnumber);
 
             } else {
                 //if there is an image
                 //displaying a big notification
-                mNotificationManager.showBigNotification(title, message, imageUrl, intent, tendigitnumber);
+                mNotificationManager.showBigNotification(title, decryptedmessage, imageUrl, intent, tendigitnumber);
             }
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: " + e.getMessage());

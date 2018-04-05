@@ -54,12 +54,15 @@ import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -143,7 +146,7 @@ public class chatactivity extends AppCompatActivity {
     private StorageReference islandRef;
     private String mobilenumber;
     private String message4;
-
+    static final String DATEFORMAT = "HH:mm%dd-MM-yyyy";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,7 +194,7 @@ public class chatactivity extends AppCompatActivity {
             // Set recipient uid
 
 
-            TimeZone pdt = TimeZone.getDefault();
+            TimeZone pdt = TimeZone.getTimeZone("UTC");
             Calendar calendar1 = new GregorianCalendar(pdt);
             Date trialTime = new Date();
             calendar1.setTime(trialTime);
@@ -200,6 +203,7 @@ public class chatactivity extends AppCompatActivity {
             int month1 = calendar1.get(Calendar.MONTH);
             int year1 = calendar1.get(Calendar.YEAR);
             todaycheck = date1 + "/" + month1 + "/" + year1;
+            Log.e("date", todaycheck);
             // Set sender uid;
 
 
@@ -401,17 +405,44 @@ public class chatactivity extends AppCompatActivity {
                         //       menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_launcher));
                         connectionstatus = dataSnapshot1.child(message3).child(ReferenceUrl.CHILD_CONNECTION).getValue().toString();
                         connectionstatus1 = dataSnapshot1.child(message3).child(ReferenceUrl.timestamp).getValue().toString();
+                        String newtime = connectionstatus1.replace("%", " ");
                         String[] parts1 = connectionstatus1.split("%");
                         String part4 = parts1[0];
                         String part5 = parts1[1];
                         String s;
+                        String timecheck = null;
+                        String dateset = null;
+
+                        SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
+                        SimpleDateFormat df1 = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+                        SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+
+
+                        try {
+                            df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                            Date date = df.parse(newtime);
+                            df1.setTimeZone(TimeZone.getDefault());
+                            timecheck = df1.format(date);
+                            df.setTimeZone(TimeZone.getDefault());
+                            dateset = df.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        //    df1.setTimeZone(TimeZone.getDefault());
+
+                        //    String datecheck = df1.format(part5);
                         if (!part5.equals(todaycheck)) {
-                            s = connectionstatus1;
+                            //   s = connectionstatus1;
+                            s = dateset;
+                            Log.e("date1", part5 + ")");
+
                         } else {
-                            s = part4;
+                            //  s = part4;
+                            s = timecheck;
+                            Log.e("date2", s + ")");
                         }
                         if (connectionstatus.equals("offline")) {
-                            mUserMessageChatconnection.setText("last seen at " + s.replace("%", " "));
+                            mUserMessageChatconnection.setText("last seen at " + s);
                         } else
 
                             mUserMessageChatconnection.setText(connectionstatus);
@@ -491,7 +522,7 @@ public class chatactivity extends AppCompatActivity {
             // begin output
             // System.out.println("Current Time");
 
-            TimeZone pdt = TimeZone.getDefault();
+            TimeZone pdt = TimeZone.getTimeZone("UTC");
 
             // set up rules for Daylight Saving Time
             //      pdt.setStartRule(Calendar.APRIL, 1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
@@ -503,7 +534,7 @@ public class chatactivity extends AppCompatActivity {
             int date = calendar.get(Calendar.DATE);
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
-            int hour = calendar.get(Calendar.HOUR);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minutes = calendar.get(Calendar.MINUTE);
             String tsTemp = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
             //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
@@ -538,7 +569,7 @@ public class chatactivity extends AppCompatActivity {
 
     private void sendSinglePush() {
         final String title = user.getEmail().replace(".","dot")+user.getDisplayName();
-        final String message = senderMessage;
+        final String message = CallsFragment.encryptRSAToString(senderMessage, publickey);
         // final String image;
 
         final String title1 = message3;
@@ -727,5 +758,39 @@ public class chatactivity extends AppCompatActivity {
                 Log.e("firebase ", ";local tem file not created  created " + exception.toString());
             }
         });
+    }
+
+    public static Date GetUTCdatetimeAsDate() {
+        //note: doesn't check for null
+        return StringDateToDate(GetUTCdatetimeAsString());
+    }
+
+    public static String GetUTCdatetimeAsString() {
+        final SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        final String utcTime = sdf.format(new Date());
+
+        return utcTime;
+    }
+
+    public static Date StringDateToDate(String StrDate) {
+        Date dateToReturn = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATEFORMAT);
+
+        try {
+            dateToReturn = dateFormat.parse(StrDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateToReturn;
+    }
+
+    public static String GetdefaultdatetimeAsString() {
+        final SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
+        sdf.setTimeZone(TimeZone.getDefault());
+        final String utcTime = sdf.format(new Date());
+
+        return utcTime;
     }
 }
