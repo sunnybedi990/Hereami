@@ -3,6 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.vedant.hereami">
 
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -42,7 +51,6 @@
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -237,7 +245,35 @@
         <activity
             android:name=".secureencryption.testdata"
             android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".voip.CallScreenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".voip.IncomingCallScreenActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat" />
 
+        <service android:name=".voip.SinchService" />
+
+        <receiver
+            android:name=".chatfolder.startnotificationservice"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".voip.SensorRestarterBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="uk.ac.shef.oak.ActivityRecognition.RestartSensor" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

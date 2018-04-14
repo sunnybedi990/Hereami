@@ -33,6 +33,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.MessageChatModel;
 import com.vedant.hereami.chatfolder.chatactivity;
@@ -106,6 +107,7 @@ public class ChatFragment extends Fragment {
         Firebase.setAndroidContext(getActivity());
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         context = getContext();
 
         //  RecentUser = (ListView) findViewById(R.id.list_recent);

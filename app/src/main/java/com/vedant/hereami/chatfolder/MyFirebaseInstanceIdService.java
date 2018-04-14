@@ -15,6 +15,7 @@
  */
 package com.vedant.hereami.chatfolder;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -51,4 +52,5 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
         //we will save the token in sharedpreferences later
     //    SharedPrefManager.getInstance(getApplicationContext()).saveDeviceToken(token);
     // }
+
 }

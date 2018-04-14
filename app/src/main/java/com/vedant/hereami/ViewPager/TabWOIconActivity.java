@@ -1,7 +1,9 @@
 package com.vedant.hereami.ViewPager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -10,13 +12,16 @@ import android.view.KeyEvent;
 import android.widget.ArrayAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.sinch.android.rtc.Sinch;
+import com.sinch.android.rtc.SinchClient;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.Fragment.ChatFragment;
 import com.vedant.hereami.Fragment.ContactsFragment;
 import com.vedant.hereami.R;
+import com.vedant.hereami.login.login;
 import com.vedant.hereami.miscellaneous.RuntimePermissionsActivity;
 import com.vedant.hereami.miscellaneous.ViewPagerAdapter;
-import com.vedant.hereami.login.login;
+import com.vedant.hereami.voip.SinchService;
 
 public class TabWOIconActivity extends RuntimePermissionsActivity {
     private static final int REQUEST_PERMISSIONS = 5;
@@ -31,6 +36,10 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
     private FirebaseAuth firebaseAuth;
     private ArrayAdapter<String> itemsAdapter;
     private CoordinatorLayout coordinatorLayout1;
+    private SinchClient mSinchClient;
+    private String mUserId;
+    public static final String mypreference123 = "mypref123";
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +81,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
 
         setupViewPager(viewPager);
         re();
+        //   connect();
 
     }
 
@@ -96,7 +106,9 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
         TabWOIconActivity.super.requestAppPermissions(new
                         String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CALL_PHONE}, R.string
+                        Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS,
+                        Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CALL_PHONE, Manifest.permission.RECORD_AUDIO}, R.string
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 
@@ -110,4 +122,18 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
         return super.onKeyDown(keycode, event);
     }
 
+    public void connect() {
+        SharedPreferences sharedpreferences = getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+        userName = sharedpreferences.getString("username", "");
+
+        mSinchClient = Sinch.getSinchClientBuilder().context(getApplicationContext()).userId(userName)
+                .applicationKey(SinchService.APP_KEY)
+                .applicationSecret(SinchService.APP_SECRET)
+                .environmentHost(SinchService.ENVIRONMENT).build();
+
+        mSinchClient.setSupportCalling(true);
+        mSinchClient.startListeningOnActiveConnection();
+
+        mSinchClient.start();
+    }
 }

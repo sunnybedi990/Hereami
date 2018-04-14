@@ -1,11 +1,15 @@
 package com.vedant.hereami.chatfolder;
 
 
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -15,15 +19,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.RemoteInput;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,11 +52,17 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.sinch.android.rtc.SinchClient;
+import com.sinch.android.rtc.calling.Call;
+import com.sinch.android.rtc.calling.CallClient;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
+import com.vedant.hereami.voip.BaseActivity;
+import com.vedant.hereami.voip.CallScreenActivity;
+import com.vedant.hereami.voip.SinchService;
 
 import java.io.File;
 import java.text.ParseException;
@@ -68,8 +79,7 @@ import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
-public class chatactivity extends AppCompatActivity {
+public class chatactivity extends BaseActivity {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static final String TAG = chatactivity.class.getSimpleName();
     public static String seedValue = "youcantseeme@9900";
@@ -147,6 +157,21 @@ public class chatactivity extends AppCompatActivity {
     private String mobilenumber;
     private String message4;
     static final String DATEFORMAT = "HH:mm%dd-MM-yyyy";
+
+    private TextView callState;
+    private SinchClient sinchClient;
+    private Button button;
+    private String callerId;
+    private String recipientId;
+    private CallClient sinchServiceInterface;
+    private ProgressDialog mSpinner;
+    private String userName;
+    private String usercall;
+    private Call call;
+    private SinchService sinch;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,6 +180,7 @@ public class chatactivity extends AppCompatActivity {
                 .coordinatorLayoutmain3);
         actionBar = getSupportActionBar();
         firebaseAuth = FirebaseAuth.getInstance();
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         storage = FirebaseStorage.getInstance();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -211,6 +237,7 @@ public class chatactivity extends AppCompatActivity {
             mChatRecyclerView = findViewById(R.id.chat_recycler_view);
             mUserMessageChatText = findViewById(R.id.chat_user_message);
             mUserMessageChatconnection = findViewById(R.id.text_connection);
+            button = findViewById(R.id.button9);
 
 
             mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -236,11 +263,13 @@ public class chatactivity extends AppCompatActivity {
             if (message1 != null) {
                 mRecipientUid = message1;
                 message3 = message1;
+                recipientId = message1;
                 //   message1 = message2.replace("-", "").replace(mSenderUid, "");
                 mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message1);
                 mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message1).child(mSenderUid);
                 messages();
                 downloadFile();
+                snichclient();
 
 
             } else {
@@ -248,16 +277,18 @@ public class chatactivity extends AppCompatActivity {
                     mRecipientUid = message2;
                     //    message1 = message2;
                     message3 = message2;
+                    recipientId = message2;
                     mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(mSenderUid).child(message2);
                     mFirebaseMessagesChat13 = mFirebaseMessagesChat.child(message2).child(mSenderUid);
                     messages();
                     downloadFile();
+                    snichclient();
                 }
             }
 
         }
         currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
-
+        callerId = currentuser;
         //    if (message2 != null) {
         //      mFirebaseMessagesChat12 = mFirebaseMessagesChat.child(message2);
         //    messages();
@@ -273,6 +304,19 @@ public class chatactivity extends AppCompatActivity {
 
     }
 
+
+    public void snichclient() {
+        usercall = recipientId;
+
+//        getSinchServiceInterface().startClient(mSenderUid);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                callButtonClicked();
+            }
+        });
+    }
     public void startchat() {
         mFirebaseMessagesChat.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -334,6 +378,7 @@ public class chatactivity extends AppCompatActivity {
                         mMessageChatAdapter.refillAdapter(newMessage);
                         mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount() - 1);
 
+
                 }
             }
 
@@ -344,6 +389,7 @@ public class chatactivity extends AppCompatActivity {
 
                 //  }
         });
+
 
 
         mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
@@ -471,6 +517,9 @@ public class chatactivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (getSinchServiceInterface() != null) {
+            getSinchServiceInterface().stopClient();
+        }
         super.onDestroy();
         //Log.e(TAG, " I am onDestroy");
     }
@@ -483,6 +532,9 @@ public class chatactivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
         super.onPause();
         Log.e(TAG, "I am onPause");
 
@@ -607,7 +659,7 @@ public class chatactivity extends AppCompatActivity {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("title", title1 + mSenderUid);
                 params.put("message", message);
@@ -793,4 +845,121 @@ public class chatactivity extends AppCompatActivity {
 
         return utcTime;
     }
+
+    private void callButtonClicked() {
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+  /* //     assert locationManager != null;
+     //   Location lastLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+     //   Double longitude = lastLoc.getLongitude();
+     //   Double latitude = lastLoc.getLatitude();
+
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("location", addresses.get(0).getAddressLine(0));
+*/
+
+        userName = mRecipientUid;
+        if (userName.isEmpty()) {
+            Toast.makeText(this, "Please enter a user to call", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (usercall == null) {
+            Toast.makeText(this, "Please enter a user to call", Toast.LENGTH_LONG).show();
+        } else {
+            call = getSinchServiceInterface().callUser(usercall);
+            String callId = call.getCallId();
+            // sendSinglePushnotification();
+            Intent callScreen = new Intent(this, CallScreenActivity.class);
+            callScreen.putExtra(SinchService.CALL_ID, callId);
+            startActivity(callScreen);
+        }
+    }
+
+
+    private void showSpinner() {
+        mSpinner = new ProgressDialog(this);
+        mSpinner.setTitle("Logging in");
+        mSpinner.show();
+    }
+
+    private void sendSinglePushnotification() {
+        final String title = user.getEmail().replace(".", "dot") + user.getDisplayName();
+        final String message = "Incoming Call";
+        // final String image;
+
+        final String title1 = message3;
+        Log.e("email bol4", title);
+        Log.e("email bol5", title1);
+
+
+        String[] parts = message3.replace("-", "").replace(title, "").replace("+", ":").split(":");  // escape .
+        String part1 = parts[0];
+//          String part2 = parts[1];
+        //  String tendigitnumber = getLastThree(part2);
+        final String email = part1.replace("dot", ".");
+
+        Log.e("email bol", title);
+        Log.e("email bol1", message);
+        Log.e("email bol2", title1);
+        Log.e("email bol3", email);
+
+//        progressDialog.setMessage("Sending Push");
+        //      progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EndPoints.URL_SEND_SINGLE_PUSH,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //                    progressDialog.dismiss();
+
+                        Toast.makeText(chatactivity.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("title", title1);
+                params.put("message", message);
+
+                //     if (!TextUtils.isEmpty(image))
+                //       params.put("image", image);
+
+                params.put("email", email);
+                return params;
+
+            }
+        };
+
+        MyVolley.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+
+
+
+
 }

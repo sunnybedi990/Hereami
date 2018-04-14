@@ -30,6 +30,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int RECIPIENT = 1;
     TimeZone pdt = TimeZone.getTimeZone("UTC");
 
+
     public static final String mypreference1 = "privatekey";
     public static final String mypreference123 = "mypref123";
     Context mcontext;
@@ -60,6 +61,12 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -78,7 +85,9 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 viewHolder = new ViewHolderSender(viewSenderDefault);
                 break;
         }
+
         return viewHolder;
+
     }
 
     @Override

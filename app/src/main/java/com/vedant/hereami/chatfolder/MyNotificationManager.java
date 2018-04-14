@@ -85,7 +85,6 @@ public class MyNotificationManager {
         this.mCtx = mCtx;
     }
 
-
     //the method will show a big notification with an image
     //parameters are title for message title, message for message text, url of the big image and an intent that will open
     //when you will tap on the notification
@@ -103,12 +102,12 @@ public class MyNotificationManager {
         bigPictureStyle.bigPicture(getBitmapFromURL(url));
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
         Notification notification;
-        notification = mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setWhen(0)
+        notification = mBuilder.setSmallIcon(R.drawable.noti).setTicker(title).setWhen(0)
                 .setAutoCancel(true)
                 .setContentIntent(resultPendingIntent)
                 .setContentTitle(title)
                 .setStyle(bigPictureStyle)
-                .setSmallIcon(R.drawable.image)
+                .setSmallIcon(R.drawable.noti)
                 .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.drawable.image))
                 .setContentText(message).setPriority(Notification.PRIORITY_MAX)
                 .build();
@@ -174,13 +173,13 @@ public class MyNotificationManager {
         //   notificationManager = NotificationManagerCompat.from(mCtx);
         notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
-
-        mBuilder.setSmallIcon(R.drawable.image).setTicker(title).setShowWhen(true).setWhen(System.currentTimeMillis())
+        int color = 0x7f06004c;
+        mBuilder.setTicker(title).setShowWhen(true).setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setContentTitle(title)
-                .addAction(action)
-                .setSmallIcon(R.drawable.image).setPriority(Notification.PRIORITY_MAX)
+                .addAction(action).setColor(color)
+                .setSmallIcon(getNotificationIcon()).setPriority(Notification.PRIORITY_MAX)
                 .setContentText(message);
         //  firstTime = false;
 
@@ -248,6 +247,11 @@ public class MyNotificationManager {
         bitmap.recycle();
 
         return output;
+    }
+
+    private int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.drawable.noti1 : R.drawable.noti1;
     }
 
 

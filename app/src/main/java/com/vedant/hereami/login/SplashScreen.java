@@ -1,11 +1,12 @@
 package com.vedant.hereami.login;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -13,24 +14,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.sinch.android.rtc.SinchError;
 import com.vedant.hereami.BuildConfig;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
 import com.vedant.hereami.chatfolder.AppUtill;
 import com.vedant.hereami.chatfolder.BadgeUtils;
+import com.vedant.hereami.voip.BaseActivity;
+import com.vedant.hereami.voip.SinchService;
 
-public class SplashScreen extends Activity {
+public class SplashScreen extends BaseActivity implements SinchService.StartFailedListener {
     private FirebaseAuth firebaseAuth;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private TextView mWelcomeTextView;
     private static final String LOADING_PHRASE_CONFIG_KEY = "splash_screen";
+    private ProgressDialog mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         startHeavyProcessing();
-        mWelcomeTextView = (TextView) findViewById(R.id.textView5);
+        mWelcomeTextView = findViewById(R.id.textView5);
         firebaseAuth = FirebaseAuth.getInstance();
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -45,6 +50,32 @@ public class SplashScreen extends Activity {
         BadgeUtils.clearBadge(this);
     }
 
+    @Override
+    public void onServiceConnected() {
+        //    mLoginButton.setEnabled(true);
+        getSinchServiceInterface().setStartListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onStartFailed(SinchError error) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
+    }
+
+    @Override
+    public void onStarted() {
+
+    }
     private void startHeavyProcessing() {
         new LongOperation().execute("");
     }
@@ -74,6 +105,8 @@ public class SplashScreen extends Activity {
             } else {
                 //getting current user
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                getSinchServiceInterface().startClient(user.getEmail().replace(".", "dot") + user.getDisplayName());
             }
 
             Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);

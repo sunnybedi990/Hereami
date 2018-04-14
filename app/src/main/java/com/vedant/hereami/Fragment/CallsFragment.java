@@ -1,6 +1,7 @@
 package com.vedant.hereami.Fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,7 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.sinch.android.rtc.SinchClient;
 import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.chatmain;
@@ -114,6 +116,9 @@ public class CallsFragment extends Fragment {
     private String privateKeyBytesBase64;
     public static final String mypreference1 = "privatekey";
     public static final String mypreference = "publickey";
+    private ProgressDialog mSpinner;
+    private SinchClient mSinchClient;
+    private static final String mypreference2 = "username";
 
 
     public CallsFragment() {
@@ -198,6 +203,7 @@ public class CallsFragment extends Fragment {
                 System.out.println("Main.onCreate: " + FirebaseInstanceId.getInstance().getToken());
 
                 connectionstatus();
+
                 currentuser = usermail.replace(".", "dot") + user.getDisplayName();
                 token = FirebaseInstanceId.getInstance().getToken();
                 sendTokenToServer();
@@ -244,6 +250,11 @@ public class CallsFragment extends Fragment {
                 editor.apply();
                 editor.commit();
 
+            }
+            if (!sharedpreferences.contains(mypreference2)) {
+                editor.putString("username", currentuser);
+                editor.apply();
+                editor.commit();
             }
 
             //    if (sharedpreferences.contains(Pass)) {
@@ -522,7 +533,7 @@ public class CallsFragment extends Fragment {
                 }) {
 
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", name3);
                 params.put("email", email);
