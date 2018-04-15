@@ -10,6 +10,9 @@ public class SensorRestarterBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(SensorRestarterBroadcastReceiver.class.getSimpleName(), "Service Stops! Oooooooooooooppppssssss!!!!");
+
         context.startService(new Intent(context, SinchService.class));
+        context.startService(new Intent(context, Activesinchservice.class));
+
     }
 }

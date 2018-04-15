@@ -29,6 +29,9 @@ public class SplashScreen extends BaseActivity implements SinchService.StartFail
     private TextView mWelcomeTextView;
     private static final String LOADING_PHRASE_CONFIG_KEY = "splash_screen";
     private ProgressDialog mSpinner;
+    private String message1;
+    private String checkFlag;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,8 @@ public class SplashScreen extends BaseActivity implements SinchService.StartFail
         mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
         fetchWelcome();
 
+
+        bundle = getIntent().getExtras();
 
         AppUtill.savePreferenceLong("NOTICOUNT", 0, this);
         BadgeUtils.clearBadge(this);
@@ -107,12 +112,39 @@ public class SplashScreen extends BaseActivity implements SinchService.StartFail
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 getSinchServiceInterface().startClient(user.getEmail().replace(".", "dot") + user.getDisplayName());
-            }
 
-            Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
-            i.putExtra("data", result);
-            startActivity(i);
-            finish();
+            }
+            if (bundle != null) {
+                message1 = bundle.getString("callid");
+                //  Intent intent = getIntent();
+                checkFlag = bundle.getString("flag");
+                if (checkFlag != null) {
+                    if (checkFlag.equals("A")) {
+                        finish();
+
+       /*           Intent intent = new Intent(SplashScreen.this, IncomingCallScreenActivity.class);
+                    intent.putExtra("CALL_ID", message1);
+              //           intent.putExtra(LOCATION, call.getHeaders().get("location"));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 //   intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                    startActivity(intent);
+              //      Intent intent1 = new Intent(SplashScreen.this,SinchService.class);
+                //    startService(intent1);
+                */
+
+                    }
+                } else {
+                    Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
+                    i.putExtra("data", result);
+                    startActivity(i);
+                    finish();
+                }
+            } else {
+                Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
+                i.putExtra("data", result);
+                startActivity(i);
+                finish();
+            }
         }
 
         @Override

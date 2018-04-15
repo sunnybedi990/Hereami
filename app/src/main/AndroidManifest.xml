@@ -7,6 +7,7 @@
         android:name="android.hardware.microphone"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -21,6 +22,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT" />
+
 
     <permission
         android:name="com.vedant.hereami.permission.C2D_MESSAGE"
@@ -256,6 +259,7 @@
             android:theme="@style/Theme.AppCompat" />
 
         <service android:name=".voip.SinchService" />
+        <service android:name=".voip.Activesinchservice" />
 
         <receiver
             android:name=".chatfolder.startnotificationservice"
@@ -274,6 +278,17 @@
                 <action android:name="uk.ac.shef.oak.ActivityRecognition.RestartSensor" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".voip.VideoCallScreenActivity"
+            android:label="@string/title_activity_video_call_screen"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true" />
+        <activity
+            android:name=".voip.IncomingVideoCallScreenActivity"
+            android:label="@string/title_activity_incoming_video_call_screen"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true" />
     </application>
 
 </manifest>

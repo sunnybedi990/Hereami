@@ -79,22 +79,33 @@
             android:id="@+id/sendUserMessage"
             android:layout_width="59dp"
             android:layout_height="40dp"
-            android:layout_toStartOf="@+id/button9"
             android:layout_marginEnd="0dp"
             android:layout_marginRight="10dp"
-            android:background="@color/accent"
+            android:layout_toStartOf="@+id/button10"
+            android:background="@android:drawable/ic_menu_send"
             android:onClick="sendMessageToFireChat"
             android:text="Send"
             android:textColor="#FFFFFF" />
 
         <Button
-            android:id="@+id/button9"
-            android:layout_width="wrap_content"
+            android:id="@+id/button10"
+            android:layout_width="52dp"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/senderContainer"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/senderContainer"
-            android:text="Call" />
+            android:layout_marginEnd="44dp"
+            android:layout_toStartOf="@+id/button9"
+            android:background="@android:drawable/presence_video_online" />
+
+        <Button
+            android:id="@+id/button9"
+            android:layout_width="41dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/senderContainer"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/senderContainer"
+            android:background="@android:drawable/ic_menu_call" />
     </RelativeLayout>
 
     <ProgressBar

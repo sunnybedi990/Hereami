@@ -1,6 +1,7 @@
 package com.vedant.hereami.voip;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -54,6 +55,7 @@ public class CallScreenActivity extends BaseActivity {
     private Bitmap myBitmap;
     private ImageView myImage;
     private String title;
+    public AudioManager audioManager;
 
     private class UpdateCallDurationTask extends TimerTask {
 
@@ -78,6 +80,8 @@ public class CallScreenActivity extends BaseActivity {
         mCallerName = findViewById(R.id.remoteUser);
         mCallState = findViewById(R.id.callState);
         Button endCallButton = findViewById(R.id.hangupButton);
+        Button speaker = findViewById(R.id.btn_speaker);
+        Button mute = findViewById(R.id.btn_mute);
         myImage = findViewById(R.id.imageview_call);
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
@@ -87,8 +91,30 @@ public class CallScreenActivity extends BaseActivity {
                 endCall();
             }
         });
+        speaker.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (audioManager.isSpeakerphoneOn()) {
+                    AudioSourceUtil.connectEarpiece(audioManager);
+                } else {
+                    AudioSourceUtil.connectSpeaker(audioManager);
+                }
+            }
+        });
+        mute.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (audioManager.isMicrophoneMute()) {
+                    audioManager.setMicrophoneMute(false);
+                } else {
+                    audioManager.setMicrophoneMute(true);
+                }
+            }
+        });
         mCallStart = System.currentTimeMillis();
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
     }
 
     @Override
@@ -194,7 +220,10 @@ public class CallScreenActivity extends BaseActivity {
             Log.d(TAG, "Call established");
             mAudioPlayer.stopProgressTone();
             mCallState.setText(call.getState().toString());
+
+
             setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+
             mCallStart = System.currentTimeMillis();
         }
 
@@ -238,4 +267,5 @@ public class CallScreenActivity extends BaseActivity {
 
         return name;
     }
+
 }

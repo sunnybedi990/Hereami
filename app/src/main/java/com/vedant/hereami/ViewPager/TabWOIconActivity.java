@@ -108,7 +108,7 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS,
                         Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.CALL_PHONE, Manifest.permission.RECORD_AUDIO}, R.string
+                        Manifest.permission.CALL_PHONE, Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA}, R.string
                         .runtime_permissions_txt
                 , REQUEST_PERMISSIONS);
 

@@ -111,4 +111,7 @@
     <string name="title_activity_status">status</string>
     <string name="type_you_status_here">Type Your Status here</string>
     <string name="welcome_to_tracker">Welcome to Tracker</string>
+    <string name="title_activity_video_call_screen">VideoCallScreenActivity</string>
+    <string name="title_activity_incoming_video_call_screen">IncomingVideoCallScreenActivity
+    </string>
 </resources>

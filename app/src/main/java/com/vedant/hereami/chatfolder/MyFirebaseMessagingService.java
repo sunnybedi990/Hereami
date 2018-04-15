@@ -107,6 +107,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
             if (isAppIsInBackground(getApplicationContext())) {
 
+                startService(new Intent(MyFirebaseMessagingService.this, SinchService.class));
                 //  sinch.start(user.getEmail().replace(".", "dot") + user.getDisplayName());
                 // if (sinchClient.isStarted())
                 result = SinchHelpers.queryPushNotificationPayload(getApplicationContext(), remoteMessage.getData());
@@ -116,6 +117,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     String category = NotificationCompat.CATEGORY_MESSAGE;
                     shownotification(message, title, category);
                 } else {
+                    String mess = result.getCallResult().getCallId();
+                    Log.e("id", mess);
+                    Intent intent1 = new Intent(MyFirebaseMessagingService.this, SplashScreen.class).putExtra("callid", mess).putExtra("flag", "A");
+                    startActivity(intent1);
+
                     String message = "Calling";
                     String title = result.getCallResult().getRemoteUserId();
                     String category = NotificationCompat.CATEGORY_CALL;

@@ -48,6 +48,7 @@ import com.vedant.hereami.login.phonenumber;
 import com.vedant.hereami.secureencryption.testdata;
 import com.vedant.hereami.tracking.ListActivity;
 import com.vedant.hereami.tracking.Sendlocation;
+import com.vedant.hereami.voip.Activesinchservice;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -218,6 +219,7 @@ public class CallsFragment extends Fragment {
                 currentuser = usermail.replace(".", "dot") + user.getDisplayName();
                 token = FirebaseInstanceId.getInstance().getToken();
                 sendTokenToServer();
+                getActivity().startService(new Intent(getActivity(), Activesinchservice.class));
                 //     ProviderQueryResult s = firebaseAuth.fetchProvidersForEmail("sunnybedi990@gmail.com").getResult();
                 //     System.out.println("getdata: " + s);
 
@@ -387,6 +389,8 @@ public class CallsFragment extends Fragment {
                             try {
                                 while (!isInterrupted()) {
                                     Thread.sleep(1000);
+                                    if (getActivity() == null)
+                                        return;
                                     getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {

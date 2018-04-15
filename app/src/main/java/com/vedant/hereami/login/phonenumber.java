@@ -143,7 +143,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         registerCarrierEditText();
         getdata();
         mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
-        mFireChatUsersRef1 = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child("keyusers");
+        mFireChatUsersRef1 = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child("userkey");
 
         //   codecon = ccpGetNumber.getFullNumberWithPlus();
         // phonenoto = phoneno.getText().toString();

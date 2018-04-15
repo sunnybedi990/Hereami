@@ -49,6 +49,8 @@ public class IncomingCallScreenActivity extends BaseActivity implements SinchSer
     private String title;
     private SinchClient msnichclient;
     private String username;
+    private Call call;
+    private SinchService sinchService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,9 @@ public class IncomingCallScreenActivity extends BaseActivity implements SinchSer
 
         mAudioPlayer = new AudioPlayer(this);
         mAudioPlayer.playRingtone();
-        mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
+
+        mCallId = getIntent().getStringExtra("CALL_ID");
+        Log.e("call id", mCallId);
 
         //mCallLocation = getIntent().getStringExtra(SinchService.LOCATION);
     }
@@ -74,8 +78,9 @@ public class IncomingCallScreenActivity extends BaseActivity implements SinchSer
     @Override
     public void onServiceConnected() {
 
-
-        Call call = getSinchServiceInterface().getCall(mCallId);
+        if (mCallId != null)
+            call = getSinchServiceInterface().getCall(mCallId);
+//        Log.e("yes", call.getCallId());
         if (call != null) {
             call.addCallListener(new SinchCallListener());
             String chatuser = call.getRemoteUserId().replace("+", ":");
@@ -109,9 +114,12 @@ public class IncomingCallScreenActivity extends BaseActivity implements SinchSer
             //    remoteUserLocation.setText("Calling from " + mCallLocation);
         } else {
             Log.e(TAG, "Started with invalid callId, aborting");
-            finish();
+            //    finish();
         }
     }
+
+
+
 
     @Override
     public void onStartFailed(SinchError error) {

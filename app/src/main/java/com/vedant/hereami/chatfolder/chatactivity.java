@@ -32,7 +32,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -63,6 +62,7 @@ import com.vedant.hereami.firebasepushnotification.MyVolley;
 import com.vedant.hereami.voip.BaseActivity;
 import com.vedant.hereami.voip.CallScreenActivity;
 import com.vedant.hereami.voip.SinchService;
+import com.vedant.hereami.voip.VideoCallScreenActivity;
 
 import java.io.File;
 import java.text.ParseException;
@@ -169,7 +169,7 @@ public class chatactivity extends BaseActivity {
     private String usercall;
     private Call call;
     private SinchService sinch;
-
+    private Button button1;
 
 
     @Override
@@ -238,6 +238,7 @@ public class chatactivity extends BaseActivity {
             mUserMessageChatText = findViewById(R.id.chat_user_message);
             mUserMessageChatconnection = findViewById(R.id.text_connection);
             button = findViewById(R.id.button9);
+            button1 = findViewById(R.id.button10);
 
 
             mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -314,6 +315,13 @@ public class chatactivity extends BaseActivity {
             public void onClick(View view) {
 
                 callButtonClicked();
+            }
+        });
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                callvideo();
             }
         });
     }
@@ -958,7 +966,20 @@ public class chatactivity extends BaseActivity {
         MyVolley.getInstance(this).addToRequestQueue(stringRequest);
     }
 
+    public void callvideo() {
+        userName = mRecipientUid;
+        if (userName.isEmpty()) {
+            Toast.makeText(this, "Please enter a user to call", Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        Call call = getSinchServiceInterface().callUserVideo(userName);
+        String callId = call.getCallId();
+
+        Intent callScreen = new Intent(this, VideoCallScreenActivity.class);
+        callScreen.putExtra(SinchService.CALL_ID, callId);
+        startActivity(callScreen);
+    }
 
 
 

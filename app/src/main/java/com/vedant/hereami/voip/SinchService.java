@@ -9,6 +9,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
@@ -17,6 +18,7 @@ import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.video.VideoController;
 
 import java.util.Map;
 
@@ -39,18 +41,21 @@ public class SinchService extends Service {
     private StartFailedListener mListener;
     private String username;
     public boolean isclientstopped;
+    private String mCallId;
 
     @Override
     public void onCreate() {
         SharedPreferences sharedpreferences = getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
         username = sharedpreferences.getString("username", "");
+
         super.onCreate();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         super.onStartCommand(intent, flags, startId);
         //  startTimer();
-        return START_STICKY_COMPATIBILITY;
+        return START_STICKY;
     }
 
     @Override
@@ -108,6 +113,10 @@ public class SinchService extends Service {
             return mSinchClient.getCallClient().callPhoneNumber(phoneNumber);
         }
 
+        public Call callUserVideo(String userId) {
+            return mSinchClient.getCallClient().callUserVideo(userId);
+        }
+
         public Call callUser(String userId) {
             return mSinchClient.getCallClient().callUser(userId);
         }
@@ -138,6 +147,20 @@ public class SinchService extends Service {
 
         public Call getCall(String callId) {
             return mSinchClient.getCallClient().getCall(callId);
+        }
+
+        public VideoController getVideoController() {
+            if (!isStarted()) {
+                return null;
+            }
+            return mSinchClient.getVideoController();
+        }
+
+        public AudioController getAudioController() {
+            if (!isStarted()) {
+                return null;
+            }
+            return mSinchClient.getAudioController();
         }
     }
 
@@ -234,12 +257,23 @@ public class SinchService extends Service {
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
             Log.d(TAG, "Incoming call");
-            Intent intent = new Intent(SinchService.this, IncomingCallScreenActivity.class);
-            intent.putExtra(CALL_ID, call.getCallId());
-            //     intent.putExtra(LOCATION, call.getHeaders().get("location"));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            SinchService.this.startActivity(intent);
-        }
-    }
 
+            if (call.getDetails().isVideoOffered()) {
+                Intent intent = new Intent(SinchService.this, IncomingVideoCallScreenActivity.class);
+                intent.putExtra(CALL_ID, call.getCallId());
+                //     intent.putExtra(LOCATION, call.getHeaders().get("location"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                SinchService.this.startActivity(intent);
+            } else {
+                Intent intent = new Intent(SinchService.this, IncomingCallScreenActivity.class);
+                intent.putExtra(CALL_ID, call.getCallId());
+                //     intent.putExtra(LOCATION, call.getHeaders().get("location"));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                SinchService.this.startActivity(intent);
+
+            }
+        }
+
+    }
 }
+
