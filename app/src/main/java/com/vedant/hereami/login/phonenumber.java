@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +48,10 @@ import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.code.Country;
 import com.vedant.hereami.code.CountryCodePicker;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -110,6 +115,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
     private EditText editTextGetname;
     private String name;
     private TextView wrongname;
+    private Firebase mFireChatUsersRef1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,20 +129,21 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         // countrycode = (TextView) findViewById(R.id.textView_selectedCountry);
-        editTextGetFullNumber = (EditText) findViewById(R.id.editTextGetFullNumber);
-        editTextGetname = (EditText) findViewById(R.id.editText_name);
-        wrongnumber = (TextView) findViewById(R.id.txt_view_wrng);
-        wrongname = (TextView) findViewById(R.id.txt_view_wrng2);
+        editTextGetFullNumber = findViewById(R.id.editTextGetFullNumber);
+        editTextGetname = findViewById(R.id.editText_name);
+        wrongnumber = findViewById(R.id.txt_view_wrng);
+        wrongname = findViewById(R.id.txt_view_wrng2);
         lst1 = new ArrayList<String>();
         // county = (Spinner) findViewById(R.id.spin_country);
-        btnsubmit = (Button) findViewById(R.id.button3);
+        btnsubmit = findViewById(R.id.button3);
         useremailaddress = user.getEmail();
         useremail = user.getDisplayName();
-        ccpGetNumber = (CountryCodePicker) findViewById(R.id.ccp);
+        ccpGetNumber = findViewById(R.id.ccp);
         this.geoFire = new GeoFire(FirebaseDatabase.getInstance().getReferenceFromUrl(GEO_FIRE_REF));
         registerCarrierEditText();
         getdata();
         mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
+        mFireChatUsersRef1 = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child("keyusers");
 
         //   codecon = ccpGetNumber.getFullNumberWithPlus();
         // phonenoto = phoneno.getText().toString();
@@ -158,9 +165,9 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                     Log.e(">>>>asddddddd", s + "");
 
                 } else {
-                    if (lst1.contains(lessplus)) {
-                        wrongnumber.setText("Number is already registered. Please enter a diffrent number");
-                    } else {
+                    //      if (lst1.contains(lessplus)) {
+                    //        wrongnumber.setText("Number is already registered. Please enter a diffrent number");
+                    //  } else {
 
                         if (useremail == null) {
 
@@ -176,7 +183,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 user.sendEmailVerification();
-
+                                                keys();
                                                 // we finally have our base64 string version of the image, save it.
                                                 regulardatas();
                                                 firsttimeregister();
@@ -202,7 +209,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                     Log.e(">>>>asddddddd", codecon + "");
 
                 }
-            }
+            //  }
 
         });
 
@@ -385,6 +392,38 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.timestamp).setValue(tsTemp);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.name).setValue(name);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.status).setValue("status");
+    }
+
+    protected void keys() {
+        KeyPair kp = getKeyPair();
+
+        PublicKey publicKey = kp.getPublic();
+        byte[] publicKeyBytes = publicKey.getEncoded();
+        String usermail1 = user.getEmail().replace(".", "dot") + codecon;
+
+        String publicKeyBytesBase64 = new String(Base64.encode(publicKeyBytes, Base64.DEFAULT));
+
+        PrivateKey privateKey = kp.getPrivate();
+        byte[] privateKeyBytes = privateKey.getEncoded();
+        String privateKeyBytesBase64 = new String(Base64.encode(privateKeyBytes, Base64.DEFAULT));
+        mFireChatUsersRef1.child(usermail1).child("publickey").setValue(publicKeyBytesBase64);
+        mFireChatUsersRef.child(usermail1).child("Publickey").setValue(publicKeyBytesBase64);
+        mFireChatUsersRef1.child(usermail1).child("privatekey").setValue(privateKeyBytesBase64);
+
+
+    }
+
+    protected static KeyPair getKeyPair() {
+        KeyPair kp = null;
+        try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            kpg.initialize(2048);
+            kp = kpg.generateKeyPair();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return kp;
     }
 }
 

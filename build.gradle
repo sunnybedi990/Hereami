@@ -16,9 +16,7 @@ allprojects {
         mavenLocal()
         jcenter()
         google()
-        flatDir {
-            dirs '/libs'
-        }
+
     }
 }
 task clean(type: Delete) {

@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +25,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -52,10 +54,6 @@ import org.json.JSONObject;
 
 import java.security.Key;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -119,6 +117,10 @@ public class CallsFragment extends Fragment {
     private ProgressDialog mSpinner;
     private SinchClient mSinchClient;
     private static final String mypreference2 = "username";
+    private SharedPreferences prefs;
+    private String publickey;
+    private Firebase mFirebaseMessagesChatconnectioncheck;
+    private Firebase mFireChatUsersRef1;
 
 
     public CallsFragment() {
@@ -139,11 +141,11 @@ public class CallsFragment extends Fragment {
         Firebase.setAndroidContext(getActivity());
 
         firebaseAuth = FirebaseAuth.getInstance();
-
+        mFirebaseMessagesChatconnectioncheck = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child("userkey");
         mFirebaseChatRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
 
-
+        prefs = getActivity().getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
 
         // set up rules for Daylight Saving Time
         //      pdt.setStartRule(Calendar.APRIL, 1, Calendar.SUNDAY, 2 * 60 * 60 * 1000);
@@ -202,8 +204,17 @@ public class CallsFragment extends Fragment {
 //                textViewUserEmail.setText("Welcome " + usermail);
                 System.out.println("Main.onCreate: " + FirebaseInstanceId.getInstance().getToken());
 
-                connectionstatus();
+/*                SharedPreferences sharedpreferences = getActivity().getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
 
+                String encrytionprivatekey = sharedpreferences.getString("privatekey", "");
+                String encrytionprivatekey1 = sharedpreferences.getString("publickey", "");
+
+                mFirebaseMessagesChatconnectioncheck.child(currentuser).child("publickey").setValue(encrytionprivatekey1);
+              //  mFireChatUsersRef.child(usermail1).child("Publickey").setValue(publicKeyBytesBase64);
+                mFirebaseMessagesChatconnectioncheck.child(currentuser).child("privatekey").setValue(encrytionprivatekey);
+                */
+                connectionstatus();
+                keys();
                 currentuser = usermail.replace(".", "dot") + user.getDisplayName();
                 token = FirebaseInstanceId.getInstance().getToken();
                 sendTokenToServer();
@@ -222,40 +233,7 @@ public class CallsFragment extends Fragment {
 
 
 
-            sharedpreferences = getActivity().getSharedPreferences(mypreference123,
-                    Context.MODE_PRIVATE);
 
-            KeyPair kp = getKeyPair();
-
-            PublicKey publicKey = kp.getPublic();
-            byte[] publicKeyBytes = publicKey.getEncoded();
-
-
-            publicKeyBytesBase64 = new String(Base64.encode(publicKeyBytes, Base64.DEFAULT));
-
-            PrivateKey privateKey = kp.getPrivate();
-            byte[] privateKeyBytes = privateKey.getEncoded();
-            privateKeyBytesBase64 = new String(Base64.encode(privateKeyBytes, Base64.DEFAULT));
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-
-            if (!sharedpreferences.contains(mypreference)) {
-                mFireChatUsersRef.child(usermail.replace(".", "dot") + name3).child("Publickey").setValue(publicKeyBytesBase64);
-                //   mFireChatUsersRef.setValue(publicKeyBytesBase64);
-                editor.putString("publickey", publicKeyBytesBase64);
-                editor.apply();
-                editor.commit();
-            }
-            if (!sharedpreferences.contains(mypreference1)) {
-                editor.putString("privatekey", privateKeyBytesBase64);
-                editor.apply();
-                editor.commit();
-
-            }
-            if (!sharedpreferences.contains(mypreference2)) {
-                editor.putString("username", currentuser);
-                editor.apply();
-                editor.commit();
-            }
 
             //    if (sharedpreferences.contains(Pass)) {
             //      savedpass = (sharedpreferences.getString(Pass, ""));
@@ -371,6 +349,11 @@ public class CallsFragment extends Fragment {
             return true;
         }
         if (id == R.id.action_logout) {
+            sharedpreferences = getActivity().getSharedPreferences(mypreference123,
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.clear();
+            editor.commit();
             firebaseAuth.signOut();
             getActivity().finish();
             //starting login activity
@@ -556,18 +539,7 @@ public class CallsFragment extends Fragment {
         return dest.toString();
     }
 
-    public static KeyPair getKeyPair() {
-        KeyPair kp = null;
-        try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-            kpg.initialize(2048);
-            kp = kpg.generateKeyPair();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return kp;
-    }
 
     public static String encryptRSAToString(String clearText, String publicKey) {
         String encryptedBase64 = "";
@@ -613,5 +585,58 @@ public class CallsFragment extends Fragment {
         return decryptedString;
     }
 
+    private void keys() {
+        usermail = user.getEmail().replace(".", "dot") + user.getDisplayName();
+
+
+        mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot1) {
+
+                for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
+                    if (connectionchild.getKey().contains(usermail)) {
+
+
+                        if (dataSnapshot1.child(usermail).child("publickey").exists()) {
+                            publickey = dataSnapshot1.child(usermail).child("publickey").getValue().toString();
+                            String privatekey = dataSnapshot1.child(usermail).child("privatekey").getValue().toString();
+                            Log.e("horaha hai pub", publickey);
+                            Log.e("horaha hai pri", privatekey);
+                            sharedpreferences = getActivity().getSharedPreferences(mypreference123,
+                                    Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            if (!sharedpreferences.contains(mypreference)) {
+                                //    mFireChatUsersRef.child(usermail.replace(".", "dot") + name3).child("Publickey").setValue(publicKeyBytesBase64);
+                                //   mFireChatUsersRef.setValue(publicKeyBytesBase64);
+                                editor.putString("publickey", publickey);
+                                editor.apply();
+                                editor.commit();
+                            }
+                            if (!sharedpreferences.contains(mypreference1)) {
+                                editor.putString("privatekey", privatekey);
+                                editor.apply();
+                                editor.commit();
+
+                            }
+                            if (!sharedpreferences.contains(mypreference2)) {
+                                editor.putString("username", usermail);
+                                editor.apply();
+                                editor.commit();
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+        });
+    }
 
 }

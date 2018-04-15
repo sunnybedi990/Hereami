@@ -105,9 +105,10 @@ public class ChatFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Firebase.setAndroidContext(getActivity());
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         context = getContext();
 
         //  RecentUser = (ListView) findViewById(R.id.list_recent);

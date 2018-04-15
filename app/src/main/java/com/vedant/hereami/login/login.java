@@ -16,14 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
-import com.vedant.hereami.miscellaneous.RuntimePermissionsActivity;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
+import com.vedant.hereami.miscellaneous.RuntimePermissionsActivity;
 
 public class login extends RuntimePermissionsActivity implements View.OnClickListener {
     private EditText mUserEmail;
@@ -39,11 +40,15 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
     private FirebaseUser user;
     private CoordinatorLayout coordinatorLayout;
     public String TAG;
+    private String publickey;
+    private String usermail;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-
+        Firebase.setAndroidContext(getApplicationContext());
         firebaseAuth = FirebaseAuth.getInstance();
         //   coordinatorLayout = (CoordinatorLayout) findViewById(R.id
         //         .coordinatorLayout);
@@ -55,6 +60,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
             //opening profile activity
             startActivity(new Intent(getApplicationContext(), TabWOIconActivity.class));
         }
+
         re();
         //initializing views
         mUserEmail = findViewById(R.id.userEmailChat);
