@@ -70,7 +70,7 @@ public class ChatFragment extends Fragment {
     public Context context;
     private String contactmatch;
     private String contactmatch1;
-    private Firebase mFirebaseMessagesChatcurrent;
+    private com.firebase.client.Query mFirebaseMessagesChatcurrent;
     private long sunn;
     private ProgressBar mProgressBarForUsers;
     private List<String> lstmsg1;

@@ -103,11 +103,11 @@ public class CountryCodePicker extends RelativeLayout {
 //        Log.d(TAG, "Initialization of CCP");
         mInflater = LayoutInflater.from(context);
         holderView = mInflater.inflate(R.layout.layout_code_picker, this, true);
-        textView_selectedCountry = (TextView) holderView.findViewById(R.id.textView_selectedCountry);
-        holder = (RelativeLayout) holderView.findViewById(R.id.countryCodeHolder);
-        imageViewArrow = (ImageView) holderView.findViewById(R.id.imageView_arrow);
-        imageViewFlag = (ImageView) holderView.findViewById(R.id.image_flag);
-        linearFlagHolder = (LinearLayout) holderView.findViewById(R.id.linear_flag_holder);
+        textView_selectedCountry = holderView.findViewById(R.id.textView_selectedCountry);
+        holder = holderView.findViewById(R.id.countryCodeHolder);
+        imageViewArrow = holderView.findViewById(R.id.imageView_arrow);
+        imageViewFlag = holderView.findViewById(R.id.image_flag);
+        linearFlagHolder = holderView.findViewById(R.id.linear_flag_holder);
         codePicker = this;
         applyCustomProperty(attrs);
         holder.setOnClickListener(countryCodeHolderClickListener);

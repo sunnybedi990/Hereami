@@ -23,6 +23,15 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
 
 
     <permission
@@ -258,7 +267,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat" />
 
-        <service android:name=".voip.SinchService" />
+        <service
+            android:name=".voip.SinchService"
+            android:directBootAware="true" />
         <service android:name=".voip.Activesinchservice" />
 
         <receiver
@@ -289,6 +300,7 @@
             android:label="@string/title_activity_incoming_video_call_screen"
             android:theme="@style/AppTheme.NoActionBar"
             android:noHistory="true" />
+
     </application>
 
 </manifest>

@@ -43,9 +43,10 @@ import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
+import com.vedant.hereami.firebasepushnotification.EndPoints;
+import com.vedant.hereami.firebasepushnotification.MyVolley;
 import com.vedant.hereami.login.login;
 import com.vedant.hereami.login.phonenumber;
-import com.vedant.hereami.secureencryption.testdata;
 import com.vedant.hereami.tracking.ListActivity;
 import com.vedant.hereami.tracking.Sendlocation;
 import com.vedant.hereami.voip.Activesinchservice;
@@ -346,8 +347,7 @@ public class CallsFragment extends Fragment {
             return true;
         }
         if (id == R.id.testdata) {
-            Intent intent = new Intent(getActivity(), testdata.class);
-            startActivity(intent);
+            getip();
             return true;
         }
         if (id == R.id.action_logout) {
@@ -641,6 +641,27 @@ public class CallsFragment extends Fragment {
             }
 
         });
+    }
+
+    private void getip() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, EndPoints.IP_GET,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //                    progressDialog.dismiss();
+
+                        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+
+        MyVolley.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 
 }

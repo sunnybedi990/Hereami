@@ -24,13 +24,13 @@ class CountryCodeDialog {
         List<Country> masterCountries = Country.getCustomMasterCountryList(codePicker);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setContentView(R.layout.layout_picker_dialog);
-        RecyclerView recyclerView_countryDialog = (RecyclerView) dialog.findViewById(R.id.recycler_countryDialog);
+        RecyclerView recyclerView_countryDialog = dialog.findViewById(R.id.recycler_countryDialog);
 
-        final TextView textViewTitle = (TextView) dialog.findViewById(R.id.textView_title);
+        final TextView textViewTitle = dialog.findViewById(R.id.textView_title);
         textViewTitle.setText(codePicker.getDialogTitle());
-        final EditText editText_search = (EditText) dialog.findViewById(R.id.editText_search);
+        final EditText editText_search = dialog.findViewById(R.id.editText_search);
         editText_search.setHint(codePicker.getSearchHintText());
-        TextView textView_noResult = (TextView) dialog.findViewById(R.id.textView_noresult);
+        TextView textView_noResult = dialog.findViewById(R.id.textView_noresult);
         textView_noResult.setText(codePicker.getNoResultFoundText());
         final CountryCodeAdapter cca = new CountryCodeAdapter(context, masterCountries, codePicker, editText_search, textView_noResult, dialog);
         recyclerView_countryDialog.setLayoutManager(new LinearLayoutManager(context));

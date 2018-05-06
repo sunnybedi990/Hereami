@@ -160,10 +160,10 @@ class CountryCodeAdapter extends RecyclerView.Adapter<CountryCodeAdapter.Country
         public CountryCodeViewHolder(View itemView) {
             super(itemView);
             relativeLayout_main = (RelativeLayout) itemView;
-            textView_name = (TextView) relativeLayout_main.findViewById(R.id.textView_countryName);
-            textView_code = (TextView) relativeLayout_main.findViewById(R.id.textView_code);
-            imageViewFlag = (ImageView) relativeLayout_main.findViewById(R.id.image_flag);
-            linearFlagHolder = (LinearLayout) relativeLayout_main.findViewById(R.id.linear_flag_holder);
+            textView_name = relativeLayout_main.findViewById(R.id.textView_countryName);
+            textView_code = relativeLayout_main.findViewById(R.id.textView_code);
+            imageViewFlag = relativeLayout_main.findViewById(R.id.image_flag);
+            linearFlagHolder = relativeLayout_main.findViewById(R.id.linear_flag_holder);
             divider = relativeLayout_main.findViewById(R.id.preferenceDivider);
         }
 

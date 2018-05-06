@@ -43,8 +43,7 @@
         android:gravity="center"
         android:id="@+id/textView3"
         android:textSize="28dp"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/cast_expanded_controller_background_color" />
+        android:layout_alignParentEnd="true" />
 
 
     <TextView
@@ -92,7 +91,6 @@
             android:layout_marginTop="89dp"
             android:textColorHint="@color/common_red"
             android:hint="Phone Number"
-            android:textColor="@color/cast_expanded_controller_background_color"
             android:layout_below="@+id/textView3"
             android:layout_toEndOf="@+id/ccp"
             android:layout_marginStart="11dp" />
@@ -111,7 +109,7 @@
         android:layout_toRightOf="@+id/ccp"
         android:text="Submit" />
 
-    <com.vedant.hereami.code.CountryCodePicker
+    <CountryCodePicker
         android:id="@+id/ccp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -123,7 +121,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" >
 
-    </com.vedant.hereami.code.CountryCodePicker>
+    </CountryCodePicker>
 
 
 </RelativeLayout>

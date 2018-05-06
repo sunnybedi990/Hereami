@@ -4,8 +4,10 @@ package com.vedant.hereami.chatfolder;
  * Created by sunnybedi on 14/03/17.
  */
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -52,6 +54,7 @@ public class MyNotificationManager {
     private int numMessagesOne = 0;
     private int numMessagesTwo = 0;
     private String entityid;
+    String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
     //  private String senderMessage;
     //  private Firebase mFirebaseMessagesChatreceipent;
 
@@ -172,28 +175,39 @@ public class MyNotificationManager {
         Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
         //   notificationManager = NotificationManagerCompat.from(mCtx);
         notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
-        int color = 0x7f06004c;
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_MAX);
+
+            // Configure the notification channel.
+            notificationChannel.setDescription("Channel description");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx, NOTIFICATION_CHANNEL_ID);
+
         mBuilder.setTicker(title).setShowWhen(true).setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setContentTitle(title)
-                .addAction(action).setColor(color)
-                .setSmallIcon(getNotificationIcon()).setPriority(Notification.PRIORITY_MAX)
+                .addAction(action).setColor(Color.RED)
+                .setSmallIcon(R.drawable.noti).setPriority(Notification.PRIORITY_MAX)
                 .setContentText(message);
         //  firstTime = false;
 
         notification = mBuilder.build();
-        // notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
         if (notification != null) {
             notification.defaults |= Notification.DEFAULT_SOUND;
-            //    noti.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            //  long[] pattern = {500, 500, 500};
-            //  noti.vibrate = pattern;
+
             notification.defaults |= Notification.DEFAULT_VIBRATE;
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-//id = Integer.valueOf(part2);
 
             notificationManager.notify(entityid, (int) id, notification);
 
@@ -251,7 +265,7 @@ public class MyNotificationManager {
 
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.noti1 : R.drawable.noti1;
+        return useWhiteIcon ? R.drawable.noti : R.drawable.noti;
     }
 
 

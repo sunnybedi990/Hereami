@@ -811,6 +811,7 @@ public class chatactivity extends BaseActivity {
                 Log.e("firebase ", ";local tem file created  created " + localFile.toString());
 
                 //  updateDb(timestamp,localFile.toString(),position);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
