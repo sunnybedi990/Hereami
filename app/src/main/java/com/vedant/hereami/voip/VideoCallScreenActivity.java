@@ -36,11 +36,10 @@ public class VideoCallScreenActivity extends BaseActivity {
     static final String TAG = CallScreenActivity.class.getSimpleName();
     static final String CALL_START_TIME = "callStartTime";
     static final String ADDED_LISTENER = "addedListener";
-
+    public HashMap<String, String> hashMap;
     private AudioPlayer mAudioPlayer;
     private Timer mTimer;
     private UpdateCallDurationTask mDurationTask;
-    public HashMap<String, String> hashMap;
     private String mCallId;
     private long mCallStart = 0;
     private boolean mAddedListener = false;
@@ -52,19 +51,6 @@ public class VideoCallScreenActivity extends BaseActivity {
     private String tendigitnumber;
     private String contactmatch;
     private String title;
-
-    private class UpdateCallDurationTask extends TimerTask {
-
-        @Override
-        public void run() {
-            VideoCallScreenActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateCallDuration();
-                }
-            });
-        }
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
@@ -242,6 +228,43 @@ public class VideoCallScreenActivity extends BaseActivity {
         }
     }
 
+    public String getContactDisplayNameByNumber(String number) {
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        String name = number;
+
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+        Cursor contactLookup = contentResolver.query(uri, new String[]{BaseColumns._ID,
+                ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+
+        try {
+            if (contactLookup != null && contactLookup.getCount() > 0) {
+                contactLookup.moveToNext();
+                name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
+                //String contactId = contactLookup.getString(contactLookup.getColumnIndex(BaseColumns._ID));
+                hashMap.put(name, number);
+            }
+        } finally {
+            if (contactLookup != null) {
+                contactLookup.close();
+            }
+        }
+
+        return name;
+    }
+
+    private class UpdateCallDurationTask extends TimerTask {
+
+        @Override
+        public void run() {
+            VideoCallScreenActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateCallDuration();
+                }
+            });
+        }
+    }
+
     private class SinchCallListener implements VideoCallListener {
 
         @Override
@@ -295,30 +318,6 @@ public class VideoCallScreenActivity extends BaseActivity {
         public void onVideoTrackResumed(Call call) {
             call.resumeVideo();
         }
-    }
-
-    public String getContactDisplayNameByNumber(String number) {
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-        String name = number;
-
-        ContentResolver contentResolver = getApplicationContext().getContentResolver();
-        Cursor contactLookup = contentResolver.query(uri, new String[]{BaseColumns._ID,
-                ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
-
-        try {
-            if (contactLookup != null && contactLookup.getCount() > 0) {
-                contactLookup.moveToNext();
-                name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
-                //String contactId = contactLookup.getString(contactLookup.getColumnIndex(BaseColumns._ID));
-                hashMap.put(name, number);
-            }
-        } finally {
-            if (contactLookup != null) {
-                contactLookup.close();
-            }
-        }
-
-        return name;
     }
 }
 

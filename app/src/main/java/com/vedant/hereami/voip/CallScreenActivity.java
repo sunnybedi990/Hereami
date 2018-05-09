@@ -47,42 +47,26 @@ import static com.vedant.hereami.Fragment.ChatFragment.getLastThree;
 public class CallScreenActivity extends BaseActivity {
 
     static final String TAG = CallScreenActivity.class.getSimpleName();
-
+    public HashMap<String, String> hashMap;
+    public HashMap<String, String> hashMap1;
+    public AudioManager audioManager;
     private AudioPlayer mAudioPlayer;
     private Timer mTimer;
     private UpdateCallDurationTask mDurationTask;
-
     private String mCallId;
     private long mCallStart = 0;
-
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
-    public HashMap<String, String> hashMap;
-    public HashMap<String, String> hashMap1;
     private String tendigitnumber;
     private String contactmatch;
     private Bitmap myBitmap;
     private ImageView myImage;
     private String title;
-    public AudioManager audioManager;
     private Spinner spinner;
     private String[] audiomode;
     private Button speaker;
     private MusicIntentReceiver myReceiver;
-
-    private class UpdateCallDurationTask extends TimerTask {
-
-        @Override
-        public void run() {
-            CallScreenActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateCallDuration();
-                }
-            });
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -260,57 +244,6 @@ public class CallScreenActivity extends BaseActivity {
         }
     }
 
-    private class SinchCallListener implements CallListener {
-
-        private SinchService.SinchServiceInterface callClient;
-
-        @Override
-        public void onCallEnded(Call call) {
-            CallEndCause cause = call.getDetails().getEndCause();
-            Log.d(TAG, "Call ended. Reason: " + cause.toString());
-            mAudioPlayer.stopProgressTone();
-            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
-            String endMsg = "Call ended: " + call.getDetails().toString();
-            Toast.makeText(CallScreenActivity.this, endMsg, Toast.LENGTH_LONG).show();
-            endCall();
-        }
-
-        @Override
-        public void onCallEstablished(Call call) {
-            Log.d(TAG, "Call established");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                getaudio();
-            }
-            mAudioPlayer.stopProgressTone();
-            mCallState.setText(call.getState().toString());
-
-
-            setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
-
-            mCallStart = System.currentTimeMillis();
-        }
-
-        @Override
-        public void onCallProgressing(Call call) {
-            Log.d(TAG, "Call progressing");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                getaudio();
-            }
-            mAudioPlayer.playProgressTone();
-            mCallState.setText("Calling");
-
-        }
-
-        @Override
-        public void onShouldSendPushNotification(Call call, List<PushPair> pushPairs) {
-            //       Map<String,String> headers = new HashMap<>();
-            //    headers.put("first value is", "@123");
-            //   headers.put("custom value", "two");
-            //   call = callClient.callUser(call.getRemoteUserId(), headers);
-            // Send a push through your push provider here, e.g. GCM
-        }
-    }
-
     public String getContactDisplayNameByNumber(String number) {
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
         String name = number;
@@ -395,6 +328,70 @@ public class CallScreenActivity extends BaseActivity {
         } else {
             spinner.setVisibility(View.GONE);
             speaker.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class UpdateCallDurationTask extends TimerTask {
+
+        @Override
+        public void run() {
+            CallScreenActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateCallDuration();
+                }
+            });
+        }
+    }
+
+    private class SinchCallListener implements CallListener {
+
+        private SinchService.SinchServiceInterface callClient;
+
+        @Override
+        public void onCallEnded(Call call) {
+            CallEndCause cause = call.getDetails().getEndCause();
+            Log.d(TAG, "Call ended. Reason: " + cause.toString());
+            mAudioPlayer.stopProgressTone();
+            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
+            String endMsg = "Call ended: " + call.getDetails().toString();
+            Toast.makeText(CallScreenActivity.this, endMsg, Toast.LENGTH_LONG).show();
+            endCall();
+        }
+
+        @Override
+        public void onCallEstablished(Call call) {
+            Log.d(TAG, "Call established");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getaudio();
+            }
+            mAudioPlayer.stopProgressTone();
+            mCallState.setText(call.getState().toString());
+
+
+            setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+
+            mCallStart = System.currentTimeMillis();
+        }
+
+        @Override
+        public void onCallProgressing(Call call) {
+            Log.d(TAG, "Call progressing");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getaudio();
+            }
+            mAudioPlayer.playProgressTone();
+            mCallState.setText("Calling");
+
+        }
+
+        @Override
+        public void onShouldSendPushNotification(Call call, List<PushPair> pushPairs) {
+            //       Map<String,String> headers = new HashMap<>();
+            //    headers.put("first value is", "@123");
+            //   headers.put("custom value", "two");
+            //   call = callClient.callUser(call.getRemoteUserId(), headers);
+            // Send a push through your push provider here, e.g. GCM
         }
     }
 

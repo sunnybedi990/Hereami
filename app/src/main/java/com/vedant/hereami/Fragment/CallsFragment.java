@@ -43,6 +43,8 @@ import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
+import com.vedant.hereami.database.messagedatabse;
+import com.vedant.hereami.database.saverecentmessage;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 import com.vedant.hereami.login.login;
@@ -123,12 +125,13 @@ public class CallsFragment extends Fragment {
     private String publickey;
     private Firebase mFirebaseMessagesChatconnectioncheck;
     private Firebase mFireChatUsersRef1;
+    String messa, message1, timestamp, sender, tendigitnumber;
+    private messagedatabse mydb;
 
 
     public CallsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -223,7 +226,11 @@ public class CallsFragment extends Fragment {
                 getActivity().startService(new Intent(getActivity(), Activesinchservice.class));
                 //     ProviderQueryResult s = firebaseAuth.fetchProvidersForEmail("sunnybedi990@gmail.com").getResult();
                 //     System.out.println("getdata: " + s);
+                mydb = new messagedatabse(getActivity());
+                if (mydb.getalltable().isEmpty()) {
 
+                    mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber);
+                }
             }
 
             //initializing views
@@ -348,6 +355,8 @@ public class CallsFragment extends Fragment {
         }
         if (id == R.id.testdata) {
             getip();
+            Intent intent = new Intent(getActivity(), saverecentmessage.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.action_logout) {

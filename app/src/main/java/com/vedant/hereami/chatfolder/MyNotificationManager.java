@@ -31,6 +31,8 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.vedant.hereami.R;
+import com.vedant.hereami.database.message;
+import com.vedant.hereami.database.messagedatabse;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,6 +73,8 @@ public class MyNotificationManager {
     private RemoteInput remoteInput;
     public static final String mypreference123 = "mypref123";
     private String myencryptionkey;
+    public static boolean exampleBool = true;
+
 
 
     //New work
@@ -79,6 +83,7 @@ public class MyNotificationManager {
     private static final String NOTIFICATION_ID = "com.stylingandroid.nougat.NOTIFICATION_ID";
     private static final int SUMMARY_ID = 0;
     private static final String EMPTY_MESSAGE_STRING = "[]";
+    private messagedatabse mydb;
 
 
     // here it ends
@@ -125,103 +130,8 @@ public class MyNotificationManager {
     //parameters are title for message title, message for message text and an intent that will open
     //when you will tap on the notification
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void showSmallNotification(String title, String message, Intent intent, String title8, String titlenum, String tendigitnumber) {
-
-
-        part2 = message;
-        id++;
-        entityid = tendigitnumber;
-        // id = idtaken;
-        //    Log.e("notee", String.valueOf(tendigitnumber));
-        //   id = Integer.valueOf(part2);
-        //   int suaa = Integer.parseInt(part2);
-        SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
-        //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
-        SharedPreferences sharedpreferences = mCtx.getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
-
-        myencryptionkey = sharedpreferences.getString("publickey", "");
-
-
-        String replyLabel = mCtx.getResources().getString(R.string.reply_label);
-        remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
-                .setLabel(replyLabel)
-                .build();
-
-        pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", message).putExtra("publickmykey", myencryptionkey);
-            Log.e("notee", String.valueOf(id));
-        } else {
-            intent2 = intent;
-            //   notificationManager.cancel(id);
-            //  nMgr.cancel(id);
-
-        }
-
-        // mCtx.sendBroadcast(intent2);
-        PendingIntent resultPendingIntent =
-                PendingIntent.getBroadcast(
-                        mCtx,
-                        0, intent2, PendingIntent.FLAG_ONE_SHOT);
-
-        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_action_stat_reply, "reply to " + title,
-                resultPendingIntent).addRemoteInput(remoteInput).setAllowGeneratedReplies(true).build();
-
-
-        String filepath = Environment.getExternalStorageDirectory().getPath();
-        File myDir = new File(filepath + "/HereamI");
-        Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
-        //   notificationManager = NotificationManagerCompat.from(mCtx);
-        notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_MAX);
-
-            // Configure the notification channel.
-            notificationChannel.setDescription("Channel description");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-            notificationChannel.enableVibration(true);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx, NOTIFICATION_CHANNEL_ID);
-
-        mBuilder.setTicker(title).setShowWhen(true).setWhen(System.currentTimeMillis())
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .setContentTitle(title)
-                .addAction(action).setColor(Color.RED)
-                .setSmallIcon(R.drawable.noti).setPriority(Notification.PRIORITY_MAX)
-                .setContentText(message);
-        //  firstTime = false;
-
-        notification = mBuilder.build();
-
-        if (notification != null) {
-            notification.defaults |= Notification.DEFAULT_SOUND;
-
-            notification.defaults |= Notification.DEFAULT_VIBRATE;
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-
-            notificationManager.notify(entityid, (int) id, notification);
-
-            notificationManager.cancel((int) id);
-            SharedPreferences.Editor editor = prefs.edit();
-            notificationNumber++;
-
-            editor.putInt("notificationNumber", notificationNumber);
-            editor.commit();
-
-
-        }
-
-
+    public static boolean returnExampleBool() {
+        return exampleBool;
     }
 
     //The method will return Bitmap from an image URL
@@ -268,6 +178,116 @@ public class MyNotificationManager {
         return useWhiteIcon ? R.drawable.noti : R.drawable.noti;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void showSmallNotification(String title, String messages, Intent intent, String title8, String titlenum, String tendigitnumber, String timestamp, String sender, String messa, String message1) {
 
+        mydb = new messagedatabse(mCtx);
+        part2 = messages;
+        id++;
+        entityid = tendigitnumber;
+        // id = idtaken;
+        //    Log.e("notee", String.valueOf(tendigitnumber));
+        //   id = Integer.valueOf(part2);
+        //   int suaa = Integer.parseInt(part2);
+        SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
+        //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
+        SharedPreferences sharedpreferences = mCtx.getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+        Log.e("title", title);
+        Log.e("title8", title8);
+        Log.e("sender", sender);
+        myencryptionkey = sharedpreferences.getString("publickey", "");
+        if (mydb.getalltable().contains("table" + tendigitnumber)) {
+            if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber)) ;
+            {
+                message n = new message();
+                n.setviewupdation(1);
+                Log.e("example", String.valueOf(exampleBool));
+            }
+        } else {
+            mydb.AddDesiredTable(tendigitnumber);
+            mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber);
+        }
+        //   Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+
+        String replyLabel = mCtx.getResources().getString(R.string.reply_label);
+        remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel(replyLabel)
+                .build();
+
+        pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", messages).putExtra("publickmykey", myencryptionkey);
+            Log.e("notee", String.valueOf(id));
+        } else {
+            intent2 = intent;
+            //   notificationManager.cancel(id);
+            //  nMgr.cancel(id);
+
+        }
+
+        // mCtx.sendBroadcast(intent2);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getBroadcast(
+                        mCtx,
+                        0, intent2, PendingIntent.FLAG_ONE_SHOT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_action_stat_reply, "reply to " + title,
+                resultPendingIntent).addRemoteInput(remoteInput).setAllowGeneratedReplies(true).build();
+
+
+        String filepath = Environment.getExternalStorageDirectory().getPath();
+        File myDir = new File(filepath + "/HereamI");
+        Bitmap bMap = BitmapFactory.decodeFile(myDir + "/" + title + ".jpg");
+        //   notificationManager = NotificationManagerCompat.from(mCtx);
+        notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_MAX);
+
+            // Configure the notification channel.
+            notificationChannel.setDescription("Channel description");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx, NOTIFICATION_CHANNEL_ID);
+
+        mBuilder.setTicker(title).setShowWhen(true).setWhen(System.currentTimeMillis())
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setContentTitle(title)
+                .addAction(action).setColor(Color.RED)
+                .setSmallIcon(R.drawable.noti).setPriority(Notification.PRIORITY_MAX)
+                .setContentText(messages);
+        //  firstTime = false;
+
+        notification = mBuilder.build();
+
+        if (notification != null) {
+            notification.defaults |= Notification.DEFAULT_SOUND;
+
+            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+
+            notificationManager.notify(entityid, (int) id, notification);
+
+            notificationManager.cancel((int) id);
+            SharedPreferences.Editor editor = prefs.edit();
+            notificationNumber++;
+
+            editor.putInt("notificationNumber", notificationNumber);
+            editor.commit();
+
+
+        }
+
+
+    }
 
 }

@@ -170,6 +170,7 @@ public class chatactivity extends BaseActivity {
     private Call call;
     private SinchService sinch;
     private Button button1;
+    private String tsTemp1;
 
 
     @Override
@@ -237,8 +238,8 @@ public class chatactivity extends BaseActivity {
             mChatRecyclerView = findViewById(R.id.chat_recycler_view);
             mUserMessageChatText = findViewById(R.id.chat_user_message);
             mUserMessageChatconnection = findViewById(R.id.text_connection);
-            button = findViewById(R.id.button9);
-            button1 = findViewById(R.id.button10);
+            button = findViewById(R.id.btn_audiocall);
+            button1 = findViewById(R.id.btn_videocall);
 
 
             mChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -596,7 +597,7 @@ public class chatactivity extends BaseActivity {
             int year = calendar.get(Calendar.YEAR);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minutes = calendar.get(Calendar.MINUTE);
-            String tsTemp = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
+            tsTemp1 = String.format("%02d:%02d", hour, minutes) + "%" + date + "/" + month + "/" + year;
             //    SimpleDateFormat sdf = new SimpleDateFormat("h:mm");
             //    String formattedTime = sdf.format(tsTemp);
 
@@ -612,7 +613,7 @@ public class chatactivity extends BaseActivity {
             newMessage.put("recipient", mRecipientUid); // Recipient uid
             newMessage.put("message", CallsFragment.encryptRSAToString(senderMessage, publickey));//message
             newMessage.put("message1", CallsFragment.encryptRSAToString(senderMessage, myencryptionkey));// mykeyMessage
-            newMessage.put("timestamp", tsTemp); // Time stamp
+            newMessage.put("timestamp", tsTemp1); // Time stamp
             newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
             sendSinglePush();
             Log.e("sala hua1", mSenderUid);
@@ -670,12 +671,16 @@ public class chatactivity extends BaseActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("title", title1 + mSenderUid);
-                params.put("message", message);
+                params.put("message", CallsFragment.encryptRSAToString(senderMessage, publickey));
+                params.put("message1", CallsFragment.encryptRSAToString(senderMessage, myencryptionkey));
+                params.put("timestamp", tsTemp1);
+                params.put("sender", mSenderUid);
 
                 //     if (!TextUtils.isEmpty(image))
                 //       params.put("image", image);
 
                 params.put("email", email);
+                Log.e("stirngg", params.toString());
                 return params;
 
             }

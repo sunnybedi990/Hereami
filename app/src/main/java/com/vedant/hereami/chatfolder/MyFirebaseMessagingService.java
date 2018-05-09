@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.BaseColumns;
@@ -46,7 +45,6 @@ import com.sinch.android.rtc.calling.CallClient;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 import com.vedant.hereami.login.SplashScreen;
-import com.vedant.hereami.tracking.MainActivity;
 import com.vedant.hereami.voip.IncomingCallScreenActivity;
 import com.vedant.hereami.voip.SinchService;
 
@@ -139,14 +137,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     JSONObject json = new JSONObject(remoteMessage.getData().toString());
                     Log.e("notidekhbaba", "notification aaya");
                     JSONObject data = json.getJSONObject("data");
-                    String message = data.getString("message");
-                    String callid = data.getString("title");
-                    if (message.equalsIgnoreCase("Incoming Call")) {
-                        Log.e("hua pass", callid);
-                        //         onIncomingCall(callid);
-                    } else {
+
                         sendPushNotification(json);
-                    }
+
                 } catch (Exception e) {
                     Log.e(TAG, "Exception: " + e.getMessage());
                 }
@@ -157,32 +150,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    //This method is only generating push notification
-    //It is same as we did in earlier posts
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Firebase Push Notification")
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
-    }
-
-    //this method will display the notification
-    //We are passing the JSONObject that is received from
-    //firebase cloud messaging
     private void sendPushNotification(JSONObject json) {
         //optionally we can display the json into log
         Log.e(TAG, "Notification JSON " + json.toString());
@@ -191,6 +161,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject data = json.getJSONObject("data");
 
             //parsing json data
+            String sender = data.getString("sender");
+            String timestamp = data.getString("timestamp");
+            String message1 = data.getString("message1");
             title1 = data.getString("title");
             String title2 = data.getString("title");
             String titletonotifyme = title2.replace("-", "").replace(user.getEmail().replace(".", "dot") + user.getDisplayName(), "");
@@ -223,7 +196,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //if there is no image
             if (imageUrl.equals("null")) {
                 //displaying small notification
-                mNotificationManager.showSmallNotification(title, decryptedmessage, intent, title8, titlenum, tendigitnumber);
+
+                mNotificationManager.showSmallNotification(title, decryptedmessage, intent, title8, titlenum, tendigitnumber, timestamp, sender, message, message1);
 
             } else {
                 //if there is an image

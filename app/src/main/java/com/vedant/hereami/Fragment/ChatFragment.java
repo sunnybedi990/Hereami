@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -40,6 +41,7 @@ import com.vedant.hereami.chatfolder.chatactivity;
 import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.recentchatadapter;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
+import com.vedant.hereami.database.DBHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,8 +67,10 @@ public class ChatFragment extends Fragment {
     private ArrayAdapter<String> RecentmessagesAdapter;
     private TextView tv;
     private TextView tm;
-    public HashMap<String, String> hashMap;
-    public HashMap<String, String> hashMap1;
+    private HashMap<String, String> hashMap;
+    private HashMap<String, String> hashMap1;
+    private HashMap<String, String> hashMap2;
+    private HashMap<String, String> hashMap3;
     public Context context;
     private String contactmatch;
     private String contactmatch1;
@@ -95,6 +99,7 @@ public class ChatFragment extends Fragment {
     private String temp6;
     private String myencryptionkey;
     private String tendigitnumber;
+    private DBHelper mydb;
 
     public ChatFragment() {
 
@@ -121,6 +126,9 @@ public class ChatFragment extends Fragment {
         newList = new ArrayList<String>();
         hashMap = new HashMap<>();
         hashMap1 = new HashMap<>();
+        hashMap2 = new HashMap<>();
+        hashMap3 = new HashMap<>();
+        mydb = new DBHelper(context);
         sharedpreferences1 = this.getActivity().getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
         myencryptionkey = sharedpreferences1.getString("privatekey", "");
 
@@ -284,6 +292,8 @@ public class ChatFragment extends Fragment {
                             //    Log.e(">>>>>last", dataSnapshot.child(currentuser).getChildrenCount() + "");
 
                             hashMap1.put(tendigitnumber, keyname);
+                            hashMap2.put(tendigitnumber, temp6);
+                            hashMap3.put(tendigitnumber, temp5);
 
 
                             contactmatch = getContactDisplayNameByNumber(tendigitnumber);
@@ -294,10 +304,60 @@ public class ChatFragment extends Fragment {
 
                             if (lst.size() < countone) {
                                 lst.add(contactmatch);
+                                Log.e("data", lst.toString());
                             }
 
                         }
                     }
+                }
+                Log.e("data1", lst.toString());
+                for (int i = 0; i < lst.size(); i++) {
+                    String keypos = hashMap1.get(hashMap.get(lst.get(i)));
+                    //   Log.e("update", "funny");
+                    String[] parts1 = keypos.replace("+", ":").split(":"); // escape .
+                    String part12 = parts1[0];
+                    String part22 = parts1[1];
+                    String phone = getLastThree(part22);
+                    List<String> phones;
+                    phones = new ArrayList<String>();
+                    phones.add(phone);
+                    Log.e("data2", lst.toString());
+                    Log.e("data1", phone);
+                    //       Log.e("update1", phone);
+                    String msgs = hashMap2.get(hashMap.get(lst.get(i)));
+                    //        Log.e("update7", msgs);
+                    String timestam = hashMap3.get(hashMap.get(lst.get(i)));
+                    //        Log.e("update1", timestam);
+                    ArrayList<String> array_list = mydb.getAllCotacts();
+                    //        Log.e("update8", array_list.toString());
+                    ArrayList<String> array_list2 = mydb.getAllid();
+                    //        Log.e("update9", array_list2.toString());
+                    for (int s = 0; s < lst.size(); s++) {
+                        //    Log.e("update1", "123");
+                        //      if (array_list2.contains(phones)) {
+                        //        Log.e("update2", "456");
+                        //      if (mydb.updateContact(phones.get(i), lst.get(i), msgs,
+                        //            timestam, keypos, phone)) {
+                        //      Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
+                        //      Log.e("update3", "yes");
+                        //   } else
+                        if (mydb.insertContact(lst.get(i), msgs,
+                                timestam, keypos, phone)) {
+                            //          Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
+                            Log.e("update4", "no");
+                        } else {
+                            Toast.makeText(getActivity(), "not done", Toast.LENGTH_SHORT).show();
+                            Log.e("update5", "error");
+                        }
+                        Log.i("Value of element " + i, lst.get(i));
+
+                        // }
+                    }
+                    //       if(array_list.size() == 0){
+                    //         if (mydb.insertContact(lst.get(i), msgs,
+                    //               timestam, keypos, phone)) {
+                    //         Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();}
+                    //    }
                 }
 
 
