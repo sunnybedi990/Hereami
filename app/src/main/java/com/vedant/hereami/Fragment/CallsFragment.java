@@ -365,10 +365,12 @@ public class CallsFragment extends Fragment {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.clear();
             editor.commit();
-            firebaseAuth.signOut();
-            getActivity().finish();
-            //starting login activity
-            startActivity(new Intent(getActivity(), login.class));
+            if(!sharedpreferences.contains(mypreference123)) {
+                firebaseAuth.signOut();
+                getActivity().finish();
+                //starting login activity
+                startActivity(new Intent(getActivity(), login.class));
+            }
             return true;
         }
 
