@@ -13,6 +13,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,14 +26,18 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
-import com.vedant.hereami.database.message;
+import com.vedant.hereami.database.DBHelper;
 import com.vedant.hereami.database.messagedatabse;
 
 import java.io.File;
@@ -39,13 +45,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 
-/**
- * Created by Ravi on 31/03/15.
- */
+
 
 public class MyNotificationManager {
 
@@ -71,9 +76,9 @@ public class MyNotificationManager {
     private Intent intent2;
     private PendingIntent pendingIntent;
     private RemoteInput remoteInput;
-    public static final String mypreference123 = "mypref123";
+    private static final String mypreference123 = "mypref123";
     private String myencryptionkey;
-    public static boolean exampleBool = true;
+    public static boolean exampleBool = false;
 
 
 
@@ -84,6 +89,7 @@ public class MyNotificationManager {
     private static final int SUMMARY_ID = 0;
     private static final String EMPTY_MESSAGE_STRING = "[]";
     private messagedatabse mydb;
+    private String encrytionprivatekey;
 
 
     // here it ends
@@ -131,6 +137,7 @@ public class MyNotificationManager {
     //when you will tap on the notification
 
     public static boolean returnExampleBool() {
+
         return exampleBool;
     }
 
@@ -179,35 +186,74 @@ public class MyNotificationManager {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void showSmallNotification(String title, String messages, Intent intent, String title8, String titlenum, String tendigitnumber, String timestamp, String sender, String messa, String message1) {
+    public void showSmallNotification(final String title, String messages, Intent intent, String title8, String titlenum, final String tendigitnumber, final String timestamp, final String sender, final String messa, final String message1) {
 
         mydb = new messagedatabse(mCtx);
+        final DBHelper mydbhelper = new DBHelper(mCtx);
         part2 = messages;
         id++;
         entityid = tendigitnumber;
+
         // id = idtaken;
         //    Log.e("notee", String.valueOf(tendigitnumber));
         //   id = Integer.valueOf(part2);
         //   int suaa = Integer.parseInt(part2);
         SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
         //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
-        SharedPreferences sharedpreferences = mCtx.getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
-        Log.e("title", title);
-        Log.e("title8", title8);
-        Log.e("sender", sender);
-        myencryptionkey = sharedpreferences.getString("publickey", "");
-        if (mydb.getalltable().contains("table" + tendigitnumber)) {
-            if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber)) ;
-            {
-                message n = new message();
-                n.setviewupdation(1);
-                Log.e("example", String.valueOf(exampleBool));
+        final SharedPreferences sharedpreferences = mCtx.getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+        //  Log.e("title", title);
+        //  Log.e("title8", title8);
+        //  Log.e("sender", sender);
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                //  Log.e("pass","passed notification manager");
+                ArrayList<String> arrTblNames = new ArrayList<String>();
+                SQLiteDatabase db = mydb.getReadableDatabase();
+                Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+                if (c.moveToFirst()) {
+                    while (!c.isAfterLast()) {
+                        arrTblNames.add(c.getString(c.getColumnIndex("name")));
+                        c.moveToNext();
+                    }
+                }
+                //    add data to recent chat when message comes
+                myencryptionkey = sharedpreferences.getString("publickey", "");
+                encrytionprivatekey = sharedpreferences.getString("privatekey", "");
+                String messagedecrypted = CallsFragment.decryptRSAToString(messa, encrytionprivatekey);
+
+                if (arrTblNames.contains("table" + tendigitnumber)) {
+                    if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber)) {
+                        Intent intent1 = new Intent("message").putExtra("message1", tendigitnumber);
+                        LocalBroadcastManager.getInstance(mCtx).sendBroadcast(intent1);
+                        mydbhelper.updatemsgs(tendigitnumber, messagedecrypted, timestamp);
+                        //    message mess = new message();
+                        //  mess.setviewupdation(1);
+                        //      Log.e("pass","passed table12 ");
+                        //  Log.e("example", String.valueOf(exampleBool));
+                    }
+
+
+                } else {
+                    mydb.AddDesiredTable(tendigitnumber);
+                    if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber)) {
+                        Intent intent1 = new Intent("message").putExtra("message1", tendigitnumber);
+                        LocalBroadcastManager.getInstance(mCtx).sendBroadcast(intent1);
+                        //   message mess = new message();
+                        // mess.setviewupdation(1);
+                        //     Log.e("pass","passed table ");
+                    }
+                    mydbhelper.insertContact(title, sender, tendigitnumber, messagedecrypted, timestamp);
+                }
+                //   Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            mydb.AddDesiredTable(tendigitnumber);
-            mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber);
-        }
-        //   Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+
+
+        }, 1000);
 
         String replyLabel = mCtx.getResources().getString(R.string.reply_label);
         remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)

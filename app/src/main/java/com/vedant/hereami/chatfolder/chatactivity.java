@@ -57,6 +57,7 @@ import com.sinch.android.rtc.calling.CallClient;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
+import com.vedant.hereami.database.messagedatabse;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 import com.vedant.hereami.voip.BaseActivity;
@@ -171,6 +172,7 @@ public class chatactivity extends BaseActivity {
     private SinchService sinch;
     private Button button1;
     private String tsTemp1;
+    private messagedatabse mydb;
 
 
     @Override
@@ -188,7 +190,7 @@ public class chatactivity extends BaseActivity {
         Intent intent = this.getIntent();
         remoteInput = RemoteInput.getResultsFromIntent(intent);
         SharedPreferences sharedpreferences = getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
-
+        mydb = new messagedatabse(this);
         String encrytionprivatekey = sharedpreferences.getString("privatekey", "");
         myencryptionkey = sharedpreferences.getString("publickey", "");
         Bundle bundle = getIntent().getExtras();
@@ -619,6 +621,7 @@ public class chatactivity extends BaseActivity {
             Log.e("sala hua1", mSenderUid);
             Log.e("sala hua2", mRecipientUid);
             Log.e("sala hua3", String.valueOf(newMessage));
+            mydb.insertContact(CallsFragment.encryptRSAToString(senderMessage, publickey), CallsFragment.encryptRSAToString(senderMessage, myencryptionkey), tsTemp1, mSenderUid, mobilenumber);
             mFirebaseMessagesChat12.push().setValue(newMessage, index);
             mFirebaseMessagesChat13.push().setValue(newMessage, index);
 

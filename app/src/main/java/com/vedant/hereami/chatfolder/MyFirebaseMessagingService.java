@@ -27,6 +27,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
@@ -134,12 +136,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (remoteMessage.getData().size() > 0) {
                 Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
                 try {
-                    JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                    final JSONObject json = new JSONObject(remoteMessage.getData().toString());
                     Log.e("notidekhbaba", "notification aaya");
                     JSONObject data = json.getJSONObject("data");
+                    Handler handler = new Handler(Looper.getMainLooper());
 
-                        sendPushNotification(json);
-
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sendPushNotification(json);
+                        }
+                    }, 1000);
                 } catch (Exception e) {
                     Log.e(TAG, "Exception: " + e.getMessage());
                 }
@@ -199,6 +206,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 mNotificationManager.showSmallNotification(title, decryptedmessage, intent, title8, titlenum, tendigitnumber, timestamp, sender, message, message1);
 
+                Log.e("pass", "passed");
             } else {
                 //if there is an image
                 //displaying a big notification
@@ -208,6 +216,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "Json Exception: " + e.getMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
+            Log.e(TAG, "yahadelh");
         }
     }
 

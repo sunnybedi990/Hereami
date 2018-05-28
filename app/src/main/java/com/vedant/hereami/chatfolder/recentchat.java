@@ -85,6 +85,7 @@ public class recentchat extends Activity {
     private Firebase mFirebaseMessagesChatconnectioncheck;
     private String username;
     private String publickey;
+    private String keys;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class recentchat extends Activity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         context = this;
         Firebase.setAndroidContext(this);
-        RecentUser = (ListView) findViewById(R.id.list_recent);
+        RecentUser = findViewById(R.id.list_recent);
         lst = new ArrayList<String>();
         lstmsg = new ArrayList<String>();
         lstreceptmsg = new ArrayList<String>();
@@ -110,7 +111,7 @@ public class recentchat extends Activity {
 
         myencryptionkey = sharedpreferences.getString("private", "");
 
-        mProgressBarForUsers = (ProgressBar) findViewById(R.id.progress_bar_users1);
+        mProgressBarForUsers = findViewById(R.id.progress_bar_users1);
         showProgressBarForUsers();
         // Bundle bundle = getIntent().getExtras();
 

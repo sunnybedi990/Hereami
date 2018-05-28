@@ -2,12 +2,18 @@ package com.vedant.hereami.Fragment;
 
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.BaseColumns;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
@@ -41,8 +47,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.sinch.android.rtc.SinchClient;
 import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
-import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
+import com.vedant.hereami.database.DBHelper;
 import com.vedant.hereami.database.messagedatabse;
 import com.vedant.hereami.database.saverecentmessage;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
@@ -62,10 +68,12 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -89,7 +97,9 @@ public class CallsFragment extends Fragment {
     String savedpass;
     private TextView textViewUserEmail;
     public String firstname;
-
+    public HashMap<String, String> hashMap;
+    public HashMap<String, String> hashMap1;
+    public Firebase fb_to_read;
     private FirebaseAuth firebaseAuth;
     public String name3;
     private String usermail;
@@ -127,10 +137,21 @@ public class CallsFragment extends Fragment {
     private Firebase mFireChatUsersRef1;
     String messa, message1, timestamp, sender, tendigitnumber;
     private messagedatabse mydb;
+    private DBHelper mydb1;
+    private String contactmatch;
+    private String tendigitnumber1;
+    private List<String> lst1;
 
 
     public CallsFragment() {
         // Required empty public constructor
+    }
+
+    public static String getLastThree(String myString) {
+        if (myString.length() > 10)
+            return myString.substring(myString.length() - 10);
+        else
+            return myString;
     }
 
     @Override
@@ -149,7 +170,15 @@ public class CallsFragment extends Fragment {
         mFirebaseMessagesChatconnectioncheck = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child("userkey");
         mFirebaseChatRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
-
+        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        fb_to_read = fb_parent.child("data");
+        Firebase fb_put_child = fb_to_read.push();
+        lst1 = new ArrayList<String>();
+        final int a;
+        lst1.clear();
+        // getdata();
+        hashMap = new HashMap<>();
+        hashMap1 = new HashMap<>();
         prefs = getActivity().getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
 
         // set up rules for Daylight Saving Time
@@ -227,10 +256,8 @@ public class CallsFragment extends Fragment {
                 //     ProviderQueryResult s = firebaseAuth.fetchProvidersForEmail("sunnybedi990@gmail.com").getResult();
                 //     System.out.println("getdata: " + s);
                 mydb = new messagedatabse(getActivity());
-                if (mydb.getalltable().isEmpty()) {
+                mydb1 = new DBHelper(getContext());
 
-                    mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber);
-                }
             }
 
             //initializing views
@@ -251,6 +278,13 @@ public class CallsFragment extends Fragment {
 
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -288,7 +322,7 @@ public class CallsFragment extends Fragment {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), chatmain.class);
+                Intent intent1 = new Intent(getActivity(), saverecentmessage.class);
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
@@ -331,51 +365,6 @@ public class CallsFragment extends Fragment {
         //    view = inflater.inflate(android.R.layout.list_content, null);
         //   listView = (ListView) view.findViewById(android.R.id.list);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(getActivity(), viewcurrentuserprofile.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.testdata) {
-            getip();
-            Intent intent = new Intent(getActivity(), saverecentmessage.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.action_logout) {
-            sharedpreferences = getActivity().getSharedPreferences(mypreference123,
-                    Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.clear();
-            editor.commit();
-            if(!sharedpreferences.contains(mypreference123)) {
-                firebaseAuth.signOut();
-                getActivity().finish();
-                //starting login activity
-                startActivity(new Intent(getActivity(), login.class));
-            }
-            return true;
-        }
-
-
-        return super.onOptionsItemSelected(item);
     }
 
 
@@ -674,5 +663,142 @@ public class CallsFragment extends Fragment {
 
         MyVolley.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(getActivity(), viewcurrentuserprofile.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.testdata) {
+            getip();
+            Intent intent = new Intent(getActivity(), saverecentmessage.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_logout) {
+            sharedpreferences = getActivity().getSharedPreferences(mypreference123,
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.clear();
+            editor.commit();
+            mydb.deletedatabse();
+            mydb1.deletedatabse();
+
+            if (!sharedpreferences.contains(mypreference123)) {
+                firebaseAuth.signOut();
+                getActivity().finish();
+                //starting login activity
+                startActivity(new Intent(getActivity(), login.class));
+            }
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void getdata() {
+
+        fb_to_read.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+            public void onDataChange(DataSnapshot result) {
+                // Result will be holded Here
+
+                for (DataSnapshot dsp : result.getChildren()) {
+                    String keyname = String.valueOf(dsp.getKey()).replace("+", ":");
+
+                    String[] parts = keyname.split(":"); // escape .
+                    String part1 = parts[0];
+                    String part2 = parts[1];
+                    tendigitnumber1 = getLastThree(part2);
+
+                    hashMap1.put(tendigitnumber1, keyname.replace(":", "+"));
+
+                    long sun = result.getChildrenCount();
+                    if (lst1.size() > sun) {
+                        lst1.clear();
+                    } else {
+
+                        contactmatch = getContactDisplayNameByNumber(tendigitnumber1);
+                        if (!contactmatch.equals("?")) {
+                            lst1.add(contactmatch);
+                        }
+
+                    }
+
+                }
+
+                for (int i = 0; i < lst1.size(); i++) {
+
+
+                    ArrayList<String> arrTblNames = new ArrayList<String>();
+                    SQLiteDatabase db = mydb1.getReadableDatabase();
+                    Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+                    if (c.moveToFirst()) {
+                        while (!c.isAfterLast()) {
+                            arrTblNames.add(c.getString(c.getColumnIndex("name")));
+                            c.moveToNext();
+                        }
+                    }
+                    if (!arrTblNames.contains("recentchat")) {
+                        Log.e("name", lst1.get(i));
+                        Log.e("username", hashMap1.get(hashMap.get(lst1.get(i))));
+                        Log.e("phone", tendigitnumber1);
+                        //            if (mydb1.insertContact(lst1.get(i), hashMap1.get(hashMap.get(lst1.get(i))), tendigitnumber1)) {
+                        //            Toast.makeText(getContext(), "inserted", Toast.LENGTH_LONG).show();
+                        //      }
+                        //  } else {
+                        //          if (mydb1.updateContact(lst1.get(i), hashMap1.get(hashMap.get(lst1.get(i))), tendigitnumber1)) {
+                        Toast.makeText(getContext(), "updated", Toast.LENGTH_LONG).show();
+                        //    }
+                    }
+                }
+
+            }
+
+
+        });
+    }
+
+    public String getContactDisplayNameByNumber(String number) {
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        String name = "?";
+
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        Cursor contactLookup = contentResolver.query(uri, new String[]{BaseColumns._ID,
+                ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+
+        try {
+            if (contactLookup != null && contactLookup.getCount() > 0) {
+                contactLookup.moveToNext();
+                name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
+                //String contactId = contactLookup.getString(contactLookup.getColumnIndex(BaseColumns._ID));
+                hashMap.put(name, number);
+            }
+        } finally {
+            if (contactLookup != null) {
+                contactLookup.close();
+            }
+        }
+
+        return name;
+    }
+
 
 }

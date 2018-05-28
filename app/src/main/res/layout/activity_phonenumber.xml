@@ -109,7 +109,7 @@
         android:layout_toRightOf="@+id/ccp"
         android:text="Submit" />
 
-    <CountryCodePicker
+    <com.vedant.hereami.code.CountryCodePicker
         android:id="@+id/ccp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" >
 
-    </CountryCodePicker>
+    </com.vedant.hereami.code.CountryCodePicker>
 
 
 </RelativeLayout>

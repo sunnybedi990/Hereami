@@ -10,7 +10,9 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,6 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CONTACTS_COLUMN_USERNAME = "username";
     public static final String CONTACTS_COLUMN_KEYPOSITION3 = "keyposition3";
     public static final String CONTACTS_COLUMN_PHONE = "phone";
+    private Context myContext;
     private HashMap hp;
 
     public DBHelper(Context context) {
@@ -37,7 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table recentchat " +
-                        "(id text primary key, name text,msg text,timestamp text, username text, phone long)"
+                        "(id  INTEGER PRIMARY KEY AUTOINCREMENT, name text, username text, phone long, msg text, timestamp text)"
         );
     }
 
@@ -46,17 +49,19 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL("DROP TABLE IF EXISTS recentchat");
         onCreate(db);
+
     }
 
-    public boolean insertContact(String name, String msg, String timestamp, String username, String phone) {
+    public boolean insertContact(String name, String username, String phone, String msg, String time) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", phone);
         contentValues.put("name", name);
-        contentValues.put("msg", msg);
-        contentValues.put("timestamp", timestamp);
         contentValues.put("username", username);
         contentValues.put("phone", phone);
+        contentValues.put("msg", msg);
+        contentValues.put("timestamp", time);
         db.insert("recentchat", null, contentValues);
         return true;
     }
@@ -80,15 +85,25 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateContact(String id, String name, String msg, String timestamp, String username, String phone) {
+    public boolean updateContact(String name, String username, String phone, String msg, String time) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
-        contentValues.put("msg", msg);
-        contentValues.put("timestamp", timestamp);
         contentValues.put("username", username);
         contentValues.put("phone", phone);
+        contentValues.put("msg", msg);
+        contentValues.put("timestamp", time);
+        db.update("recentchat", contentValues, "id = ? ", null);
+        return true;
+    }
+
+    public boolean updatemsgs(String id, String msg, String time) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("msg", msg);
+        contentValues.put("timestamp", time);
         db.update("recentchat", contentValues, "id = ? ", new String[]{id});
+
         return true;
     }
 
@@ -203,4 +218,22 @@ public class DBHelper extends SQLiteOpenHelper {
         return array_list3;
     }
 
+    public boolean gettabes() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select id from recentchat", null);
+
+        return true;
+    }
+
+    public void deletedatabse() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.e("datapath", db.getPath());
+        SQLiteDatabase.deleteDatabase((new File(db.getPath())));
+        // File datapath = myContext.getDatabasePath("message.db");
+        //  myContext.deleteDatabase(db.getPath());
+
+
+    }
 }

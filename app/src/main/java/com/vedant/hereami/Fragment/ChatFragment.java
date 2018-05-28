@@ -26,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -71,6 +70,7 @@ public class ChatFragment extends Fragment {
     private HashMap<String, String> hashMap1;
     private HashMap<String, String> hashMap2;
     private HashMap<String, String> hashMap3;
+    private HashMap<String, String> hashMap4;
     public Context context;
     private String contactmatch;
     private String contactmatch1;
@@ -100,6 +100,9 @@ public class ChatFragment extends Fragment {
     private String myencryptionkey;
     private String tendigitnumber;
     private DBHelper mydb;
+    private Firebase fb_to_read;
+    private List<String> lst1;
+    private String tendigitnumber1;
 
     public ChatFragment() {
 
@@ -118,6 +121,7 @@ public class ChatFragment extends Fragment {
 
         //  RecentUser = (ListView) findViewById(R.id.list_recent);
         lst = new ArrayList<String>();
+        lst1 = new ArrayList<String>();
         lstmsg = new ArrayList<String>();
         lstreceptmsg = new ArrayList<String>();
         lstmsg1 = new ArrayList<String>();
@@ -128,6 +132,7 @@ public class ChatFragment extends Fragment {
         hashMap1 = new HashMap<>();
         hashMap2 = new HashMap<>();
         hashMap3 = new HashMap<>();
+        hashMap4 = new HashMap<>();
         mydb = new DBHelper(context);
         sharedpreferences1 = this.getActivity().getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
         myencryptionkey = sharedpreferences1.getString("privatekey", "");
@@ -147,11 +152,14 @@ public class ChatFragment extends Fragment {
         Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
         mFirebaseMessagesChat = fb_parent.child("/message");
         mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
+        fb_to_read = fb_parent.child("data");
+        Firebase fb_put_child = fb_to_read.push();
         currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
         mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child(currentuser);
 
 
         chats();
+
     }
 
     @Override
@@ -273,7 +281,7 @@ public class ChatFragment extends Fragment {
                             } else {
                                 temp5 = part4;
                             }
-                            Log.e("users", temp3);
+                            //           Log.e("users", temp3);
 
                             temp6 = CallsFragment.decryptRSAToString(temp1, myencryptionkey) + CallsFragment.decryptRSAToString(temp1, publickey) + CallsFragment.decryptRSAToString(temp4, publickey) + CallsFragment.decryptRSAToString(temp4, myencryptionkey);
 
@@ -310,56 +318,6 @@ public class ChatFragment extends Fragment {
                         }
                     }
                 }
-                Log.e("data1", lst.toString());
-                for (int i = 0; i < lst.size(); i++) {
-                    String keypos = hashMap1.get(hashMap.get(lst.get(i)));
-                    //   Log.e("update", "funny");
-                    String[] parts1 = keypos.replace("+", ":").split(":"); // escape .
-                    String part12 = parts1[0];
-                    String part22 = parts1[1];
-                    String phone = getLastThree(part22);
-                    List<String> phones;
-                    phones = new ArrayList<String>();
-                    phones.add(phone);
-                    Log.e("data2", lst.toString());
-                    Log.e("data1", phone);
-                    //       Log.e("update1", phone);
-                    String msgs = hashMap2.get(hashMap.get(lst.get(i)));
-                    //        Log.e("update7", msgs);
-                    String timestam = hashMap3.get(hashMap.get(lst.get(i)));
-                    //        Log.e("update1", timestam);
-                    ArrayList<String> array_list = mydb.getAllCotacts();
-                    //        Log.e("update8", array_list.toString());
-                    ArrayList<String> array_list2 = mydb.getAllid();
-                    //        Log.e("update9", array_list2.toString());
-                    for (int s = 0; s < lst.size(); s++) {
-                        //    Log.e("update1", "123");
-                        //      if (array_list2.contains(phones)) {
-                        //        Log.e("update2", "456");
-                        //      if (mydb.updateContact(phones.get(i), lst.get(i), msgs,
-                        //            timestam, keypos, phone)) {
-                        //      Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
-                        //      Log.e("update3", "yes");
-                        //   } else
-                        if (mydb.insertContact(lst.get(i), msgs,
-                                timestam, keypos, phone)) {
-                            //          Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();
-                            Log.e("update4", "no");
-                        } else {
-                            Toast.makeText(getActivity(), "not done", Toast.LENGTH_SHORT).show();
-                            Log.e("update5", "error");
-                        }
-                        Log.i("Value of element " + i, lst.get(i));
-
-                        // }
-                    }
-                    //       if(array_list.size() == 0){
-                    //         if (mydb.insertContact(lst.get(i), msgs,
-                    //               timestam, keypos, phone)) {
-                    //         Toast.makeText(getActivity(), "done", Toast.LENGTH_SHORT).show();}
-                    //    }
-                }
-
 
                 rec = new recentchatadapter(getActivity(), lst, lstmsg, timestamp);
                 //  RecentmessagesAdapter = new ArrayAdapter<String>(recentchat.this,android.R.layout.simple_list_item_1,android.R.id.text1);
@@ -408,9 +366,9 @@ public class ChatFragment extends Fragment {
 
 
                     String sunn = connectionchild.getKey();
-                    Log.e("sunn", sunn);
+                    //    Log.e("sunn", sunn);
                     publickey = dataSnapshot1.child(username).child("Publickey").getValue().toString();
-                    Log.e("sunnq", publickey + "");
+                    //    Log.e("sunnq", publickey + "");
 
                 }
             }
@@ -421,4 +379,6 @@ public class ChatFragment extends Fragment {
             }
         });
     }
+
+
 }

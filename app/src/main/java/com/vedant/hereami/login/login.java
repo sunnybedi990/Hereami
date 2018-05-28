@@ -50,8 +50,8 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         setContentView(R.layout.activity_log_in);
         Firebase.setAndroidContext(getApplicationContext());
         firebaseAuth = FirebaseAuth.getInstance();
-        //   coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-        //         .coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.coordinator_layout
+        );
         //if the objects getcurrentuser method is not null
         //means user is already logged in
         if (firebaseAuth.getCurrentUser() != null) {
@@ -143,6 +143,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
 
 
                                 } else {
+                                    user.sendEmailVerification();
                                     Snackbar snackbar = Snackbar
                                             .make(coordinatorLayout, "Please verify your account!", Snackbar.LENGTH_LONG);
 

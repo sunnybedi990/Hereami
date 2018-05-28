@@ -306,6 +306,9 @@
             android:name=".database.message"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".database.newchat"
+            android:theme="@style/Theme.AppCompat" />
     </application>
 
 </manifest>
