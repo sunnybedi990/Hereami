@@ -5,11 +5,15 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.RemoteInput;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
@@ -29,6 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.vedant.hereami.Fragment.CallsFragment;
+import com.vedant.hereami.database.DBHelper;
+import com.vedant.hereami.database.messagedatabse;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 
@@ -39,6 +45,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class notifyme extends BroadcastReceiver {
     private static String KEY_TEXT_REPLY = "key_text_reply";
@@ -106,6 +114,9 @@ public class notifyme extends BroadcastReceiver {
     Firebase mFirebaseMessagesChatconnectioncheck;
     private String publickey;
     private String tsTemp;
+    private messagedatabse mydb;
+    private DBHelper mydbhelper;
+    private String phone;
 
     @SuppressLint("ServiceCast")
     @Override
@@ -117,6 +128,13 @@ public class notifyme extends BroadcastReceiver {
         // Set recipient uid
 
         Firebase.setAndroidContext(context);
+        mydb = new messagedatabse(context);
+        mydbhelper = new DBHelper(context);
+        // SharedPreferences prefs = context.getSharedPreferences(notifyme.class.getSimpleName(), Context.MODE_PRIVATE);
+        //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
+        final SharedPreferences sharedpreferences = context.getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+        //    add data to recent chat when message comes
+        myencryptionkey = sharedpreferences.getString("publickey", "");
         remoteInput = RemoteInput.getResultsFromIntent(intent);
         bundle = intent.getExtras();
         if (remoteInput != null) {
@@ -126,7 +144,12 @@ public class notifyme extends BroadcastReceiver {
             message2 = bundle.getString("key_position");
             tag = bundle.getString("tag");
             messageId = bundle.getInt("KEY_NOTIFICATION_ID");
-            myencryptionkey = bundle.getString("publickmykey");
+            //   myencryptionkey = bundle.getString("publickmykey");
+            phone = bundle.getString("number");
+            Log.e("keykey", myencryptionkey + "   " + message2 + "  " + tag + "    " + phone);
+
+
+
 
             message = remoteInput.getCharSequence(KEY_TEXT_REPLY);
             if (message2 != null) {
@@ -197,15 +220,45 @@ public class notifyme extends BroadcastReceiver {
                         newMessage.put("timestamp", tsTemp); // Time stamp
                         newMessage.put("devicetoken", FirebaseInstanceId.getInstance().getToken());
 
-                        Log.e("sala hua4", myencryptionkey);
-                        Log.e("sala hua1", mSenderUid);
-                        Log.e("sala hua2", mRecipientUid);
-                        Log.e("sala hua3", String.valueOf(newMessage));
+                        //         Log.e("sala hua4", myencryptionkey);
+                        //       Log.e("sala hua1", mSenderUid);
+                        //     Log.e("sala hua2", mRecipientUid);
+                        //      Log.e("sala hua3", String.valueOf(newMessage));
                         if (mFirebaseMessagesChat12 != null) {
                             mFirebaseMessagesChat12.push().setValue(newMessage, index);
                             mFirebaseMessagesChat13.push().setValue(newMessage, index);
-                            NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
-                            notificationManager.cancel(tag, messageId);
+
+                            NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(NOTIFICATION_SERVICE);
+
+                            notificationManager.cancel(messageId);
+
+
+                            ArrayList<String> arrTblNames = new ArrayList<String>();
+                            SQLiteDatabase db = mydb.getReadableDatabase();
+                            Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+                            if (c.moveToFirst()) {
+                                while (!c.isAfterLast()) {
+                                    arrTblNames.add(c.getString(c.getColumnIndex("name")));
+                                    c.moveToNext();
+                                }
+                            }
+                            if (arrTblNames.contains("table" + phone)) {
+
+                                if (mydb.insertContact(CallsFragment.encryptRSAToString(senderMessage, publickey), CallsFragment.encryptRSAToString(senderMessage, myencryptionkey), tsTemp, mSenderUid, phone)) {
+                                    Intent intent1 = new Intent("message").putExtra("message1", phone);
+                                    LocalBroadcastManager.getInstance(mCtx).sendBroadcast(intent1);
+                                }
+
+
+                                mydbhelper.updatemsgs(phone, senderMessage, tsTemp);
+                                //  com.vedant.hereami.database.message n = new message();
+                                //     n.setviewupdation(1);
+                                //  Log.e("example", String.valueOf(exampleBool));
+
+
+                            }
+
                             sendSinglePush();
                         }
                     }
@@ -261,11 +314,14 @@ public class notifyme extends BroadcastReceiver {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("title", title1 + mSenderUid);
-                params.put("message", message);
 
+                params.put("title", title1 + mSenderUid);
+                params.put("message", CallsFragment.encryptRSAToString(senderMessage, publickey));
+                params.put("message1", CallsFragment.encryptRSAToString(senderMessage, myencryptionkey));
+                params.put("timestamp", tsTemp);
+                params.put("sender", mSenderUid);
                 //     if (!TextUtils.isEmpty(image))
                 //       params.put("image", image);
 

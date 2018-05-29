@@ -46,6 +46,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -68,7 +69,7 @@ public class MyNotificationManager {
     private static final String KEY_TEXT_REPLY = "key_text_reply";
     private Context mCtx;
     private EditText mUserMessageChatText;
-    public long id = System.currentTimeMillis();
+    public int id = new Random().nextInt();
     private Notification notification;
     private NotificationManager notificationManager;
     private String part2;
@@ -201,6 +202,9 @@ public class MyNotificationManager {
         SharedPreferences prefs = mCtx.getSharedPreferences(MyNotificationManager.class.getSimpleName(), Context.MODE_PRIVATE);
         //   notificationNumber = prefs.getInt("notificationNumber", Integer.parseInt(titlenum));
         final SharedPreferences sharedpreferences = mCtx.getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
+        //    add data to recent chat when message comes
+        myencryptionkey = sharedpreferences.getString("publickey", "");
+        encrytionprivatekey = sharedpreferences.getString("privatekey", "");
         //  Log.e("title", title);
         //  Log.e("title8", title8);
         //  Log.e("sender", sender);
@@ -221,9 +225,7 @@ public class MyNotificationManager {
                         c.moveToNext();
                     }
                 }
-                //    add data to recent chat when message comes
-                myencryptionkey = sharedpreferences.getString("publickey", "");
-                encrytionprivatekey = sharedpreferences.getString("privatekey", "");
+
                 String messagedecrypted = CallsFragment.decryptRSAToString(messa, encrytionprivatekey);
 
                 if (arrTblNames.contains("table" + tendigitnumber)) {
@@ -263,7 +265,7 @@ public class MyNotificationManager {
         pendingIntent = PendingIntent.getActivity(mCtx, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", messages).putExtra("publickmykey", myencryptionkey);
+            intent2 = new Intent(mCtx, notifyme.class).putExtra("key_position", title8).putExtra("KEY_NOTIFICATION_ID", id).putExtra("tag", sender).putExtra("publickmykey", myencryptionkey).putExtra("number", tendigitnumber);
             Log.e("notee", String.valueOf(id));
         } else {
             intent2 = intent;
@@ -321,9 +323,9 @@ public class MyNotificationManager {
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
 
-            notificationManager.notify(entityid, (int) id, notification);
+            notificationManager.notify(id, notification);
 
-            notificationManager.cancel((int) id);
+
             SharedPreferences.Editor editor = prefs.edit();
             notificationNumber++;
 

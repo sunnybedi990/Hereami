@@ -160,7 +160,7 @@ public class ChatFragment extends Fragment {
         mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child(currentuser);
 
 
-        chats();
+        //     chats();
 
     }
 
@@ -217,11 +217,12 @@ public class ChatFragment extends Fragment {
             return myString1;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public String getContactDisplayNameByNumber(String number) {
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
         String name = number;
 
-        ContentResolver contentResolver = getActivity().getContentResolver();
+        ContentResolver contentResolver = Objects.requireNonNull(getActivity()).getContentResolver();
         Cursor contactLookup = contentResolver.query(uri, new String[]{BaseColumns._ID,
                 ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
 
@@ -306,7 +307,9 @@ public class ChatFragment extends Fragment {
                             hashMap3.put(tendigitnumber, temp5);
 
 
-                            contactmatch = getContactDisplayNameByNumber(tendigitnumber);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                contactmatch = getContactDisplayNameByNumber(tendigitnumber);
+                            }
                             if (contactmatch == null) {
                                 contactmatch = tendigitnumber;
                             }

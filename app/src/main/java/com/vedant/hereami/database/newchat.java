@@ -30,9 +30,10 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.ReferenceUrl;
-import com.vedant.hereami.chatfolder.chatactivity;
 import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
 import com.vedant.hereami.swiperefresh.MyCustomHeadView;
 
@@ -57,6 +58,8 @@ public class newchat extends AppCompatActivity implements CustomSwipeRefreshLayo
     private SpannableString wordtoSpan;
     private String contactmatch;
     private String tendigitnumber;
+    private FirebaseUser user;
+    private FirebaseAuth firebaseAuth;
 
     public static String getLastThree(String myString) {
         if (myString.length() > 10)
@@ -81,6 +84,8 @@ public class newchat extends AppCompatActivity implements CustomSwipeRefreshLayo
         Firebase fb_put_child = fb_to_read.push();
         lst = new ArrayList<String>();
         final int a;
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
         lst.clear();
         getdata();
         hashMap = new HashMap<>();
@@ -161,7 +166,7 @@ public class newchat extends AppCompatActivity implements CustomSwipeRefreshLayo
                         Log.e(">>>>>NAME_NUMBER", hashMap.get(lst.get(position)) + "");
 
                         Log.e(">>>>>NUMBER_KEY", hashMap1.get(hashMap.get(lst.get(position))) + "");
-                        Intent intent4 = new Intent(newchat.this, chatactivity.class).putExtra("key_position1", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("namenumber", lst.get(position) + "").putExtra("number", tendigitnumber);
+                        Intent intent4 = new Intent(newchat.this, message.class).putExtra("username", hashMap1.get(hashMap.get(lst.get(position)))).putExtra("name", lst.get(position) + "").putExtra("number", hashMap.get(lst.get(position))).putExtra("tablename", "table" + hashMap.get(lst.get(position)));
                         startActivity(intent4);
                         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }
