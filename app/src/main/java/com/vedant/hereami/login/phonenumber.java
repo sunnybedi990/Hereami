@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -116,6 +118,9 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
     private String name;
     private TextView wrongname;
     private Firebase mFireChatUsersRef1;
+    private String TAG = phonenumber.class.getSimpleName();
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +128,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         setContentView(R.layout.activity_phonenumber);
         settingsrequest();
         Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -155,8 +160,8 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                 codecon = ccpGetNumber.getFullNumberWithPlus();
                 String lessplus = codecon.replace("+", "");
                 String s = editTextGetFullNumber.getText().toString();
-                 name = editTextGetname.getText().toString();
-                if(name.length() < 0){
+                name = editTextGetname.getText().toString();
+                if (name.length() < 0) {
                     wrongname.setText("Please Enter the Name");
                 }
 
@@ -165,9 +170,9 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                     Log.e(">>>>asddddddd", s + "");
 
                 } else {
-                    //      if (lst1.contains(lessplus)) {
-                    //        wrongnumber.setText("Number is already registered. Please enter a diffrent number");
-                    //  } else {
+                    if (lst1.contains(lessplus)) {
+                        wrongnumber.setText("Number is already registered. Please enter a diffrent number");
+                    } else {
 
                         if (useremail == null) {
 
@@ -177,6 +182,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(codecon).build();
+
                             user.updateProfile(profileUpdates)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -209,7 +215,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
                     Log.e(">>>>asddddddd", codecon + "");
 
                 }
-            //  }
+            }
 
         });
 
@@ -386,8 +392,7 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
         final int ampm = calendar.get(Calendar.AM_PM);
         String tsTemp = String.format("%02d:%02d", hour, minutes);
 
-        mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.image).setValue(R.string.defaultphoto);
-        mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.imagecheck).setValue(R.string.defaultphoto);
+
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.CHILD_CONNECTION).setValue(ReferenceUrl.KEY_ONLINE);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.timestamp).setValue(tsTemp);
         mFireChatUsersRef.child(useremailaddress.replace(".", "dot") + user.getDisplayName()).child(ReferenceUrl.name).setValue(name);
@@ -425,6 +430,14 @@ public class phonenumber extends AppCompatActivity implements GoogleApiClient.Co
 
         return kp;
     }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == android.view.KeyEvent.KEYCODE_BACK) {
+            //   firebaseAuth.signOut();
+            //     overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
+        }
+        return super.onKeyDown(keycode, event);
+    }
+
 }
-
-

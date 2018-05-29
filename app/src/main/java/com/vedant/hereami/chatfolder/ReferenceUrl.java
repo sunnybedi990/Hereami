@@ -7,6 +7,7 @@ public class ReferenceUrl {
 
     // public static final String FIREBASE_CHAT_URL="https://amber-heat-6674.firebaseio.com"; //Your app main firebase url
     public static final String FIREBASE_CHAT_URL = "https://iamhere-29f2b.firebaseio.com/"; //Your app main firebase url
+    public static final String FIREBASE_STORAGE_URL = "gs://iamhere-29f2b.appspot.com";
     public static final String CHILD_USERS = "users";
     public static final String CHILD_CHAT = "messages";
     public static final String CHILD_CONNECTION = "connection";

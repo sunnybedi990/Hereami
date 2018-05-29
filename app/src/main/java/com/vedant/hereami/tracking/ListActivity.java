@@ -34,6 +34,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.vedant.hereami.R;
 import com.vedant.hereami.ViewPager.TabWOIconActivity;
+import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
 import com.vedant.hereami.swiperefresh.MyCustomHeadView;
 
@@ -72,7 +73,7 @@ public class ListActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         // swipeLayout.setProgressBackgroundColor(android.R.color.transparent);
         Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         fb_to_read.addValueEventListener(new ValueEventListener() {

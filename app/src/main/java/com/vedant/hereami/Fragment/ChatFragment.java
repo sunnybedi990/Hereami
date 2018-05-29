@@ -1,6 +1,7 @@
 package com.vedant.hereami.Fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +34,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.vedant.hereami.R;
 import com.vedant.hereami.chatfolder.MessageChatModel;
 import com.vedant.hereami.chatfolder.chatactivity;
@@ -49,6 +49,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 
@@ -108,12 +109,13 @@ public class ChatFragment extends Fragment {
 
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        Firebase.setAndroidContext(getActivity());
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        Firebase.setAndroidContext(Objects.requireNonNull(getActivity()));
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 

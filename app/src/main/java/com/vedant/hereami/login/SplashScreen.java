@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class SplashScreen extends BaseActivity implements SinchService.StartFail
     private String message1;
     private String checkFlag;
     private Bundle bundle;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,18 +111,25 @@ public class SplashScreen extends BaseActivity implements SinchService.StartFail
                 startActivity(new Intent(SplashScreen.this, login.class));
             } else {
                 //getting current user
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
+                if (user.getDisplayName() == null) {
 
-                getSinchServiceInterface().startClient(user.getEmail().replace(".", "dot") + user.getDisplayName());
+                    Intent i = new Intent(SplashScreen.this, phonenumber.class);
+                    //   i.putExtra("data", result);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Log.e("username", user.getDisplayName());
+                    getSinchServiceInterface().startClient(user.getEmail().replace(".", "dot") + user.getDisplayName());
 
-            }
-            if (bundle != null) {
-                message1 = bundle.getString("callid");
-                //  Intent intent = getIntent();
-                checkFlag = bundle.getString("flag");
-                if (checkFlag != null) {
-                    if (checkFlag.equals("A")) {
-                        finish();
+
+                    if (bundle != null) {
+                        message1 = bundle.getString("callid");
+                        //  Intent intent = getIntent();
+                        checkFlag = bundle.getString("flag");
+                        if (checkFlag != null) {
+                            if (checkFlag.equals("A")) {
+                                finish();
 
        /*           Intent intent = new Intent(SplashScreen.this, IncomingCallScreenActivity.class);
                     intent.putExtra("CALL_ID", message1);
@@ -132,18 +141,20 @@ public class SplashScreen extends BaseActivity implements SinchService.StartFail
                 //    startService(intent1);
                 */
 
+                            }
+                        } else {
+                            Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
+                            i.putExtra("data", result);
+                            startActivity(i);
+                            finish();
+                        }
+                    } else {
+                        Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
+                        i.putExtra("data", result);
+                        startActivity(i);
+                        finish();
                     }
-                } else {
-                    Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
-                    i.putExtra("data", result);
-                    startActivity(i);
-                    finish();
                 }
-            } else {
-                Intent i = new Intent(SplashScreen.this, TabWOIconActivity.class);
-                i.putExtra("data", result);
-                startActivity(i);
-                finish();
             }
         }
 

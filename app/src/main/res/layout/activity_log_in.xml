@@ -100,7 +100,34 @@
             android:layout_marginTop="8dp"
             android:background="@color/text_color"
             android:text="Register"
-            android:textColor="@color/primary" />
+            android:textColor="@color/primary"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_login_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/log_in_margin"
+            android:layout_marginRight="@dimen/log_in_margin"
+            android:layout_marginTop="8dp"
+            android:background="@color/text_color"
+            android:onClick="onClick"
+            android:text="Register"
+            android:textColor="@color/primary"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_login_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/log_in_margin"
+            android:layout_marginRight="@dimen/log_in_margin"
+            android:layout_marginTop="8dp"
+            android:background="@color/text_color"
+            android:onClick="onClick"
+            android:text="Cancel"
+            android:textColor="@color/primary"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textview_forgetpassword"

@@ -52,13 +52,13 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vedant.hereami.R;
+import com.vedant.hereami.chatfolder.ReferenceUrl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +136,7 @@ public class MainActivity extends FragmentActivity implements GeoQueryEventListe
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         name2 = user.getDisplayName();

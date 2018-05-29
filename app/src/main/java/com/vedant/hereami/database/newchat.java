@@ -31,6 +31,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.vedant.hereami.R;
+import com.vedant.hereami.chatfolder.ReferenceUrl;
 import com.vedant.hereami.chatfolder.chatactivity;
 import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
 import com.vedant.hereami.swiperefresh.MyCustomHeadView;
@@ -75,7 +76,7 @@ public class newchat extends AppCompatActivity implements CustomSwipeRefreshLayo
         mCustomSwipeRefreshLayout.setCustomHeadview(new MyCustomHeadView(this));
         mCustomSwipeRefreshLayout.setProgressBarColorRes();
         Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         lst = new ArrayList<String>();

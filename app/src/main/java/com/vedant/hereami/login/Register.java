@@ -2,7 +2,6 @@ package com.vedant.hereami.login;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -89,12 +88,13 @@ public class Register extends Activity implements View.OnClickListener {
 
                             // Name, email address, and profile photo Url
 
-                            finish();
+                            //   finish();
                             //     Intent intent4 = new Intent(Register.this,Main.class).putExtra("first_name", Firstname);
                             //   startActivity(intent4);
-                            Intent intent4 = new Intent(Register.this, phonenumber.class);
-                            startActivity(intent4);
+                            //        Intent intent4 = new Intent(Register.this, phonenumber.class);
+                            //      startActivity(intent4);
                             //     startActivity(new Intent(getApplicationContext(), Main.class));
+                            mAuth.signOut();
                         } else {
                             //display some message1 here
                             Toast.makeText(Register.this, "Registration Error", Toast.LENGTH_LONG).show();

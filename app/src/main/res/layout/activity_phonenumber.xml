@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
 
-    android:background="@color/card_background"
     android:id="@+id/viewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context="com.vedant.hereami.login.phonenumber">
 
     <EditText
@@ -32,18 +32,18 @@
         android:layout_marginTop="27dp"
         android:text="Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/cardview_dark_background"
+        android:textColor="@android:color/background_light"
         android:textSize="24sp" />
 
     <TextView
-        android:text="Enter your Phone Number"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:gravity="center"
-        android:id="@+id/textView3"
-        android:textSize="28dp"
-        android:layout_alignParentEnd="true" />
+        android:text="Enter your Phone Number"
+        android:textSize="28dp" />
 
 
     <TextView
@@ -72,28 +72,28 @@
         android:textSize="30sp" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/ccp"
-        android:layout_toRightOf="@+id/ccp"
-        android:layout_toEndOf="@+id/ccp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="50dp"
         android:layout_marginStart="50dp"
-        android:layout_marginBottom="8dp"
-        android:id="@+id/textInputLayout">
+        android:layout_toEndOf="@+id/ccp"
+        android:layout_toRightOf="@+id/ccp">
 
         <EditText
+            android:id="@+id/editTextGetFullNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:ems="10"
-            android:id="@+id/editTextGetFullNumber"
-            android:layout_marginTop="89dp"
-            android:textColorHint="@color/common_red"
-            android:hint="Phone Number"
             android:layout_below="@+id/textView3"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="89dp"
             android:layout_toEndOf="@+id/ccp"
-            android:layout_marginStart="11dp" />
+            android:ems="10"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:textColorHint="@color/common_red" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -107,19 +107,20 @@
         android:layout_marginTop="21dp"
         android:layout_toEndOf="@+id/ccp"
         android:layout_toRightOf="@+id/ccp"
-        android:text="Submit" />
+        android:text="Submit"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
 
     <com.vedant.hereami.code.CountryCodePicker
         android:id="@+id/ccp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:defaultNameCode="IN"
-        app:keyboardAutoPopOnSearch="false"
-
-        android:layout_marginTop="99dp"
-        android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" >
+        android:layout_alignParentStart="true"
+
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="99dp"
+        app:defaultNameCode="IN"
+        app:keyboardAutoPopOnSearch="false">
 
     </com.vedant.hereami.code.CountryCodePicker>
 

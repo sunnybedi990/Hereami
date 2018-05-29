@@ -170,7 +170,7 @@ public class CallsFragment extends Fragment {
         mFirebaseMessagesChatconnectioncheck = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child("userkey");
         mFirebaseChatRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         lst1 = new ArrayList<String>();

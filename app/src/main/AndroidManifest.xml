@@ -309,6 +309,10 @@
         <activity
             android:name=".database.newchat"
             android:theme="@style/Theme.AppCompat" />
+        <activity
+            android:name=".login.phoneverify"
+            android:label="@string/title_activity_phoneverify"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>

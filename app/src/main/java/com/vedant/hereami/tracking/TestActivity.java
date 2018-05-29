@@ -48,11 +48,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vedant.hereami.R;
+import com.vedant.hereami.chatfolder.ReferenceUrl;
 
 import java.util.List;
 import java.util.Map;
@@ -157,7 +157,7 @@ public class TestActivity extends FragmentActivity implements GeoQueryEventListe
         message = bundle.getString("key_position");
         namenumber = bundle.getString("namenumber");
         Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         fb_to_read.addChildEventListener(new ChildEventListener() {

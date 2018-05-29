@@ -96,7 +96,7 @@ public class viewcurrentuserprofile extends AppCompatActivity {
             username = user.getDisplayName();
             currentuser = usermail.replace(".", "dot") + username;
             Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
-            storageReference = storage.getReferenceFromUrl("gs://iamhere-29f2b.appspot.com");
+            storageReference = storage.getReferenceFromUrl(ReferenceUrl.FIREBASE_STORAGE_URL);
             mFireChatUsersRef = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL).child(ReferenceUrl.CHILD_USERS);
             myConnectionsStatusRef2 = mFireChatUsersRef.child(currentuser).child(ReferenceUrl.image);
             mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");

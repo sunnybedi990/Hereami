@@ -42,6 +42,7 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
     public String TAG;
     private String publickey;
     private String usermail;
+    private Button mRegisteration, mcancel;
 
 
     @Override
@@ -66,7 +67,12 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         mUserEmail = findViewById(R.id.userEmailChat);
         mUserPassWord = findViewById(R.id.passWordChat);
         mLoginToMChat = findViewById(R.id.btn_LogInChat);
+
         mRegisterUser = findViewById(R.id.registerUser);
+        mRegisteration = findViewById(R.id.btn_login_register);
+        mcancel = findViewById(R.id.btn_login_cancel);
+
+
         forgetpass = findViewById(R.id.textview_forgetpassword);
 
 
@@ -89,11 +95,28 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         }
 
         if (view == mRegisterUser) {
-            finish();
-            startActivity(new Intent(this, Register.class));
+
+            findViewById(R.id.btn_LogInChat).setVisibility(View.GONE);
+            findViewById(R.id.registerUser).setVisibility(View.GONE);
+            findViewById(R.id.btn_login_register).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_login_cancel).setVisibility(View.VISIBLE);
+            //    findViewById(R.id.logout_items).setVisibility(View.GONE);
+            //   finish();
+            // startActivity(new Intent(this, Register.class));
         }
+
         if (view == forgetpass) {
             forgetpassword();
+        }
+        if (view == mRegisteration) {
+            registerUser();
+        }
+        if (view == mcancel) {
+            findViewById(R.id.btn_LogInChat).setVisibility(View.VISIBLE);
+            findViewById(R.id.registerUser).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_login_register).setVisibility(View.GONE);
+            findViewById(R.id.btn_login_cancel).setVisibility(View.GONE);
+
         }
     }
 
@@ -191,6 +214,61 @@ public class login extends RuntimePermissionsActivity implements View.OnClickLis
         progressDialog.show();
         firebaseAuth.sendPasswordResetEmail(email);
         progressDialog.dismiss();
+    }
+
+
+    private void registerUser() {
+        String email = mUserEmail.getText().toString().trim();
+        String password = mUserPassWord.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //if the email and password are not empty
+        //displaying a progress dialog
+
+        progressDialog.setMessage("Registering Please Wait...");
+        progressDialog.show();
+
+        //creating a new user
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        //checking if success
+                        if (task.isSuccessful()) {
+
+                            // Name, email address, and profile photo Url
+
+                            //   finish();
+                            //     Intent intent4 = new Intent(Register.this,Main.class).putExtra("first_name", Firstname);
+                            //   startActivity(intent4);
+                            //        Intent intent4 = new Intent(Register.this, phonenumber.class);
+                            //      startActivity(intent4);
+                            //     startActivity(new Intent(getApplicationContext(), Main.class));
+                            firebaseAuth.signOut();
+                            findViewById(R.id.btn_LogInChat).setVisibility(View.VISIBLE);
+                            findViewById(R.id.registerUser).setVisibility(View.VISIBLE);
+                            findViewById(R.id.btn_login_register).setVisibility(View.GONE);
+                            findViewById(R.id.btn_login_cancel).setVisibility(View.GONE);
+
+
+                        } else {
+                            //display some message1 here
+                            Toast.makeText(login.this, "Registration Error", Toast.LENGTH_LONG).show();
+                        }
+                        progressDialog.dismiss();
+
+                    }
+                });
     }
 
 }

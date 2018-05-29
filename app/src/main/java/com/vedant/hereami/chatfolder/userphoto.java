@@ -65,7 +65,7 @@ public class userphoto extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_userphoto);
         firebaseAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReferenceFromUrl("gs://iamhere-29f2b.appspot.com");    //change the url according to your firebase app
+        storageReference = storage.getReferenceFromUrl(ReferenceUrl.FIREBASE_STORAGE_URL);    //change the url according to your firebase app
         //  textViewUserEmail = (TextView) findViewById(R.id.textView2);
         mRegisterButton = findViewById(R.id.button5);
         mRegisterButton.setOnClickListener(userphoto.this);

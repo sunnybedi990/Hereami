@@ -255,7 +255,7 @@ public class chatactivity extends BaseActivity {
 
 
             // Initialize firebase for this chat
-            storageReference = storage.getReferenceFromUrl("gs://iamhere-29f2b.appspot.com");    //change the url according to your firebase app
+            storageReference = storage.getReferenceFromUrl(ReferenceUrl.FIREBASE_STORAGE_URL);    //change the url according to your firebase app
 
             Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
             mFirebaseMessagesChat = fb_parent.child("/message");

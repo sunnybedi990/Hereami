@@ -41,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.vedant.hereami.R;
+import com.vedant.hereami.chatfolder.ReferenceUrl;
 
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class Sendlocation extends FragmentActivity implements GoogleApiClient.Co
         //  SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         //  mapFragment.getMapAsync(this);
         Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         Firebase fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         name1 = user.getDisplayName();

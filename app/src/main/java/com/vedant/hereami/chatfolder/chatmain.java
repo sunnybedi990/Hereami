@@ -31,6 +31,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.vedant.hereami.R;
+import com.vedant.hereami.database.saverecentmessage;
 import com.vedant.hereami.swiperefresh.CustomSwipeRefreshLayout;
 import com.vedant.hereami.swiperefresh.MyCustomHeadView;
 
@@ -67,7 +68,7 @@ public class chatmain extends AppCompatActivity implements SwipeRefreshLayout.On
         mCustomSwipeRefreshLayout.setCustomHeadview(new MyCustomHeadView(this));
         mCustomSwipeRefreshLayout.setProgressBarColorRes();
         Firebase.setAndroidContext(this);
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com/");
+        Firebase fb_parent = new Firebase(ReferenceUrl.FIREBASE_CHAT_URL);
         fb_to_read = fb_parent.child("data");
         Firebase fb_put_child = fb_to_read.push();
         lst = new ArrayList<String>();
@@ -302,7 +303,7 @@ public class chatmain extends AppCompatActivity implements SwipeRefreshLayout.On
 
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == android.view.KeyEvent.KEYCODE_BACK) {
-            Intent i = new Intent(chatmain.this, recentchat.class);
+            Intent i = new Intent(chatmain.this, saverecentmessage.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
