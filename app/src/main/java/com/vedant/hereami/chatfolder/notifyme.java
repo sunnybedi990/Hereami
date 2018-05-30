@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -245,7 +244,7 @@ public class notifyme extends BroadcastReceiver {
                             }
                             if (arrTblNames.contains("table" + phone)) {
 
-                                if (mydb.insertContact(CallsFragment.encryptRSAToString(senderMessage, publickey), CallsFragment.encryptRSAToString(senderMessage, myencryptionkey), tsTemp, mSenderUid, phone)) {
+                                if (mydb.insertContact(CallsFragment.encryptRSAToString(senderMessage, publickey), CallsFragment.encryptRSAToString(senderMessage, myencryptionkey), tsTemp, mSenderUid, phone, null, null, "text")) {
                                     Intent intent1 = new Intent("message").putExtra("message1", phone);
                                     LocalBroadcastManager.getInstance(mCtx).sendBroadcast(intent1);
                                 }

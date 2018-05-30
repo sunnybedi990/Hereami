@@ -382,9 +382,11 @@ public class chatactivity extends BaseActivity {
                         MessageChatModel newMessage = last.getValue(MessageChatModel.class);
                         if (newMessage.getSender().equals(currentuser)) {
                             newMessage.setRecipientOrSenderStatus(SENDER_STATUS);
+
                         } else {
                             newMessage.setRecipientOrSenderStatus(RECIPIENT_STATUS);
                         }
+
 
                         mMessageChatAdapter.refillAdapter(newMessage);
                         mChatRecyclerView.scrollToPosition(mMessageChatAdapter.getItemCount() - 1);
@@ -621,7 +623,7 @@ public class chatactivity extends BaseActivity {
             Log.e("sala hua1", mSenderUid);
             Log.e("sala hua2", mRecipientUid);
             Log.e("sala hua3", String.valueOf(newMessage));
-            mydb.insertContact(CallsFragment.encryptRSAToString(senderMessage, publickey), CallsFragment.encryptRSAToString(senderMessage, myencryptionkey), tsTemp1, mSenderUid, mobilenumber);
+            mydb.insertContact(CallsFragment.encryptRSAToString(senderMessage, publickey), CallsFragment.encryptRSAToString(senderMessage, myencryptionkey), tsTemp1, mSenderUid, mobilenumber, null, null, "text");
             mFirebaseMessagesChat12.push().setValue(newMessage, index);
             mFirebaseMessagesChat13.push().setValue(newMessage, index);
 

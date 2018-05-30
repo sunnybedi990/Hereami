@@ -4,12 +4,14 @@ package com.vedant.hereami.database;
  * Created by bedi on 5/7/2016.
  */
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
@@ -50,6 +52,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS recentchat");
         onCreate(db);
 
+    }
+
+    @Override
+    @TargetApi(Build.VERSION_CODES.FROYO)
+    public void onDowngrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+        // Debug.log_d(DebugConfig.DEFAULT, LOG_TAG, "onDowngrade(): oldVersion = " + oldVersion + " : newVersion = " + newVersion);
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     public boolean insertContact(String name, String username, String phone, String msg, String time) {

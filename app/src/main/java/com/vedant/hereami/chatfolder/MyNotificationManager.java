@@ -41,10 +41,13 @@ import com.vedant.hereami.database.DBHelper;
 import com.vedant.hereami.database.messagedatabse;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -91,6 +94,8 @@ public class MyNotificationManager {
     private static final String EMPTY_MESSAGE_STRING = "[]";
     private messagedatabse mydb;
     private String encrytionprivatekey;
+    private String ts;
+    private String imagetype;
 
 
     // here it ends
@@ -186,8 +191,32 @@ public class MyNotificationManager {
         return useWhiteIcon ? R.drawable.noti : R.drawable.noti;
     }
 
+    public static String saveToSdCard(Bitmap bitmap, String filename) {
+
+        String stored = null;
+
+        File sdcard = Environment.getExternalStorageDirectory();
+
+        File folder = new File(sdcard.getPath(), "/HereamI/pics");//the dot makes this directory hidden to the user
+        folder.mkdir();
+        File file = new File(folder.getPath(), filename + ".jpg");
+        if (file.exists())
+            return stored;
+
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            stored = "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stored;
+    }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public void showSmallNotification(final String title, String messages, Intent intent, String title8, String titlenum, final String tendigitnumber, final String timestamp, final String sender, final String messa, final String message1) {
+    public void showSmallNotification(final String title, String messages, Intent intent, String title8, String titlenum, final String tendigitnumber, final String timestamp, final String sender, final String messa, final String message1, final String imageurl) {
 
         mydb = new messagedatabse(mCtx);
         final DBHelper mydbhelper = new DBHelper(mCtx);
@@ -225,11 +254,33 @@ public class MyNotificationManager {
                         c.moveToNext();
                     }
                 }
+                imagetype = "text";
+                if (!imageurl.equalsIgnoreCase("null")) {
+                    Long tsLong = System.currentTimeMillis() / 1000;
+                    ts = tsLong.toString();
+                    imagetype = "image";
 
+                    URL url = null;
+                    try {
+                        url = new URL(imageurl);
+                        URLConnection conn = url.openConnection();
+                        Bitmap bitmap = BitmapFactory.decodeStream(conn.getInputStream());
+
+                        saveToSdCard(bitmap, ts);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
                 String messagedecrypted = CallsFragment.decryptRSAToString(messa, encrytionprivatekey);
 
                 if (arrTblNames.contains("table" + tendigitnumber)) {
-                    if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber)) {
+                    Log.e("imageurl", imageurl);
+                    Log.e("imagetype", imagetype);
+                    if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber, imageurl, ts, imagetype)) {
                         Intent intent1 = new Intent("message").putExtra("message1", tendigitnumber);
                         LocalBroadcastManager.getInstance(mCtx).sendBroadcast(intent1);
                         mydbhelper.updatemsgs(tendigitnumber, messagedecrypted, timestamp);
@@ -242,7 +293,7 @@ public class MyNotificationManager {
 
                 } else {
                     mydb.AddDesiredTable(tendigitnumber);
-                    if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber)) {
+                    if (mydb.insertContact(messa, message1, timestamp, sender, tendigitnumber, imageurl, ts, imagetype)) {
                         Intent intent1 = new Intent("message").putExtra("message1", tendigitnumber);
                         LocalBroadcastManager.getInstance(mCtx).sendBroadcast(intent1);
                         //   message mess = new message();

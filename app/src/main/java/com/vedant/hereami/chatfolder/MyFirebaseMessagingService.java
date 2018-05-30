@@ -43,11 +43,10 @@ import com.sinch.android.rtc.NotificationResult;
 import com.sinch.android.rtc.SinchClient;
 import com.sinch.android.rtc.SinchHelpers;
 import com.sinch.android.rtc.calling.Call;
-import com.sinch.android.rtc.calling.CallClient;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
+import com.vedant.hereami.database.message;
 import com.vedant.hereami.login.SplashScreen;
-import com.vedant.hereami.voip.IncomingCallScreenActivity;
 import com.vedant.hereami.voip.SinchService;
 
 import org.json.JSONException;
@@ -55,8 +54,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
-
-import static com.vedant.hereami.voip.SinchService.CALL_ID;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -112,20 +109,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 // if (sinchClient.isStarted())
                 result = SinchHelpers.queryPushNotificationPayload(getApplicationContext(), remoteMessage.getData());
                 if (result.getCallResult().isCallCanceled()) {
-                    String message = "Missed Call";
+                    String messagebody = "Missed Call";
                     String title = result.getCallResult().getRemoteUserId();
                     String category = NotificationCompat.CATEGORY_MESSAGE;
-                    shownotification(message, title, category);
+                    shownotification(messagebody, title, category);
                 } else {
                     String mess = result.getCallResult().getCallId();
                     Log.e("id", mess);
                     Intent intent1 = new Intent(MyFirebaseMessagingService.this, SplashScreen.class).putExtra("callid", mess).putExtra("flag", "A");
                     startActivity(intent1);
 
-                    String message = "Calling";
+                    String messagebody = "Calling";
                     String title = result.getCallResult().getRemoteUserId();
                     String category = NotificationCompat.CATEGORY_CALL;
-                    shownotification(message, title, category);
+                    shownotification(messagebody, title, category);
                 }
             }
 
@@ -190,28 +187,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             title = contactmatch;
             //getdp();
             String encrytionprivatekey = sharedpreferences.getString("privatekey", "");
-            String message = data.getString("message");
-            String decryptedmessage = CallsFragment.decryptRSAToString(message, encrytionprivatekey);
+            String messagebody = data.getString("message");
+            String decryptedmessage = CallsFragment.decryptRSAToString(messagebody, encrytionprivatekey);
             String imageUrl = data.getString("image");
 
             //creating MyNotificationManager object
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), chatactivity.class).putExtra("key_position1", titletonotifyme).putExtra("namenumber", title);
+            Intent intent = new Intent(getApplicationContext(), message.class).putExtra("username", titletonotifyme).putExtra("name", title).putExtra("number", tendigitnumber).putExtra("tablename", "table" + tendigitnumber);
             String title8 = title1.replace(".", "dot");
             //if there is no image
-            if (imageUrl.equals("null")) {
+
                 //displaying small notification
 
-                mNotificationManager.showSmallNotification(title, decryptedmessage, intent, title8, titlenum, tendigitnumber, timestamp, sender, message, message1);
+            mNotificationManager.showSmallNotification(title, decryptedmessage, intent, title8, titlenum, tendigitnumber, timestamp, sender, messagebody, message1, imageUrl);
 
                 Log.e("pass", "passed");
-            } else {
-                //if there is an image
-                //displaying a big notification
-                mNotificationManager.showBigNotification(title, decryptedmessage, imageUrl, intent, tendigitnumber);
-            }
+
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: " + e.getMessage());
         } catch (Exception e) {
@@ -251,135 +244,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return myString;
     }
 
-  /*  public void getdp() {
-        mFirebaseMessagesChatconnectioncheck.addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot1) {
-
-                for (DataSnapshot connectionchild : dataSnapshot1.getChildren()) {
-                    if (connectionchild.getKey().contains(title1)) {
-
-                        Log.e("title bol", title1);
-                        connectionstatus2 = dataSnapshot1.child(title1).child(ReferenceUrl.image).getValue().toString();
-
-                        imageAsBytes = Base64.decode(connectionstatus2.getBytes(), Base64.DEFAULT);
-                        image = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-
-                        System.out.println("Downloaded image with length: " + imageAsBytes.length);
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        image.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-
-                        //  String root = getFilesDir();
-                        String filepath = Environment.getExternalStorageDirectory().getPath();
-                        File myDir = new File(filepath + "/.HereamI");
-                        Log.e("file", myDir.toString());
-                        myDir.mkdirs();
-                        String fname = title + ".jpg";
-//you can create a new file name "test.jpg" in sdcard folder.
-                        File file = new File(myDir, fname);
-                        if (file.exists()) file.delete();
-                        try {
-                            FileOutputStream out = new FileOutputStream(file);
-                            out.write(bytes.toByteArray());
-                            out.flush();
-                            out.close();
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
 
 
-                }
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-    }
-*/
 
 
-    private void sendnewnotification(JSONObject json) {
-        try {
-            JSONObject data = json.getJSONObject("data");
-            title1 = data.getString("title");
-            String title2 = data.getString("title");
-            String titletonotifyme = title2.replace("-", "").replace(user.getEmail().replace(".", "dot") + user.getDisplayName(), "");
-            String[] parts1 = titletonotifyme.replace("+", ":").split(":"); // escape .
-            String part5 = parts1[0];
-            titlenum = parts1[1];
-            Log.e(TAG, title1);
-
-            String[] parts = title1.replace("-", "").replace(user.getEmail().replace(".", "dot") + user.getDisplayName(), "").replace("+", ":").split(":"); // escape .
-            String part1 = parts[0];
-            String part2 = parts[1];
-            //  String tendigitnumber = getLastThree(part2);
-            sunny = part1.replace("dot", ".");
-
-            tendigitnumber = getLastThree(part2);
-            contactmatch = getContactDisplayNameByNumber(tendigitnumber);
-            title = contactmatch;
-            String message = data.getString("message");
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.noti1)
-                            .setContentTitle(title)
-                            .setContentText(message);
-
-            Intent notificationIntent = new Intent(this, SplashScreen.class);
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            builder.setContentIntent(contentIntent);
-            builder.setDefaults(NotificationCompat.DEFAULT_ALL);
-            // Add as notification
-            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            manager.notify(0, builder.build());
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
-    public void onIncomingCall(CallClient callClient, String callid) {
-
-
-        String titletonotifyme = user.getEmail().replace(".", "dot") + user.getDisplayName();
-        Log.e(TAG, titletonotifyme);
-        // sinchClient = null;
-        // sinch.start(titletonotifyme);
-        Log.d(TAG, "Incoming call");
-        Intent intent = new Intent(MyFirebaseMessagingService.this, IncomingCallScreenActivity.class);
-        intent.putExtra(CALL_ID, callid);
-        //     intent.putExtra(LOCATION, call.getHeaders().get("location"));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-
-
-    }
-
-    public void onIncomingCall(String call) {
-        String titletonotifyme = user.getEmail().replace(".", "dot") + user.getDisplayName();
-        Log.e(TAG, titletonotifyme);
-        // sinchClient = null;
-//         sinch.start(titletonotifyme);
-        Log.d(TAG, "Incoming call");
-        Intent intent = new Intent(MyFirebaseMessagingService.this, IncomingCallScreenActivity.class);
-        intent.putExtra(CALL_ID, call);
-        //     intent.putExtra(LOCATION, call.getHeaders().get("location"));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
 
     public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;

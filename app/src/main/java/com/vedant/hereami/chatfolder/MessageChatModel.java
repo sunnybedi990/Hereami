@@ -13,6 +13,8 @@ public class MessageChatModel {
 
     private int mRecipientOrSenderStatus;
     private String message1;
+    private String messagetype1;
+    private String imageurl1;
 
 
     /* Setter */
@@ -23,6 +25,10 @@ public class MessageChatModel {
 
     public void setMessage1(String message1) {
         this.message1 = message1;
+    }
+
+    public void setmessagetype(String messagetype) {
+        this.messagetype1 = messagetype;
     }
 
 
@@ -49,7 +55,18 @@ public class MessageChatModel {
         devicetoken = givenDevicetoken;
     }
 
+    public void setimageurl(String imageurl) {
+        this.imageurl1 = imageurl;
+    }
     /* Getter */
+
+    public String getImageurl1() {
+        return imageurl1;
+    }
+
+    public String getMessagetype1() {
+        return messagetype1;
+    }
 
     public String getMessage() {
         return message;

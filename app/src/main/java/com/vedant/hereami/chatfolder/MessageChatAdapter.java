@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.R;
 
@@ -58,6 +60,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else {
             return RECIPIENT;
         }
+
     }
 
     @Override
@@ -109,77 +112,93 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private void configureSenderView(ViewHolderSender viewHolderSender, int position) {
         MessageChatModel senderFireMessage = mListOfFireChat.get(position);
-        String encrypted = senderFireMessage.getMessage1();
-        String decrypted = CallsFragment.decryptRSAToString(encrypted, encrytionprivatekey1);
-        viewHolderSender.getSenderMessageTextView().setText(decrypted);
-        String s;
-        String[] parts1 = senderFireMessage.getTimestamp().split("%");
-        String part4 = parts1[0];
-        String part5 = parts1[1];
-        String timecheck = null;
-        String dateset = null;
+        if (senderFireMessage.getImageurl1() == null) {
+            viewHolderSender.mSenderimageview.setVisibility(View.INVISIBLE);
 
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
-        SimpleDateFormat df1 = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        //    SimpleDateFormat df1 = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+            String encrypted = senderFireMessage.getMessage1();
+            String decrypted = CallsFragment.decryptRSAToString(encrypted, encrytionprivatekey1);
+            viewHolderSender.getSenderMessageTextView().setText(decrypted);
+            String s;
+            String[] parts1 = senderFireMessage.getTimestamp().split("%");
+            String part4 = parts1[0];
+            String part5 = parts1[1];
+            String timecheck = null;
+            String dateset = null;
 
-        try {
-            df.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date date = df.parse(senderFireMessage.getTimestamp().replace("%", " "));
-            df1.setTimeZone(TimeZone.getDefault());
-            timecheck = df1.format(date);
-            df2.setTimeZone(TimeZone.getDefault());
-            dateset = df2.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (!part5.equals(todaycheck)) {
-            //  s = part5;
-            s = dateset;
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
+            SimpleDateFormat df1 = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            //    SimpleDateFormat df1 = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+
+            try {
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date date = df.parse(senderFireMessage.getTimestamp().replace("%", " "));
+                df1.setTimeZone(TimeZone.getDefault());
+                timecheck = df1.format(date);
+                df2.setTimeZone(TimeZone.getDefault());
+                dateset = df2.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (!part5.equals(todaycheck)) {
+                //  s = part5;
+                s = dateset;
+            } else {
+                //  s = part4;
+                s = timecheck;
+            }
+            viewHolderSender.getSenderMessagetimeTextView().setText(s);
         } else {
-            //  s = part4;
-            s = timecheck;
+            viewHolderSender.mSenderMessageTextView.setVisibility(View.INVISIBLE);
+            Picasso.with(viewHolderSender.mSenderimageview.getContext()).load(senderFireMessage.getImageurl1()).placeholder(R.drawable.headshot_7).into(viewHolderSender.mSenderimageview);
+
         }
-        viewHolderSender.getSenderMessagetimeTextView().setText(s);
 
     }
 
     private void configureRecipientView(ViewHolderRecipient viewHolderRecipient, int position) {
 
         MessageChatModel recipientFireMessage = mListOfFireChat.get(position);
-        String encrypted = recipientFireMessage.getMessage();
-        String decrypted;
-        if (encrypted != null) {
-            decrypted = CallsFragment.decryptRSAToString(encrypted, encrytionprivatekey1);
+        if (recipientFireMessage.getImageurl1() == null) {
+            viewHolderRecipient.mReecepientimageview.setVisibility(View.INVISIBLE);
+            String encrypted = recipientFireMessage.getMessage();
+            String decrypted;
+            if (encrypted != null) {
+                decrypted = CallsFragment.decryptRSAToString(encrypted, encrytionprivatekey1);
 
 
-            //   String decrypted = KeyStoreHelper.decrypt(KEYSTORE_KEY_ALIAS, encrypted);
-            viewHolderRecipient.getRecipientMessageTextView().setText(decrypted);
-            String s;
-            String[] parts1 = recipientFireMessage.getTimestamp().split("%");
-            String part4 = parts1[0];
-            String part5 = parts1[1];
+                //   String decrypted = KeyStoreHelper.decrypt(KEYSTORE_KEY_ALIAS, encrypted);
+                viewHolderRecipient.getRecipientMessageTextView().setText(decrypted);
+                String s;
+                String[] parts1 = recipientFireMessage.getTimestamp().split("%");
+                String part4 = parts1[0];
+                String part5 = parts1[1];
 
-            if (!part5.equals(todaycheck)) {
-                s = part5;
+                if (!part5.equals(todaycheck)) {
+                    s = part5;
+                } else {
+                    s = part4;
+                }
+                viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
             } else {
-                s = part4;
+                viewHolderRecipient.getRecipientMessageTextView().setText(encrypted);
+                String s;
+                String[] parts1 = recipientFireMessage.getTimestamp().split("%");
+                String part4 = parts1[0];
+                String part5 = parts1[1];
+
+                if (!part5.equals(todaycheck)) {
+                    s = part5;
+                } else {
+                    s = part4;
+                }
+                viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
             }
-            viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
         } else {
-            viewHolderRecipient.getRecipientMessageTextView().setText(encrypted);
-            String s;
-            String[] parts1 = recipientFireMessage.getTimestamp().split("%");
-            String part4 = parts1[0];
-            String part5 = parts1[1];
 
-            if (!part5.equals(todaycheck)) {
-                s = part5;
-            } else {
-                s = part4;
-            }
-            viewHolderRecipient.getRecipientMessagetimeTextView().setText(s);
+            viewHolderRecipient.mRecipientMessageTextView.setVisibility(View.INVISIBLE);
+            Picasso.with(viewHolderRecipient.mReecepientimageview.getContext()).load(recipientFireMessage.getImageurl1()).placeholder(R.drawable.headshot_7).into(viewHolderRecipient.mReecepientimageview);
+
         }
     }
 
@@ -223,11 +242,17 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         private TextView mSenderMessageTextView;
         private TextView mSenderMessagetimeTextView;
+        private ImageView mSenderimageview;
 
         public ViewHolderSender(View itemView) {
             super(itemView);
             mSenderMessageTextView = itemView.findViewById(R.id.senderMessage);
             mSenderMessagetimeTextView = itemView.findViewById(R.id.senderMessagetime);
+            mSenderimageview = itemView.findViewById(R.id.imageView_sender);
+        }
+
+        public ImageView getmSenderimageview() {
+            return mSenderimageview;
         }
 
         public TextView getSenderMessageTextView() {
@@ -253,11 +278,17 @@ public class MessageChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         private TextView mRecipientMessageTextView;
         private TextView mRecipientMessagetimeTextView;
+        private ImageView mReecepientimageview;
 
         public ViewHolderRecipient(View itemView) {
             super(itemView);
             mRecipientMessageTextView = itemView.findViewById(R.id.recipientMessage);
             mRecipientMessagetimeTextView = itemView.findViewById(R.id.recipientMessagetime);
+            mReecepientimageview = itemView.findViewById(R.id.imageView_recepient);
+        }
+
+        public ImageView getmReecepientimageview() {
+            return mReecepientimageview;
         }
 
         public TextView getRecipientMessageTextView() {
