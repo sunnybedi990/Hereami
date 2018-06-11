@@ -54,7 +54,8 @@
         android:required="true" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
+
+        android:name=".firebasepushnotification.MyApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@drawable/image"
@@ -310,10 +311,6 @@
         <activity
             android:name=".database.newchat"
             android:theme="@style/Theme.AppCompat" />
-        <activity
-            android:name=".login.phoneverify"
-            android:label="@string/title_activity_phoneverify"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>

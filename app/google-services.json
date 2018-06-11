@@ -15,6 +15,18 @@
       },
       "oauth_client": [
         {
+          "client_id": "181482104004-qkdluqkpl7vn5snp9jj1j7trnicd77pg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vedant.hereami",
+            "certificate_hash": "bd182adea97a82972eab859b420868b1292f5edc"
+          }
+        },
+        {
+          "client_id": "181482104004-ct8ojoabt5n9bagif1gbjs10cbtobq1f.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "181482104004-ct8ojoabt5n9bagif1gbjs10cbtobq1f.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +41,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181482104004-ct8ojoabt5n9bagif1gbjs10cbtobq1f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "181482104004-easesaa69uuegqsr7q3pf16h75lc3mv7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "sun.HereAmI"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

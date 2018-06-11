@@ -28,19 +28,16 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
-import com.vedant.hereami.chatfolder.MessageChatModel;
-import com.vedant.hereami.chatfolder.chatactivity;
 import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.recentchatadapter;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
 import com.vedant.hereami.database.DBHelper;
+import com.vedant.hereami.database.message;
+import com.vedant.hereami.database.messagedatabse;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,6 +101,10 @@ public class ChatFragment extends Fragment {
     private Firebase fb_to_read;
     private List<String> lst1;
     private String tendigitnumber1;
+    private ListView obj;
+    private messagedatabse mydb1;
+    private List<String> tablenames;
+
 
     public ChatFragment() {
 
@@ -121,26 +122,6 @@ public class ChatFragment extends Fragment {
 
         context = getContext();
 
-        //  RecentUser = (ListView) findViewById(R.id.list_recent);
-        lst = new ArrayList<String>();
-        lst1 = new ArrayList<String>();
-        lstmsg = new ArrayList<String>();
-        lstreceptmsg = new ArrayList<String>();
-        lstmsg1 = new ArrayList<String>();
-        timestamp = new ArrayList<String>();
-        timestamp1 = new ArrayList<String>();
-        newList = new ArrayList<String>();
-        hashMap = new HashMap<>();
-        hashMap1 = new HashMap<>();
-        hashMap2 = new HashMap<>();
-        hashMap3 = new HashMap<>();
-        hashMap4 = new HashMap<>();
-        mydb = new DBHelper(context);
-        sharedpreferences1 = this.getActivity().getSharedPreferences(mypreference123, Context.MODE_PRIVATE);
-        myencryptionkey = sharedpreferences1.getString("privatekey", "");
-
-
-        mSenderUid = user.getEmail().replace(".", "dot") + user.getDisplayName();
 
         TimeZone pdt = TimeZone.getDefault();
         calendar1 = new GregorianCalendar(pdt);
@@ -151,14 +132,17 @@ public class ChatFragment extends Fragment {
         int month1 = calendar1.get(Calendar.MONTH);
         int year1 = calendar1.get(Calendar.YEAR);
         todaycheck = date1 + "/" + month1 + "/" + year1;
-        Firebase fb_parent = new Firebase("https://iamhere-29f2b.firebaseio.com");
-        mFirebaseMessagesChat = fb_parent.child("/message");
-        mFirebaseMessagesChatconnectioncheck = fb_parent.child("/users");
-        fb_to_read = fb_parent.child("data");
-        Firebase fb_put_child = fb_to_read.push();
-        currentuser = user.getEmail().replace(".", "dot") + user.getDisplayName();
-        mFirebaseMessagesChatcurrent = mFirebaseMessagesChat.child(currentuser);
 
+
+        mydb = new DBHelper(getActivity());
+        mydb1 = new messagedatabse(getActivity());
+
+        tablenames = new ArrayList<>();
+        tablenames = mydb1.getalltable();
+        Log.e("table", tablenames.toString());
+
+
+        //  showmessages();
 
         //     chats();
 
@@ -169,15 +153,16 @@ public class ChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
-        RecentUser = view.findViewById(R.id.list_chat_fragment);
+        obj = view.findViewById(R.id.list_chat_fragment);
+        showmessages();
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.menu_chat_fragment, menu);
+        inflater.inflate(R.menu.menu_chat_fragment, menu);
 
-            super.onCreateOptionsMenu(menu, inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -203,6 +188,7 @@ public class ChatFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
+
     public static String getLastThree(String myString) {
         if (myString.length() > 10)
             return myString.substring(myString.length() - 10);
@@ -242,6 +228,60 @@ public class ChatFragment extends Fragment {
         return name;
     }
 
+
+    public void showmessages() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                final ArrayList<String> array_list = mydb.getAllCotacts();
+                ArrayList<String> array_list1 = mydb.getAllmsgs();
+                ArrayList<String> array_list2 = mydb.getAlltimestamp();
+                Log.e("array1", array_list.toString());
+                Log.e("array2", array_list1.toString());
+                Log.e("array3", array_list2.toString());
+
+                rec = new recentchatadapter(getActivity(), array_list, array_list1, array_list2);
+
+                obj.setAdapter(rec);
+
+                rec.notifyDataSetChanged();
+
+                obj.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {     // TODO Auto-generated method stub
+                        Bundle dataBundle = new Bundle();
+                        dataBundle.putString("tablename", "table" + mydb.getAllphone().get(position));
+                        dataBundle.putString("name", array_list.get(position));
+                        dataBundle.putString("number", mydb.getAllphone().get(position));
+                        dataBundle.putString("username", mydb.getAllkey().get(position));
+                        Intent intent = new Intent(context, message.class);
+
+                        intent.putExtras(dataBundle);
+                        startActivity(intent);
+/*
+                Intent intent4 = new Intent(saverecentmessage.this, chatactivity.class).putExtra("key_position", mydb.getAllkey().get(position)).putExtra("namenumber", array_list.get(position) + "").putExtra("number", mydb.getAllphone().get(position));
+                startActivity(intent4);
+  */
+                    }
+                });
+
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+
+    }
+
+
+}
+
+
+
+
+
+
+
+/*
     public void chats() {
         mFirebaseMessagesChat.addValueEventListener(new ValueEventListener() {
 
@@ -384,6 +424,4 @@ public class ChatFragment extends Fragment {
             }
         });
     }
-
-
-}
+*/

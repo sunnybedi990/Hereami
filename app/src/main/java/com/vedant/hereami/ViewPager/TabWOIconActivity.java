@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
+
 import com.vedant.hereami.Fragment.CallsFragment;
 import com.vedant.hereami.Fragment.ChatFragment;
 import com.vedant.hereami.Fragment.ContactsFragment;
@@ -36,10 +37,12 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
     private FirebaseAuth firebaseAuth;
     private ArrayAdapter<String> itemsAdapter;
     private CoordinatorLayout coordinatorLayout1;
+
     private SinchClient mSinchClient;
     private String mUserId;
     public static final String mypreference123 = "mypref123";
     private String userName;
+    private int pageno = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,10 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
             finish();
             //starting login activity
             startActivity(new Intent(this, login.class));
+        }
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            pageno = bundle.getInt("no");
         }
         //Initializing the tablayout
         tabLayout = findViewById(R.id.tablayout);
@@ -80,6 +87,8 @@ public class TabWOIconActivity extends RuntimePermissionsActivity {
         });
 
         setupViewPager(viewPager);
+        viewPager.setCurrentItem(pageno);
+
         re();
         //   connect();
 

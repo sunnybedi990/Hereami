@@ -825,10 +825,13 @@ public class chatactivity extends BaseActivity {
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
+
             public void onFailure(@NonNull Exception exception) {
                 Log.e("firebase ", ";local tem file not created  created " + exception.toString());
             }
         });
+
+
     }
 
     public static Date GetUTCdatetimeAsDate() {

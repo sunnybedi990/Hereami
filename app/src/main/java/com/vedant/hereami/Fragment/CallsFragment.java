@@ -19,6 +19,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -322,9 +323,14 @@ public class CallsFragment extends Fragment {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(getActivity(), saverecentmessage.class);
-                startActivity(intent1);
-                getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+
+                ViewPager viewPager = getActivity().findViewById(R.id.viewpager);
+                viewPager.setCurrentItem(1);
+
+                //     Intent intent1 = new Intent(getActivity(), TabWOIconActivity.class).putExtra("no",1);
+
+                //   startActivity(intent1);
+                //   getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
             }
         });
 
@@ -605,8 +611,8 @@ public class CallsFragment extends Fragment {
                         if (dataSnapshot1.child(usermail).child("publickey").exists()) {
                             publickey = dataSnapshot1.child(usermail).child("publickey").getValue().toString();
                             String privatekey = dataSnapshot1.child(usermail).child("privatekey").getValue().toString();
-                            Log.e("horaha hai pub", publickey);
-                            Log.e("horaha hai pri", privatekey);
+                            //       Log.e("horaha hai pub", publickey);
+                            //      Log.e("horaha hai pri", privatekey);
                             sharedpreferences = getActivity().getSharedPreferences(mypreference123,
                                     Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
