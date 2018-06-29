@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.vedant.hereami.chatfolder;
+package com.vedant.hereami.notification;
 
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -135,13 +135,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 try {
                     final JSONObject json = new JSONObject(remoteMessage.getData().toString());
                     Log.e("notidekhbaba", "notification aaya");
-                    JSONObject data = json.getJSONObject("data");
+                    final JSONObject data = json.getJSONObject("data");
+                    final String sender = data.getString("incoming");
                     Handler handler = new Handler(Looper.getMainLooper());
 
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            sendPushNotification(json);
+
+                            if (sender.equals("incoming")) {
+                                Log.e("callincomeing", "callincoming");
+                            } else {
+                                sendPushNotification(json);
+                            }
                         }
                     }, 1000);
                 } catch (Exception e) {

@@ -1,4 +1,4 @@
-package com.vedant.hereami.chatfolder;
+package com.vedant.hereami.notification;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

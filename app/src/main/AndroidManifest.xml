@@ -177,14 +177,14 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".chatfolder.MyFirebaseInstanceIdService"
+            android:name=".notification.MyFirebaseInstanceIdService"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".chatfolder.MyFirebaseMessagingService"
+            android:name=".notification.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedService">
@@ -194,7 +194,7 @@
         </service>
 
         <activity
-            android:name=".chatfolder.NotificationReceiverActivity"
+            android:name=".notification.NotificationReceiverActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".chatfolder.CreateNotificationActivity"
@@ -233,7 +233,7 @@
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
 
         <receiver
-            android:name=".chatfolder.notifyme"
+            android:name=".notification.notifyme"
             android:enabled="true"
             android:exported="false" />
 

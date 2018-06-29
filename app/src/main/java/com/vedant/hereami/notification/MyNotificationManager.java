@@ -1,4 +1,4 @@
-package com.vedant.hereami.chatfolder;
+package com.vedant.hereami.notification;
 
 /**
  * Created by sunnybedi on 14/03/17.
@@ -188,7 +188,7 @@ public class MyNotificationManager {
 
     private int getNotificationIcon() {
         boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.noti : R.drawable.noti;
+        return useWhiteIcon ? R.drawable.noti1 : R.drawable.noti;
     }
 
     public static String saveToSdCard(Bitmap bitmap, String filename) {
@@ -361,7 +361,7 @@ public class MyNotificationManager {
                 .setContentIntent(pendingIntent)
                 .setContentTitle(title)
                 .addAction(action).setColor(Color.RED)
-                .setSmallIcon(R.drawable.noti).setPriority(Notification.PRIORITY_MAX)
+                .setSmallIcon(getNotificationIcon()).setPriority(Notification.PRIORITY_MAX)
                 .setContentText(messages);
         //  firstTime = false;
 

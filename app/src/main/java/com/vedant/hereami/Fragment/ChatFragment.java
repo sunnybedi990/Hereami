@@ -2,9 +2,11 @@ package com.vedant.hereami.Fragment;
 
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,12 +35,12 @@ import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
-import com.vedant.hereami.chatfolder.chatmain;
 import com.vedant.hereami.chatfolder.recentchatadapter;
 import com.vedant.hereami.chatfolder.viewcurrentuserprofile;
 import com.vedant.hereami.database.DBHelper;
 import com.vedant.hereami.database.message;
 import com.vedant.hereami.database.messagedatabse;
+import com.vedant.hereami.database.newchat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -110,6 +113,38 @@ public class ChatFragment extends Fragment {
 
     }
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message1");
+
+            //    updateview();
+
+            rec.notifyDataSetChanged();
+            //       RecentUser.invalidateViews();
+            Log.d("receiver", "Got message: " + message);
+
+        }
+    };
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        obj = view.findViewById(R.id.list_chat_fragment);
+        showmessages();
+        return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_chat_fragment, menu);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     @SuppressLint("NewApi")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,7 +156,8 @@ public class ChatFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         context = getContext();
-
+        LocalBroadcastManager.getInstance(context).registerReceiver(mMessageReceiver,
+                new IntentFilter("message"));
 
         TimeZone pdt = TimeZone.getDefault();
         calendar1 = new GregorianCalendar(pdt);
@@ -146,47 +182,6 @@ public class ChatFragment extends Fragment {
 
         //     chats();
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
-        obj = view.findViewById(R.id.list_chat_fragment);
-        showmessages();
-        return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_chat_fragment, menu);
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_chat) {
-            //   LocationFound();
-            Intent intent = new Intent(getActivity(), chatmain.class);
-            startActivity(intent);
-            return true;
-        }
-        if (id == R.id.setting) {
-            Intent intent = new Intent(getActivity(), viewcurrentuserprofile.class);
-            startActivity(intent);
-            return true;
-        }
-
-
-        return super.onOptionsItemSelected(item);
     }
 
     public static String getLastThree(String myString) {
@@ -270,6 +265,30 @@ public class ChatFragment extends Fragment {
         Thread t = new Thread(r);
         t.start();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_chat) {
+            //   LocationFound();
+            Intent intent = new Intent(getActivity(), newchat.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.setting) {
+            Intent intent = new Intent(getActivity(), viewcurrentuserprofile.class);
+            startActivity(intent);
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 

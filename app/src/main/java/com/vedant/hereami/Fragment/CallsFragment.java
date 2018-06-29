@@ -406,7 +406,7 @@ public class CallsFragment extends Fragment {
                                             calendar.setTime(trialTime);
                                             Date now = new Date();
                                             int date = calendar.get(Calendar.DATE);
-                                            int month = calendar.get(Calendar.MONTH);
+                                            int month = calendar.get(Calendar.MONTH + 1);
                                             int year = calendar.get(Calendar.YEAR);
                                             hour = calendar.get(Calendar.HOUR_OF_DAY);
                                             minutes = calendar.get(Calendar.MINUTE);

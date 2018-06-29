@@ -28,10 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Calling from Example"
+            android:textAllCaps="true"
             android:textColor="@color/sinch_purple"
-            android:textSize="16sp"
-            android:textAllCaps="true" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

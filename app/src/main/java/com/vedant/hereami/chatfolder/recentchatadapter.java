@@ -82,39 +82,42 @@ public class recentchatadapter extends ArrayAdapter<String> {
         holder.textView1.setText(s);
 
         String time = values2.get(position);
-        String time1;
-        String[] parts1 = time.split("%");
-        String part4 = parts1[0];
-        String part5 = parts1[1];
-        String timecheck = null;
-        String dateset = null;
+        String time1 = "";
+        if (time != null) {
 
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
-        SimpleDateFormat df1 = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        //    SimpleDateFormat df1 = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+            String[] parts1 = time.split("%");
+            String part4 = parts1[0];
+            String part5 = parts1[1];
+            String timecheck = null;
+            String dateset = null;
 
-        try {
-            df.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date date = df.parse(time.replace("%", " "));
-            df1.setTimeZone(TimeZone.getDefault());
-            timecheck = df1.format(date);
-            df2.setTimeZone(TimeZone.getDefault());
-            dateset = df2.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.ENGLISH);
+            SimpleDateFormat df1 = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            //    SimpleDateFormat df1 = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+
+            try {
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date date = df.parse(time.replace("%", " "));
+                df1.setTimeZone(TimeZone.getDefault());
+                timecheck = df1.format(date);
+                df2.setTimeZone(TimeZone.getDefault());
+                dateset = df2.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (!part5.equals(todaycheck)) {
+                //   time1 = part5;
+                time1 = dateset;
+            } else {
+                //   time1 = part4;
+                time1 = timecheck;
+            }
+
         }
-
-        if (!part5.equals(todaycheck)) {
-            //   time1 = part5;
-            time1 = dateset;
-        } else {
-            //   time1 = part4;
-            time1 = timecheck;
-        }
-
-
         holder.textViewtimestamp.setText(time1);
+
 
         return convertView;
     }

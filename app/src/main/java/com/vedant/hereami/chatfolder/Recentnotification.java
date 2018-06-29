@@ -28,6 +28,7 @@ import com.firebase.client.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vedant.hereami.R;
+import com.vedant.hereami.notification.NotificationReceiverActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

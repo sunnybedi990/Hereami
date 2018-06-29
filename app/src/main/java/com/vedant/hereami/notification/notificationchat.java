@@ -1,4 +1,4 @@
-package com.vedant.hereami.chatfolder;
+package com.vedant.hereami.notification;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,6 +27,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.vedant.hereami.R;
+import com.vedant.hereami.chatfolder.Message;
+import com.vedant.hereami.chatfolder.MessageChatAdapter;
+import com.vedant.hereami.chatfolder.MessageChatModel;
+import com.vedant.hereami.chatfolder.ReferenceUrl;
+import com.vedant.hereami.chatfolder.chatactivity;
 import com.vedant.hereami.firebasepushnotification.EndPoints;
 import com.vedant.hereami.firebasepushnotification.MyVolley;
 

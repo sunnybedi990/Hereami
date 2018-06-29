@@ -17,6 +17,9 @@ public class ReferenceUrl {
     public static final String imagecheck = "imagecheck";
     public static final String status = "status";
     public static final String name = "name";
+    public static final String callreport = "callreport";
+    public static final String callstage = "callstage";
+    public static final String myip = "myip";
 
     // Key for passing user data between activity
     public static final String KEY_PASS_USERS_INFO = "usersData";

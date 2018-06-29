@@ -185,7 +185,9 @@ public class CallScreenActivity extends BaseActivity {
                 myImage.setImageResource(R.drawable.headshot_7);
             }
             mCallerName.setText(contactmatch);
-            mCallState.setText(call.getState().toString());
+            //  mCallState.setText(call.getState().toString());
+            mCallState.setText("Calling");
+
         } else {
             Log.e(TAG, "Started with invalid callId, aborting.");
             finish();
@@ -268,33 +270,51 @@ public class CallScreenActivity extends BaseActivity {
         return name;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private boolean isHeadphonesPlugged() {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        AudioDeviceInfo[] audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_ALL);
-        for (AudioDeviceInfo deviceInfo : audioDevices) {
-            if (deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES
-                    || deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET) {
-                return true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            AudioDeviceInfo[] audioDevices = new AudioDeviceInfo[0];
+
+            if (audioManager != null) {
+                audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_ALL);
+            }
+
+            for (AudioDeviceInfo deviceInfo : audioDevices) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES
+                            || deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private boolean isBluetoothPlugged() {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        AudioDeviceInfo[] audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_ALL);
-        for (AudioDeviceInfo deviceInfo : audioDevices) {
-            if (deviceInfo.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
-                    || deviceInfo.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) {
-                return true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            AudioDeviceInfo[] audioDevices = new AudioDeviceInfo[0];
+
+            if (audioManager != null) {
+                audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_ALL);
             }
+
+        for (AudioDeviceInfo deviceInfo : audioDevices) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (deviceInfo.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
+                        || deviceInfo.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) {
+                    return true;
+                }
+            }
+        }
         }
         return false;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     public void getaudio() {
 
         if (isHeadphonesPlugged()) {
@@ -381,7 +401,7 @@ public class CallScreenActivity extends BaseActivity {
                 getaudio();
             }
             mAudioPlayer.playProgressTone();
-            mCallState.setText("Calling");
+            mCallState.setText("Ringing");
 
         }
 

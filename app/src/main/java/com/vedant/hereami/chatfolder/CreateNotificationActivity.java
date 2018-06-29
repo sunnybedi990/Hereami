@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.vedant.hereami.R;
+import com.vedant.hereami.notification.NotificationReceiverActivity;
 
 public class CreateNotificationActivity extends Activity {
 
